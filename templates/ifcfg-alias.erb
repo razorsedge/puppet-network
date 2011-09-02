@@ -1,0 +1,13 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= interface %>
+BOOTPROTO=<%= bootproto %>
+ONPARENT=<%= onparent %>
+TYPE=Ethernet
+<% if !ipaddress.empty? %>IPADDR=<%= ipaddress %>
+<% end -%>
+<% if !netmask.empty? %>NETMASK=<%= netmask %>
+<% end -%>
+<% if !gateway.empty? %>GATEWAY=<%= gateway %>
+<% end -%>

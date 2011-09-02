@@ -1,0 +1,10 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= interface %>
+HWADDR=<%= macaddress %>
+MASTER=<%= master %>
+SLAVE=yes
+TYPE=Ethernet
+<% if !ethtool_opts.empty? %>ETHTOOL_OPTS="<%= ethtool_opts %>"
+<% end -%>

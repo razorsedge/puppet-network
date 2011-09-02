@@ -1,0 +1,22 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= interface %>
+BOOTPROTO=<%= bootproto %>
+<% if !macaddress.empty? %>HWADDR=<%= macaddress %>
+<% end -%>
+ONBOOT=<%= onboot %>
+HOTPLUG=<%= onboot %>
+TYPE=Ethernet
+<% if !ipaddress.empty? %>IPADDR=<%= ipaddress %>
+<% end -%>
+<% if !netmask.empty? %>NETMASK=<%= netmask %>
+<% end -%>
+<% if !gateway.empty? %>GATEWAY=<%= gateway %>
+<% end -%>
+<% if !mtu.empty? %>MTU=<%= mtu %>
+<% end -%>
+<% if !bonding_opts.empty? %>BONDING_OPTS="<%= bonding_opts %>"
+<% end -%>
+<% if !ethtool_opts.empty? %>ETHTOOL_OPTS="<%= ethtool_opts %>"
+<% end -%>
