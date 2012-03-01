@@ -29,8 +29,8 @@ class network::if {
   #    ensure     => "up",
   #  }
   #
-  define static ( $ipaddress, $netmask, $gateway = "", $macaddress, $mtu = "", $ethtool_opts = "", $ensure ) {
-    network_if_base { "$title":
+  define network::if::static ( $ipaddress, $netmask, $gateway = "", $macaddress, $mtu = "", $ethtool_opts = "", $ensure ) {
+    network::if_base { "$title":
       ipaddress    => $ipaddress,
       netmask      => $netmask,
       gateway      => $gateway,
@@ -72,8 +72,8 @@ class network::if {
   #    ensure     => "up",
   #  }
   #
-  define dynamic ( $macaddress, $bootproto = "dhcp", $mtu = "", $ethtool_opts = "", $ensure ) {
-    network_if_base { "$title":
+  define network::if::dynamic ( $macaddress, $bootproto = "dhcp", $mtu = "", $ethtool_opts = "", $ensure ) {
+    network::if_base { "$title":
       ipaddress    => "",
       netmask      => "",
       gateway      => "",
@@ -109,8 +109,8 @@ class network::if {
   #    ensure    => "up",
   #  }
   #
-  define alias ( $ipaddress, $netmask, $gateway = "", $ensure ) {
-    network_if_base { "$title":
+  define network::if::alias ( $ipaddress, $netmask, $gateway = "", $ensure ) {
+    network::if_base { "$title":
       ipaddress    => $ipaddress,
       netmask      => $netmask,
       gateway      => $gateway,

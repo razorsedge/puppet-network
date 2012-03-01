@@ -30,8 +30,8 @@ class network::bond {
   #    ensure       => "up",
   #  }
   #
-  define static ( $ipaddress, $netmask, $gateway = "", $mtu = "", $ethtool_opts = "", $bonding_opts = "", $ensure ) {
-    network_if_base { "$title":
+  define network::bond::static ( $ipaddress, $netmask, $gateway = "", $mtu = "", $ethtool_opts = "", $bonding_opts = "", $ensure ) {
+    network::if_base { "$title":
       ipaddress    => $ipaddress,
       netmask      => $netmask,
       gateway      => $gateway,
@@ -77,8 +77,8 @@ class network::bond {
   #    ensure => "up",
   #  }
   #
-  define dynamic ( $mtu = "", $ethtool_opts = "", $bonding_opts = "", $ensure ) {
-    network_if_base { "$title":
+  define network::bond::dynamic ( $mtu = "", $ethtool_opts = "", $bonding_opts = "", $ensure ) {
+    network::if_base { "$title":
       ipaddress    => "",
       netmask      => "",
       gateway      => "",
@@ -125,8 +125,8 @@ class network::bond {
   #    ensure    => "up",
   #  }
   #
-  define alias ( $ipaddress, $netmask, $gateway = "", $ensure ) {
-    network_if_base { "$title":
+  define network::bond::alias ( $ipaddress, $netmask, $gateway = "", $ensure ) {
+    network::if_base { "$title":
       ipaddress    => $ipaddress,
       netmask      => $netmask,
       gateway      => $gateway,
@@ -160,7 +160,7 @@ class network::bond {
   #    master     => "bond0",
   #  }
   #
-  define slave ( $macaddress, $master, $ethtool_opts = "" ) {
+  define network::bond::slave ( $macaddress, $master, $ethtool_opts = "" ) {
     $interface = $name
 
     file { "ifcfg-$interface":
