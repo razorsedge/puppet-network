@@ -41,7 +41,18 @@
 #   LINKDELAY=
 #   REORDER_HDR=yes|no
 #
-define network::if_base ( $ipaddress, $netmask, $gateway = "", $macaddress, $bootproto = "none", $mtu = "", $ethtool_opts = "", $bonding_opts = "", $isalias = false, $ensure ) {
+define network::if_base (
+  $ipaddress,
+  $netmask,
+  $gateway = "",
+  $macaddress,
+  $bootproto = "none",
+  $mtu = "",
+  $ethtool_opts = "",
+  $bonding_opts = "",
+  $isalias = false,
+  $ensure
+) {
   $interface = $name
 
   if $isalias {

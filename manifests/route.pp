@@ -20,7 +20,11 @@
 #     gateway => [ "192.168.1.1", "10.0.0.1", ],
 #   }
 #
-define network::route ( $address, $netmask, $gateway ) {
+define network::route (
+  $address,
+  $netmask,
+  $gateway
+) {
   $interface = $name
 
   file { "route-$interface":

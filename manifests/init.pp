@@ -14,4 +14,3 @@ class network {
   }
 
 } # class network
-
