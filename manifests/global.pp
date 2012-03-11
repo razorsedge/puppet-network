@@ -34,9 +34,9 @@ define network::global (
   $nozeroconf = "",
   $gatewaydev = ""
 ) {
-  $nisdomain = $nisdomainname ? {
+  $nisdomain = $::nisdomainname ? {
     ''      => "",
-    default => "$nisdomainname",
+    default => "$::nisdomainname",
   }
 
   file { "network.sysconfig":
@@ -50,9 +50,7 @@ define network::global (
   }
 
   service { "network":
-    name       => $operatingsystem ? {
-      default => "network",
-    },
+    name       => "network",
     ensure     => "running",
     enable     => "true",
     hasrestart => "true",

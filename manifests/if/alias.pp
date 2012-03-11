@@ -27,7 +27,7 @@ define network::if::alias (
   $gateway = "",
   $ensure
 ) {
-  network::if_base { "$title":
+  network_if_base { "$title":
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,

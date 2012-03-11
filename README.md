@@ -124,10 +124,11 @@ Static interface routes:
 Notes
 -----
 
+* Runs under Puppet 2.6 and later.
 * Only works with RedHat-ish systems.
 * Read /usr/share/doc/initscripts-*/sysconfig.txt for underlying details.
 * Read /usr/share/doc/kernel-doc-*/Documentation/networking/bonding.txt for underlying details.
-* Only tested on EL5.5.
+* Only tested on CentOS 5.5.
 * There is an assumption that an aliased interface will never use DHCP.
 * bootp support is unknown for bonded interfaces. Thus no bootp bond support in this module.
 * It is assumed that if you create a bond that you also create the slave interface(s).

@@ -8,7 +8,7 @@ network::route { "eth2":
 }
 
 network::if::dynamic { "eth2":
-  macaddress   => $macaddress_eth2,
+  macaddress   => $::macaddress_eth2,
   ensure       => "down",
 }
 
