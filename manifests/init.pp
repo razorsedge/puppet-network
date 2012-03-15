@@ -111,4 +111,4 @@ define network_if_base (
     }
   }
 
-} # define network::if_base
+} # define network_if_base
