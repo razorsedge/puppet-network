@@ -1,7 +1,13 @@
 TODO
 ====
 
-Consolidate the bonding config master and slave into one definition.
+1. Change definition network_if_base $ensure to also take "absent" as a
+parameter.  This should remove all traces of the ifconfig file from the system
+and remove the interface.
+
+    $ensure - required - up|down|absent
+
+2. Consolidate the bonding config master and slave into one definition.
 
 Examples
 --------

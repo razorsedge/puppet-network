@@ -35,11 +35,11 @@ define network::route (
     path    => "/etc/sysconfig/network-scripts/route-$interface",
     content => template("network/route-eth.erb"),
     before  => File["ifcfg-$interface"],
-    # need to know $ensure of $interface since one of these execs is not defined.
+    # TODO: need to know $ensure of $interface since one of these execs is not defined.
     #notify  => [ Exec["ifup-$interface"], Exec["ifdown-$interface"], ],
   }
 
-  # mja: use "if defined(File['/tmp/myfile']) { ... }" ?
+  # TODO: use "if defined(File['/tmp/myfile']) { ... }" ?
   # check if interface is up and if so then add routes
   #exec { "ifup-routes-$interface":
   #  command => "/etc/sysconfig/network-scripts/ifup-routes $interface",

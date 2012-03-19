@@ -98,7 +98,7 @@ define network_if_base (
       exec { "ifup-$interface":
         command     => "/sbin/ifdown $interface; /sbin/ifup $interface",
         subscribe   => File["ifcfg-$interface"],
-        refreshonly => "true",
+        refreshonly => true,
       }
     }
 
@@ -106,7 +106,7 @@ define network_if_base (
       exec { "ifdown-$interface":
         command     => "/sbin/ifdown $interface",
         subscribe   => File["ifcfg-$interface"],
-        refreshonly => "true",
+        refreshonly => true,
       }
     }
   }

@@ -14,7 +14,7 @@
 #   Performs 'service network restart' after any change to /etc/sysconfig/network.
 #
 # Requires:
-#   $nisdomainname - optional - configures the NIS domainname
+#   $::nisdomainname - optional - configures the NIS domainname
 #
 # Sample Usage:
 #   # global network settings
@@ -52,8 +52,8 @@ define network::global (
   service { "network":
     name       => "network",
     ensure     => "running",
-    enable     => "true",
-    hasrestart => "true",
-    hasstatus  => "true",
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
   }
 } # define global
