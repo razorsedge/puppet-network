@@ -3,6 +3,7 @@
 # Configures /etc/sysconfig/network
 #
 # Parameters:
+#   $hostname   - optional - Changes the hostname (be aware that it will break something)
 #   $gateway    - optional - Sets the default gateway
 #   $gatewaydev - optional - Determines the device to use as the default gateway.
 #                            Overrides $gateway in network::global.  Must have
@@ -19,6 +20,7 @@
 # Sample Usage:
 #   # global network settings
 #   network::global { "default":
+#    hostname   => "host.domain.tld",
 #    gateway    => "1.2.3.1",
 #    gatewaydev => "eth0",
 #    vlan       => "yes",
@@ -29,6 +31,7 @@
 #   NETWORKING_IPV6=yes|no
 #
 define network::global (
+  $hostname = "",
   $gateway = "",
   $vlan = "",
   $nozeroconf = "",
