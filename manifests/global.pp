@@ -3,6 +3,12 @@
 # Configures /etc/sysconfig/network
 #
 # Parameters:
+#   $hostname   - optional - Changes the hostname (be aware that it will break something)
+#                            Note: when you'll reboot/restart puppet, it will generate a
+#                            new certificate and a new certificate request, based on the 
+#                            new hostname; you'll have to sign it (if autosign is off).
+#                            You'll also have to provide a new node definition in the 
+#                            manifest based on the new hostname.
 #   $gateway    - optional - Sets the default gateway
 #   $gatewaydev - optional - Determines the device to use as the default gateway.
 #                            Overrides $gateway in network::global.  Must have
@@ -19,6 +25,7 @@
 # Sample Usage:
 #   # global network settings
 #   network::global { "default":
+#    hostname   => "host.domain.tld",
 #    gateway    => "1.2.3.1",
 #    gatewaydev => "eth0",
 #    vlan       => "yes",
@@ -29,6 +36,7 @@
 #   NETWORKING_IPV6=yes|no
 #
 define network::global (
+  $hostname = "",
   $gateway = "",
   $vlan = "",
   $nozeroconf = "",
