@@ -9,6 +9,9 @@
 #   $macaddress   - required
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $peerdns      - optional
+#   $dns1         - optional
+#   $dns2         - optional
 #   $ensure       - required - up|down
 #
 # Actions:
@@ -31,6 +34,9 @@ define network::if::static (
   $macaddress,
   $mtu = "",
   $ethtool_opts = "",
+  $peerdns = "",
+  $dns1 = "",
+  $dns2 = "",
   $ensure
 ) {
   network_if_base { "$title":
@@ -42,6 +48,9 @@ define network::if::static (
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => "",
+    peerdns      => $peerdns,
+    dns1         => $dns1,
+    dns2         => $dns2,
     ensure       => $ensure,
   }
 } # define network::if::static
