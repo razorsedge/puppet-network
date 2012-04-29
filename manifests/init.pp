@@ -30,6 +30,9 @@ class network {
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
 #   $isalias      - optional
+#   $peerdns      - optional
+#   $dns1         - optional
+#   $dns2         - optional
 #   $ensure       - required - up|down
 #
 # Actions:
@@ -44,8 +47,6 @@ class network {
 #   HOTPLUG=yes|no
 #   USERCTL=yes|no
 #   WINDOW=
-#   PEERDNS=yes|no
-#   DNS{1,2}=<ip address>
 #   SCOPE=
 #   SRCADDR=
 #   NOZEROCONF=yes
@@ -65,6 +66,9 @@ define network_if_base (
   $ethtool_opts = "",
   $bonding_opts = "",
   $isalias = false,
+  $peerdns = false,
+  $dns1 = "",
+  $dns2 = "",
   $ensure
 ) {
   $interface = $name

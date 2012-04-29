@@ -7,6 +7,9 @@
 #   $ipaddress    - required
 #   $netmask      - required
 #   $gateway      - optional
+#   $peerdns      - optional
+#   $dns1         - optional
+#   $dns2         - optional
 #   $ensure       - required - up|down
 #
 # Actions:
@@ -25,6 +28,9 @@ define network::if::alias (
   $ipaddress,
   $netmask,
   $gateway = "",
+  $peerdns = "",
+  $dns1 = "",
+  $dns2 = "",
   $ensure
 ) {
   network_if_base { "$title":
@@ -37,6 +43,9 @@ define network::if::alias (
     ethtool_opts => "",
     bonding_opts => "",
     isalias      => true,
+    peerdns      => $peerdns,
+    dns1         => $dns1,
+    dns2         => $dns2,
     ensure       => $ensure,
   }
 } # define network::if::alias
