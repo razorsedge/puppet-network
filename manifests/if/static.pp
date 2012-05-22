@@ -12,6 +12,7 @@
 #   $peerdns      - optional
 #   $dns1         - optional
 #   $dns2         - optional
+#   $domain       - optional
 #   $ensure       - required - up|down
 #
 # Actions:
@@ -24,6 +25,7 @@
 #    ipaddress  => "10.21.30.248",
 #    netmask    => "255.255.255.128",
 #    macaddress => $macaddress_eth0,
+#    domain     => "is.domain.com domain.com",
 #    ensure     => "up",
 #  }
 #
@@ -37,6 +39,7 @@ define network::if::static (
   $peerdns = "",
   $dns1 = "",
   $dns2 = "",
+  $domain = "",
   $ensure
 ) {
   network_if_base { "$title":
@@ -51,6 +54,7 @@ define network::if::static (
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
+    domain       => $domain,
     ensure       => $ensure,
   }
 } # define network::if::static
