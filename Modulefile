@@ -1,10 +1,10 @@
 name 'razorsedge-network'
-version '2.0.0'
+version '2.1.0'
 
 author 'razorsedge'
 license 'Apache 2.0'
-project_page 'https://github.com/runningman/puppet-network'
-source 'git://github.com/runningman/puppet-network.git'
+project_page 'https://github.com/razorsedge/puppet-network'
+source 'git://github.com/razorsedge/puppet-network.git'
 summary 'Puppet module to manage RedHat/Fedora traditional network configuration.'
 description 'This module manages Red Hat/Fedora traditional network configuration.
 
