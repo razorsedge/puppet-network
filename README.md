@@ -30,7 +30,6 @@ Normal interface - static (minimal):
     network::if::static { "eth0":
       ipaddress  => "1.2.3.248",
       netmask    => "255.255.255.128",
-      macaddress => $macaddress_eth0,
       ensure     => "up",
     }
 
@@ -49,7 +48,6 @@ Normal interface - static:
 Normal interface - dhcp (minimal):
 
     network::if::dynamic { "eth2":
-      macaddress => $macaddress_eth2,
       ensure     => "up",
     }
 
