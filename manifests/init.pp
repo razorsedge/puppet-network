@@ -99,6 +99,11 @@ define network_if_base (
     }
   }
 
+  file { 'resolv.conf.save':
+    ensure => 'absent',
+    path   => '/etc/resolv.conf.save', 
+  }
+
   case $ensure {
     up: {
       exec { "ifup-$interface":
