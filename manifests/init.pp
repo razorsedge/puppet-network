@@ -67,7 +67,7 @@ define network_if_base (
   $ethtool_opts = "",
   $bonding_opts = "",
   $isalias = false,
-  $peerdns = false,
+  $peerdns = "",
   $dns1 = "",
   $dns2 = "",
   $domain = "",
