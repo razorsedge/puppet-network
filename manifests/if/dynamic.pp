@@ -3,7 +3,7 @@
 # Creates a normal interface with dynamic IP information.
 #
 # Parameters:
-#   $macaddress   - required
+#   $macaddress   - optional - defaults to macaddress_$title
 #   $bootproto    - optional - defaults to "dhcp"
 #   $mtu          - optional
 #   $ethtool_opts - optional
@@ -28,12 +28,17 @@
 #  }
 #
 define network::if::dynamic (
-  $macaddress,
+  $macaddress = "",
   $bootproto = "dhcp",
   $mtu = "",
   $ethtool_opts = "",
   $ensure
 ) {
+
+  if ! $macaddress {
+    $macaddress = getvar("macaddress_$title")
+  }
+
   network_if_base { "$title":
     ipaddress    => "",
     netmask      => "",
