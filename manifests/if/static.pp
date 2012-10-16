@@ -6,7 +6,7 @@
 #   $ipaddress    - required
 #   $netmask      - required
 #   $gateway      - optional
-#   $macaddress   - required
+#   $macaddress   - optional - defaults to macaddress_$title
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $peerdns      - optional
@@ -33,7 +33,7 @@ define network::if::static (
   $ipaddress,
   $netmask,
   $gateway = "",
-  $macaddress,
+  $macaddress = "",
   $mtu = "",
   $ethtool_opts = "",
   $peerdns = "",
@@ -42,6 +42,11 @@ define network::if::static (
   $domain = "",
   $ensure
 ) {
+
+  if ! $macaddress {
+    $macaddress = getvar("macaddress_$title")
+  }
+
   network_if_base { "$title":
     ipaddress    => $ipaddress,
     netmask      => $netmask,
