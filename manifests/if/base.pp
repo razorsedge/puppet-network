@@ -44,62 +44,66 @@
 #   REORDER_HDR=yes|no
 #
 define network::if::base (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
   $macaddress,
-  $bootproto = "none",
-  $mtu = "",
-  $ethtool_opts = "",
-  $bonding_opts = "",
+  $gateway = '',
+  $bootproto = 'none',
+  $mtu = '',
+  $ethtool_opts = '',
+  $bonding_opts = '',
   $isalias = false,
   $peerdns = false,
-  $dns1 = "",
-  $dns2 = "",
-  $domain = "",
-  $ensure
+  $dns1 = '',
+  $dns2 = '',
+  $domain = '',
 ) {
   $interface = $name
 
   if $isalias {
     $onparent = $ensure ? {
-      up   => "yes",
-      down => "no",
+      up   => 'yes',
+      down => 'no',
     }
   } else {
     $onboot = $ensure ? {
-      up   => "yes",
-      down => "no",
+      up   => 'yes',
+      down => 'no',
     }
   }
 
-  file { "ifcfg-$interface":
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    ensure  => "present",
-    path    => "/etc/sysconfig/network-scripts/ifcfg-$interface",
+  file { "ifcfg-${interface}":
+    ensure  => 'present',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => $isalias ? {
-      false => template("network/ifcfg-eth.erb"),
-      true  => template("network/ifcfg-alias.erb"),
+      false => template('network/ifcfg-eth.erb'),
+      true  => template('network/ifcfg-alias.erb'),
     }
   }
 
   case $ensure {
     up: {
-      exec { "ifup-$interface":
-        command     => "/sbin/ifdown $interface; /sbin/ifup $interface",
-        subscribe   => File["ifcfg-$interface"],
+      exec { "ifup-${interface}":
+        command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
+        subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
     }
 
     down: {
-      exec { "ifdown-$interface":
-        command     => "/sbin/ifdown $interface",
-        subscribe   => File["ifcfg-$interface"],
+      exec { "ifdown-${interface}":
+        command     => "/sbin/ifdown ${interface}",
+        subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
+    }
+
+    default: {
+      fail("network::if::base - unknown ensure value '${ensure}': use 'up' or 'down'")
     }
   }
 

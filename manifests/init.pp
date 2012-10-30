@@ -7,7 +7,7 @@ class network {
   case $::osfamily {
     RedHat: { }
     default: {
-      fail("This network module only supports Red Hat-based systems.")
+      fail('This network module only supports Red Hat-based systems.')
     }
   }
 } # class network

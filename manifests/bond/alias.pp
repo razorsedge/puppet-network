@@ -15,28 +15,28 @@
 #
 # Sample Usage:
 #  # aliased bonded interface
-#  network::bond::alias { "bond2:1":
-#    ipaddress => "1.2.3.6",
-#    netmask   => "255.255.255.0",
-#    ensure    => "up",
+#  network::bond::alias { 'bond2:1':
+#    ipaddress => '1.2.3.6',
+#    netmask   => '255.255.255.0',
+#    ensure    => 'up',
 #  }
 #
 define network::bond::alias (
   $ipaddress,
   $netmask,
-  $gateway = "",
-  $ensure
+  $ensure,
+  $gateway = '',
 ) {
-  network::if::base { "$title":
+  network::if::base { $title:
+    ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
-    macaddress   => "",
-    bootproto    => "none",
-    mtu          => "",
-    ethtool_opts => "",
-    bonding_opts => "",
+    macaddress   => '',
+    bootproto    => 'none',
+    mtu          => '',
+    ethtool_opts => '',
+    bonding_opts => '',
     isalias      => true,
-    ensure       => $ensure,
   }
 } # define network::bond::alias
