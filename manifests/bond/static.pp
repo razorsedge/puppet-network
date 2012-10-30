@@ -34,7 +34,7 @@ define network::bond::static (
   $bonding_opts = "",
   $ensure
 ) {
-  network_if_base { "$title":
+  network::if::base { "$title":
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,

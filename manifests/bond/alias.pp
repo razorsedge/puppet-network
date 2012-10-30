@@ -27,7 +27,7 @@ define network::bond::alias (
   $gateway = "",
   $ensure
 ) {
-  network_if_base { "$title":
+  network::if::base { "$title":
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,

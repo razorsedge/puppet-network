@@ -34,7 +34,7 @@ define network::if::dynamic (
   $ethtool_opts = "",
   $ensure
 ) {
-  network_if_base { "$title":
+  network::if::base { "$title":
     ipaddress    => "",
     netmask      => "",
     gateway      => "",

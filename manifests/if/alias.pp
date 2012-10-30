@@ -33,7 +33,7 @@ define network::if::alias (
   $dns2 = "",
   $ensure
 ) {
-  network_if_base { "$title":
+  network::if::base { "$title":
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,

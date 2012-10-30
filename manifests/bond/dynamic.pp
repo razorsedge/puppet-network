@@ -26,7 +26,7 @@ define network::bond::dynamic (
   $bonding_opts = "",
   $ensure
 ) {
-  network_if_base { "$title":
+  network::if::base { "$title":
     ipaddress    => "",
     netmask      => "",
     gateway      => "",
