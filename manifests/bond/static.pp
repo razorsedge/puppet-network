@@ -18,42 +18,42 @@
 #
 # Sample Usage:
 #  # bonded master interface - static
-#  network::bond::static { "bond0":
-#    ipaddress    => "1.2.3.5",
-#    netmask      => "255.255.255.0",
-#    bonding_opts => "mode=active-backup miimon=100",
-#    ensure       => "up",
+#  network::bond::static { 'bond0':
+#    ipaddress    => '1.2.3.5',
+#    netmask      => '255.255.255.0',
+#    bonding_opts => 'mode=active-backup miimon=100',
+#    ensure       => 'up',
 #  }
 #
 define network::bond::static (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
-  $mtu = "",
-  $ethtool_opts = "",
-  $bonding_opts = "",
-  $ensure
+  $gateway = '',
+  $mtu = '',
+  $ethtool_opts = '',
+  $bonding_opts = ''
 ) {
-  network_if_base { "$title":
+  network::if::base { $title:
+    ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
-    macaddress   => "",
-    bootproto    => "none",
+    macaddress   => '',
+    bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
-    ensure       => $ensure,
   }
 
-  augeas { "modprobe.conf_$title":
-    context => "/files/etc/modprobe.conf",
-    changes => [ "set alias[last()+1] $title", "set alias[last()]/modulename bonding", ],
-    onlyif  => "match alias[*][. = '$title'] size == 0",
-   #onlyif  => "match */modulename[. = 'bonding'] size == 0",
+  augeas { "modprobe.conf_${title}":
+    context => '/files/etc/modprobe.conf',
+    changes => [ "set alias[last()+1] ${title}', 'set alias[last()]/modulename bonding", ],
+    onlyif  => "match alias[*][. = '${title}'] size == 0",
+    #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
     before  => $ensure ? {
-      up   => Exec["ifup-$title"],
-      down => Exec["ifdown-$title"],
+      up   => Exec["ifup-${title}"],
+      down => Exec["ifdown-${title}"],
     }
   }
 } # define network::bond::static

@@ -21,40 +21,40 @@
 #
 # Sample Usage:
 #  # normal interface - static (minimal)
-#  network::if::static { "eth0":
-#    ipaddress  => "10.21.30.248",
-#    netmask    => "255.255.255.128",
+#  network::if::static { 'eth0':
+#    ipaddress  => '10.21.30.248',
+#    netmask    => '255.255.255.128',
 #    macaddress => $macaddress_eth0,
-#    domain     => "is.domain.com domain.com",
-#    ensure     => "up",
+#    domain     => 'is.domain.com domain.com',
+#    ensure     => 'up',
 #  }
 #
 define network::if::static (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
   $macaddress,
-  $mtu = "",
-  $ethtool_opts = "",
-  $peerdns = "",
-  $dns1 = "",
-  $dns2 = "",
-  $domain = "",
-  $ensure
+  $gateway = '',
+  $mtu = '',
+  $ethtool_opts = '',
+  $peerdns = '',
+  $dns1 = '',
+  $dns2 = '',
+  $domain = ''
 ) {
-  network_if_base { "$title":
+  network::if::base { $title:
+    ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
     macaddress   => $macaddress,
-    bootproto    => "none",
+    bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => "",
+    bonding_opts => '',
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,
-    ensure       => $ensure,
   }
 } # define network::if::static

@@ -18,34 +18,34 @@
 #
 # Sample Usage:
 #  # aliased interface
-#  network::if::alias { "eth0:1":
-#    ipaddress => "1.2.3.5",
-#    netmask   => "255.255.255.0",
-#    ensure    => "up",
+#  network::if::alias { 'eth0:1':
+#    ipaddress => '1.2.3.5',
+#    netmask   => '255.255.255.0',
+#    ensure    => 'up',
 #  }
 #
 define network::if::alias (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
-  $peerdns = "",
-  $dns1 = "",
-  $dns2 = "",
-  $ensure
+  $gateway = '',
+  $peerdns = '',
+  $dns1    = '',
+  $dns2    = ''
 ) {
-  network_if_base { "$title":
+  network::if::base { $title:
+    ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
-    macaddress   => "",
-    bootproto    => "none",
-    mtu          => "",
-    ethtool_opts => "",
-    bonding_opts => "",
+    macaddress   => '',
+    bootproto    => 'none',
+    mtu          => '',
+    ethtool_opts => '',
+    bonding_opts => '',
     isalias      => true,
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
-    ensure       => $ensure,
   }
 } # define network::if::alias

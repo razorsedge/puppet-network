@@ -1,0 +1,21 @@
+network:
+  bond:
+    # bonded master interface - static
+    static:
+      'bond0':
+        ensure:       'up'
+        ipaddress:    '1.2.3.5'
+        netmask:      '255.255.255.0'
+        gateway:      '1.2.3.1'
+        mtu:          '9000'
+        bonding_opts: 'mode=active-backup miimon=100'
+    # bonded slave interfaces - static
+    slave:
+      'eth1':
+        macaddress:   %{::macaddress_eth1}
+        ethtool_opts: 'speed 1000 duplex full autoneg off'
+        master:       'bond0'
+      'eth3':
+        macaddress:   %{::macaddress_eth3}
+        ethtool_opts: 'speed 100 duplex half autoneg off'
+        master:       'bond0'
