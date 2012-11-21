@@ -7,7 +7,7 @@ class network {
   case $::osfamily {
     RedHat: { }
     default: {
-      fail("This network module only supports Red Hat-based systems.")
+      fail('This network module only supports RedHat-based systems.')
     }
   }
 } # class network
@@ -21,6 +21,7 @@ class network {
 #  /etc/sysconfig/networking-scripts/ifcfg-bond(master)
 #
 # Parameters:
+#   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
 #   $gateway      - optional
@@ -34,7 +35,6 @@ class network {
 #   $dns1         - optional
 #   $dns2         - optional
 #   $domain       - optional
-#   $ensure       - required - up|down
 #
 # Actions:
 #   Performs 'ifup/ifdown $name' after any changes to the ifcfg file.
@@ -58,60 +58,60 @@ class network {
 #   REORDER_HDR=yes|no
 #
 define network_if_base (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
   $macaddress,
-  $bootproto = "none",
-  $mtu = "",
-  $ethtool_opts = "",
-  $bonding_opts = "",
+  $gateway = '',
+  $bootproto = 'none',
+  $mtu = '',
+  $ethtool_opts = '',
+  $bonding_opts = '',
   $isalias = false,
-  $peerdns = "",
-  $dns1 = "",
-  $dns2 = "",
-  $domain = "",
-  $ensure
+  $peerdns = '',
+  $dns1 = '',
+  $dns2 = '',
+  $domain = ''
 ) {
   $interface = $name
 
   if $isalias {
     $onparent = $ensure ? {
-      up   => "yes",
-      down => "no",
+      up   => 'yes',
+      down => 'no',
     }
   } else {
     $onboot = $ensure ? {
-      up   => "yes",
-      down => "no",
+      up   => 'yes',
+      down => 'no',
     }
   }
 
-  file { "ifcfg-$interface":
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    ensure  => "present",
-    path    => "/etc/sysconfig/network-scripts/ifcfg-$interface",
+  file { "ifcfg-${interface}":
+    ensure  => 'present',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => $isalias ? {
-      false => template("network/ifcfg-eth.erb"),
-      true  => template("network/ifcfg-alias.erb"),
+      false => template('network/ifcfg-eth.erb'),
+      true  => template('network/ifcfg-alias.erb'),
     }
   }
 
   case $ensure {
     up: {
-      exec { "ifup-$interface":
-        command     => "/sbin/ifdown $interface; /sbin/ifup $interface",
-        subscribe   => File["ifcfg-$interface"],
+      exec { "ifup-${interface}":
+        command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
+        subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
     }
 
     down: {
-      exec { "ifdown-$interface":
-        command     => "/sbin/ifdown $interface",
-        subscribe   => File["ifcfg-$interface"],
+      exec { "ifdown-${interface}":
+        command     => "/sbin/ifdown ${interface}",
+        subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
     }
