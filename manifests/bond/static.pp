@@ -32,7 +32,11 @@ define network::bond::static (
   $gateway = '',
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = ''
+  $bonding_opts = '',
+  $peerdns = false,
+  $dns1 = '',
+  $dns2 = '',
+  $domain = ''
 ) {
   network_if_base { $title:
     ensure       => $ensure,
@@ -44,6 +48,10 @@ define network::bond::static (
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
+    peerdns      => $peerdns,
+    dns1         => $dns1,
+    dns2         => $dns2,
+    domain       => $domain,
   }
 
   augeas { "modprobe.conf_${title}":

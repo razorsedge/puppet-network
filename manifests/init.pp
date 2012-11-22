@@ -68,12 +68,30 @@ define network_if_base (
   $ethtool_opts = '',
   $bonding_opts = '',
   $isalias = false,
-  $peerdns = '',
+  $peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = ''
 ) {
+  # Validate our booleans
+  validate_bool($isalias)
+  validate_bool($peerdns)
+
   $interface = $name
+
+  # Deal with the case where $dns2 is non-empty and $dns1 is empty.
+  if $dns2 != '' {
+    if $dns1 == '' {
+      $dns1_real = $dns2
+      $dns2_real = ''
+    } else {
+      $dns1_real = $dns1
+      $dns2_real = $dns2
+    }
+  } else {
+    $dns1_real = $dns1
+    $dns2_real = $dns2
+  }
 
   if $isalias {
     $onparent = $ensure ? {
