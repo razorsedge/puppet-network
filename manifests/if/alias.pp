@@ -11,6 +11,7 @@
 #   $peerdns      - optional
 #   $dns1         - optional
 #   $dns2         - optional
+#   $domain       - optional
 #
 # Actions:
 #
@@ -31,7 +32,8 @@ define network::if::alias (
   $gateway = '',
   $peerdns = '',
   $dns1 = '',
-  $dns2 = ''
+  $dns2 = '',
+  $domain = ''
 ) {
   network_if_base { $title:
     ensure       => $ensure,
@@ -47,5 +49,6 @@ define network::if::alias (
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
+    domain       => $domain,
   }
 } # define network::if::alias
