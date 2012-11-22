@@ -37,7 +37,7 @@ define network::if::static (
   $macaddress = '',
   $mtu = '',
   $ethtool_opts = '',
-  $peerdns = '',
+  $peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = ''

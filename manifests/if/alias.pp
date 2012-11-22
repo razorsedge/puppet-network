@@ -30,7 +30,7 @@ define network::if::alias (
   $ipaddress,
   $netmask,
   $gateway = '',
-  $peerdns = '',
+  $peerdns = false,  # TODO: strip this out like in network::bond::alias?
   $dns1 = '',
   $dns2 = '',
   $domain = ''
