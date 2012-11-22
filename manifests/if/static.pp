@@ -25,7 +25,7 @@
 #    ensure     => 'up',
 #    ipaddress  => '10.21.30.248',
 #    netmask    => '255.255.255.128',
-#    macaddress => $macaddress_eth0,
+#    macaddress => $::macaddress_eth0,
 #    domain     => 'is.domain.com domain.com',
 #  }
 #
@@ -43,8 +43,10 @@ define network::if::static (
   $domain = ''
 ) {
 
-  if ! $macaddress {
-    $macaddress = getvar("macaddress_${title}")
+  if ! is_mac_address($macaddress) {
+    $macaddy = getvar("::macaddress_${title}")
+  } else {
+    $macaddy = $macaddress
   }
 
   network_if_base { $title:
@@ -52,7 +54,7 @@ define network::if::static (
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
-    macaddress   => $macaddress,
+    macaddress   => $macaddy,
     bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,

@@ -14,7 +14,7 @@
 # Sample Usage:
 #  # bonded slave interface
 #  network::bond::slave { 'eth1':
-#    macaddress => $macaddress_eth1,
+#    macaddress => $::macaddress_eth1,
 #    master     => 'bond0',
 #  }
 #

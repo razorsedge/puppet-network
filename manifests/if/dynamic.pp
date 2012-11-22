@@ -17,7 +17,7 @@
 #  # normal interface - dhcp (minimal)
 #  network::if::dynamic { 'eth2':
 #    ensure     => 'up',
-#    macaddress => $macaddress_eth2,
+#    macaddress => $::macaddress_eth2,
 #  }
 #
 #  # normal interface - bootp (minimal)
@@ -35,8 +35,10 @@ define network::if::dynamic (
   $ethtool_opts = ''
 ) {
 
-  if ! $macaddress {
-    $macaddress = getvar("macaddress_${title}")
+  if ! is_mac_address($macaddress) {
+    $macaddy = getvar("::macaddress_${title}")
+  } else {
+    $macaddy = $macaddress
   }
 
   network_if_base { $title:
@@ -44,7 +46,7 @@ define network::if::dynamic (
     ipaddress    => '',
     netmask      => '',
     gateway      => '',
-    macaddress   => $macaddress,
+    macaddress   => $macaddy,
     bootproto    => $bootproto,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
