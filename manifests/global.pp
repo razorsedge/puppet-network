@@ -5,9 +5,9 @@
 # Parameters:
 #   $hostname   - optional - Changes the hostname (be aware that it will break something)
 #                            Note: when you'll reboot/restart puppet, it will generate a
-#                            new certificate and a new certificate request, based on the 
+#                            new certificate and a new certificate request, based on the
 #                            new hostname; you'll have to sign it (if autosign is off).
-#                            You'll also have to provide a new node definition in the 
+#                            You'll also have to provide a new node definition in the
 #                            manifest based on the new hostname.
 #   $gateway    - optional - Sets the default gateway
 #   $gatewaydev - optional - Determines the device to use as the default gateway.
@@ -36,30 +36,30 @@
 #   NETWORKING_IPV6=yes|no
 #
 define network::global (
-  $hostname = "",
-  $gateway = "",
-  $vlan = "",
-  $nozeroconf = "",
-  $gatewaydev = ""
+  $hostname = '',
+  $gateway = '',
+  $vlan = '',
+  $nozeroconf = '',
+  $gatewaydev = ''
 ) {
   $nisdomain = $::nisdomainname ? {
-    ''      => "",
-    default => "$::nisdomainname",
+    ''      => '',
+    default => $::nisdomainname,
   }
 
-  file { "network.sysconfig":
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    ensure  => "present",
-    path    => "/etc/sysconfig/network",
-    content => template("network/network.erb"),
-    notify  => Service["network"],
+  file { 'network.sysconfig':
+    ensure  => 'present',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    path    => '/etc/sysconfig/network',
+    content => template('network/network.erb'),
+    notify  => Service['network'],
   }
 
-  service { "network":
-    name       => "network",
-    ensure     => "running",
+  service { 'network':
+    ensure     => 'running',
+    name       => 'network',
     enable     => true,
     hasrestart => true,
     hasstatus  => true,

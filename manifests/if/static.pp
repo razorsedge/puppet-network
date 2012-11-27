@@ -30,31 +30,31 @@
 #  }
 #
 define network::if::static (
+  $ensure,
+  $macaddress,
   $ipaddress,
   $netmask,
-  $gateway = "",
-  $macaddress,
-  $mtu = "",
-  $ethtool_opts = "",
-  $peerdns = "",
-  $dns1 = "",
-  $dns2 = "",
-  $domain = "",
-  $ensure
+  $gateway = '',
+  $mtu = '',
+  $ethtool_opts = '',
+  $peerdns = '',
+  $dns1 = '',
+  $dns2 = '',
+  $domain = '',
 ) {
-  network_if_base { "$title":
+  network_if_base { "${title}":
+    ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
     macaddress   => $macaddress,
-    bootproto    => "none",
+    bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => "",
+    bonding_opts => '',
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,
-    ensure       => $ensure,
   }
 } # define network::if::static
