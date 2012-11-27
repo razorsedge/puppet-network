@@ -21,31 +21,33 @@
 #  }
 #
 define network::bond::dynamic (
-  $mtu = "",
-  $ethtool_opts = "",
-  $bonding_opts = "",
-  $ensure
-) {
-  network_if_base { "$title":
-    ipaddress    => "",
-    netmask      => "",
-    gateway      => "",
-    macaddress   => "",
-    bootproto    => "dhcp",
+  $ensure,
+  $mtu = '',
+  $ethtool_opts = '',
+  $bonding_opts = '',
+  ) {
+  network_if_base { "${title}":
+    ensure       => $ensure,
+    ipaddress    => '',
+    netmask      => '',
+    gateway      => '',
+    macaddress   => '',
+    bootproto    => 'dhcp',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
-    ensure       => $ensure,
   }
 
-  augeas { "modprobe.conf_$title":
-    context => "/files/etc/modprobe.conf",
-    changes => [ "set alias[last()+1] $title", "set alias[last()]/modulename bonding", ],
-    onlyif  => "match alias[*][. = '$title'] size == 0",
-   #onlyif  => "match */modulename[. = 'bonding'] size == 0",
-    before  => $ensure ? {
-      up   => Exec["ifup-$title"],
-      down => Exec["ifdown-$title"],
+  $ifstate = $ensure ? {
+      up   => Exec["ifup-${title}"],
+      down => Exec["ifdown-${title}"],
     }
+
+  augeas { "modprobe.conf_${title}":
+    context => '/files/etc/modprobe.conf',
+    changes => [ "set alias[last()+1] ${title}", 'set alias[last()]/modulename bonding', ],
+    onlyif  => "match alias[*][. = '${title}'] size == 0",
+    #onlyif  => "match */modulename[. = 'bonding'] size == 0",
+    before  => $ifstate,
   }
 } # define network::bond::dynamic

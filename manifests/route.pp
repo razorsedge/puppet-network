@@ -27,14 +27,14 @@ define network::route (
 ) {
   $interface = $name
 
-  file { "route-$interface":
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    ensure  => "present",
-    path    => "/etc/sysconfig/network-scripts/route-$interface",
-    content => template("network/route-eth.erb"),
-    before  => File["ifcfg-$interface"],
+  file { "route-${interface}":
+    ensure  => 'present',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    path    => "/etc/sysconfig/network-scripts/route-${interface}",
+    content => template('network/route-eth.erb'),
+    before  => File["ifcfg-${interface}"],
     # TODO: need to know $ensure of $interface since one of these execs is not defined.
     #notify  => [ Exec["ifup-$interface"], Exec["ifdown-$interface"], ],
   }

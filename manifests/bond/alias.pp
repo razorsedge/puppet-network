@@ -22,21 +22,21 @@
 #  }
 #
 define network::bond::alias (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
-  $ensure
-) {
-  network_if_base { "$title":
+  $gateway = ''
+  ) {
+  network_if_base { "${title}":
+    ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
-    macaddress   => "",
-    bootproto    => "none",
-    mtu          => "",
-    ethtool_opts => "",
-    bonding_opts => "",
+    macaddress   => '',
+    bootproto    => 'none',
+    mtu          => '',
+    ethtool_opts => '',
+    bonding_opts => '',
     isalias      => true,
-    ensure       => $ensure,
-  }
+    }
 } # define network::bond::alias

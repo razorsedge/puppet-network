@@ -28,21 +28,21 @@
 #  }
 #
 define network::if::dynamic (
+  $ensure,
   $macaddress,
-  $bootproto = "dhcp",
-  $mtu = "",
-  $ethtool_opts = "",
-  $ensure
+  $bootproto = 'dhcp',
+  $mtu = '',
+  $ethtool_opts = '',
 ) {
-  network_if_base { "$title":
-    ipaddress    => "",
-    netmask      => "",
-    gateway      => "",
+  network_if_base { "${title}":
+    ensure       => $ensure,
+    ipaddress    => '',
+    netmask      => '',
+    gateway      => '',
     macaddress   => $macaddress,
     bootproto    => $bootproto,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => "",
-    ensure       => $ensure,
+    bonding_opts => '',
   }
 } # define network::if::dynamic
