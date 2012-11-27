@@ -38,6 +38,11 @@ define network::bond::dynamic (
     bonding_opts => $bonding_opts,
   }
 
+  $ifstate = $ensure ? {
+    up   => Exec["ifup-${title}"],
+    down => Exec["ifdown-${title}"],
+  }
+
   augeas { "modprobe.conf_${title}":
     context => '/files/etc/modprobe.conf',
     changes => [
@@ -46,9 +51,6 @@ define network::bond::dynamic (
     ],
     onlyif  => "match alias[*][. = '${title}'] size == 0",
     #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
-    before  => $ensure ? {
-      up   => Exec["ifup-${title}"],
-      down => Exec["ifdown-${title}"],
-    }
+    before  => $ifstate,
   }
 } # define network::bond::dynamic

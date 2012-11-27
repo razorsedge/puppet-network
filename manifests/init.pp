@@ -98,11 +98,13 @@ define network_if_base (
       up   => 'yes',
       down => 'no',
     }
+    $iftemplate = template('network/ifcfg-eth.erb')
   } else {
     $onboot = $ensure ? {
       up   => 'yes',
       down => 'no',
     }
+    $iftemplate = template('network/ifcfg-alias.erb')
   }
 
   file { "ifcfg-${interface}":
@@ -111,14 +113,11 @@ define network_if_base (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => $isalias ? {
-      false => template('network/ifcfg-eth.erb'),
-      true  => template('network/ifcfg-alias.erb'),
-    }
+    content => $iftemplate,
   }
 
   case $ensure {
-    up: {
+    default,up: {
       exec { "ifup-${interface}":
         command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
         subscribe   => File["ifcfg-${interface}"],

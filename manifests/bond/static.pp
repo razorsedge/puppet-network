@@ -54,6 +54,11 @@ define network::bond::static (
     domain       => $domain,
   }
 
+  $ifstate = $ensure ? {
+    up   => Exec["ifup-${title}"],
+    down => Exec["ifdown-${title}"],
+  }
+
   augeas { "modprobe.conf_${title}":
     context => '/files/etc/modprobe.conf',
     changes => [
@@ -62,9 +67,6 @@ define network::bond::static (
     ],
     onlyif  => "match alias[*][. = '${title}'] size == 0",
     #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
-    before  => $ensure ? {
-      up   => Exec["ifup-${title}"],
-      down => Exec["ifdown-${title}"],
-    }
+    before  => $ifstate
   }
 } # define network::bond::static
