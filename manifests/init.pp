@@ -98,13 +98,13 @@ define network_if_base (
       up   => 'yes',
       down => 'no',
     }
-    $iftemplate = template('network/ifcfg-eth.erb')
+    $iftemplate = template('network/ifcfg-alias.erb')
   } else {
     $onboot = $ensure ? {
       up   => 'yes',
       down => 'no',
     }
-    $iftemplate = template('network/ifcfg-alias.erb')
+    $iftemplate = template('network/ifcfg-eth.erb')
   }
 
   file { "ifcfg-${interface}":
