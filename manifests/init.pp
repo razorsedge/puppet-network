@@ -64,6 +64,7 @@ class network {
 #   $dns1         - optional
 #   $dns2         - optional
 #   $domain       - optional
+#   $bridge       - optional
 #
 # === Actions:
 #
@@ -107,6 +108,7 @@ define network_if_base (
   $dns1 = '',
   $dns2 = '',
   $domain = ''
+  $bridge = ''
 ) {
   # Validate our booleans
   validate_bool($userctl)
