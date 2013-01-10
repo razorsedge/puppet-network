@@ -34,6 +34,7 @@ class network {
 #   $dns1         - optional
 #   $dns2         - optional
 #   $domain       - optional
+#   $bridge       - optional
 #   $ensure       - required - up|down
 #
 # Actions:
@@ -71,6 +72,7 @@ define network_if_base (
   $dns1 = "",
   $dns2 = "",
   $domain = "",
+  $bridge = "",
   $ensure
 ) {
   $interface = $name

@@ -3,22 +3,13 @@
 ###
 DEVICE=<%= interface %>
 BOOTPROTO=<%= bootproto %>
-<% if !macaddress.empty? %>HWADDR=<%= macaddress %>
-<% end -%>
 ONBOOT=<%= onboot %>
-HOTPLUG=<%= onboot %>
-TYPE=Ethernet
+TYPE=Bridge
 <% if !ipaddress.empty? %>IPADDR=<%= ipaddress %>
 <% end -%>
 <% if !netmask.empty? %>NETMASK=<%= netmask %>
 <% end -%>
 <% if !gateway.empty? %>GATEWAY=<%= gateway %>
-<% end -%>
-<% if !mtu.empty? %>MTU=<%= mtu %>
-<% end -%>
-<% if !bonding_opts.empty? %>BONDING_OPTS="<%= bonding_opts %>"
-<% end -%>
-<% if !ethtool_opts.empty? %>ETHTOOL_OPTS="<%= ethtool_opts %>"
 <% end -%>
 <% if !peerdns %><% if dns1.empty? %><% if dns2.empty? %>PEERDNS=no
 <% else %>PEERDNS=yes
@@ -30,4 +21,5 @@ DNS1=<%= dns1 %>
 <% end -%>
 <% end -%>
 <% if !domain.empty? %>DOMAIN="<%= domain %>"<% end -%>
-<% if !bridge.empty? %>BRIDGE=<%= bridge %><% end -%>
+DELAY=0
+
