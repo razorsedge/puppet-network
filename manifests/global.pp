@@ -1,4 +1,4 @@
-# Definition: network::global
+# Class: network::global
 #
 # Configures /etc/sysconfig/network
 #
@@ -27,7 +27,7 @@
 #
 # Sample Usage:
 #   # global network settings
-#   network::global { 'default':
+#   class { 'network::global':
 #    hostname   => 'host.domain.tld',
 #    gateway    => '1.2.3.1',
 #    gatewaydev => 'eth0',
@@ -38,7 +38,7 @@
 # TODO:
 #   NETWORKING_IPV6=yes|no
 #
-define network::global (
+class network::global (
   $hostname = '',
   $gateway = '',
   $vlan = '',
@@ -66,4 +66,4 @@ define network::global (
     hasrestart => true,
     hasstatus  => true,
   }
-} # define global
+} # class global

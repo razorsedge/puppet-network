@@ -37,5 +37,3 @@ Bonded interface - dhcp:
       ensure       => "up",
     }
 
-3. Convert network::global from a define to a parameterized class.
-
