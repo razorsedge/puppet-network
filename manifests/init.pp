@@ -5,7 +5,7 @@
 class network {
   # Only run on RedHat derived systems.
   case $::osfamily {
-    RedHat: { }
+    'RedHat': { }
     default: {
       fail('This network module only supports RedHat-based systems.')
     }
@@ -95,14 +95,16 @@ define network_if_base (
 
   if $isalias {
     $onparent = $ensure ? {
-      up   => 'yes',
-      down => 'no',
+      'up'    => 'yes',
+      'down'  => 'no',
+      default => undef,
     }
     $iftemplate = template('network/ifcfg-alias.erb')
   } else {
     $onboot = $ensure ? {
-      up   => 'yes',
-      down => 'no',
+      'up'    => 'yes',
+      'down'  => 'no',
+      default => undef,
     }
     $iftemplate = template('network/ifcfg-eth.erb')
   }
@@ -117,7 +119,7 @@ define network_if_base (
   }
 
   case $ensure {
-    default,up: {
+    'up': {
       exec { "ifup-${interface}":
         command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
         subscribe   => File["ifcfg-${interface}"],
@@ -125,13 +127,14 @@ define network_if_base (
       }
     }
 
-    down: {
+    'down': {
       exec { "ifdown-${interface}":
         command     => "/sbin/ifdown ${interface}",
         subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
     }
+    default: {}
   }
 
 } # define network_if_base
