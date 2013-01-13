@@ -5,9 +5,9 @@
 class network {
   # Only run on RedHat derived systems.
   case $::osfamily {
-    RedHat: { }
+    'RedHat': { }
     default: {
-      fail("This network module only supports Red Hat-based systems.")
+      fail('This network module only supports RedHat-based systems.')
     }
   }
 } # class network
@@ -21,10 +21,11 @@ class network {
 #  /etc/sysconfig/networking-scripts/ifcfg-bond(master)
 #
 # Parameters:
+#   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
-#   $gateway      - optional
 #   $macaddress   - required
+#   $gateway      - optional
 #   $bootproto    - optional
 #   $mtu          - optional
 #   $ethtool_opts - optional
@@ -34,7 +35,6 @@ class network {
 #   $dns1         - optional
 #   $dns2         - optional
 #   $domain       - optional
-#   $ensure       - required - up|down
 #
 # Actions:
 #   Performs 'ifup/ifdown $name' after any changes to the ifcfg file.
@@ -58,63 +58,86 @@ class network {
 #   REORDER_HDR=yes|no
 #
 define network_if_base (
+  $ensure,
   $ipaddress,
   $netmask,
-  $gateway = "",
   $macaddress,
-  $bootproto = "none",
-  $mtu = "",
-  $ethtool_opts = "",
-  $bonding_opts = "",
+  $gateway = '',
+  $bootproto = 'none',
+  $mtu = '',
+  $ethtool_opts = '',
+  $bonding_opts = '',
   $isalias = false,
   $peerdns = false,
-  $dns1 = "",
-  $dns2 = "",
-  $domain = "",
-  $ensure
+  $dns1 = '',
+  $dns2 = '',
+  $domain = ''
 ) {
+  # Validate our booleans
+  validate_bool($isalias)
+  validate_bool($peerdns)
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+
   $interface = $name
+
+  # Deal with the case where $dns2 is non-empty and $dns1 is empty.
+  if $dns2 != '' {
+    if $dns1 == '' {
+      $dns1_real = $dns2
+      $dns2_real = ''
+    } else {
+      $dns1_real = $dns1
+      $dns2_real = $dns2
+    }
+  } else {
+    $dns1_real = $dns1
+    $dns2_real = $dns2
+  }
 
   if $isalias {
     $onparent = $ensure ? {
-      up   => "yes",
-      down => "no",
+      'up'    => 'yes',
+      'down'  => 'no',
+      default => undef,
     }
+    $iftemplate = template('network/ifcfg-alias.erb')
   } else {
     $onboot = $ensure ? {
-      up   => "yes",
-      down => "no",
+      'up'    => 'yes',
+      'down'  => 'no',
+      default => undef,
     }
+    $iftemplate = template('network/ifcfg-eth.erb')
   }
 
-  file { "ifcfg-$interface":
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    ensure  => "present",
-    path    => "/etc/sysconfig/network-scripts/ifcfg-$interface",
-    content => $isalias ? {
-      false => template("network/ifcfg-eth.erb"),
-      true  => template("network/ifcfg-alias.erb"),
-    }
+  file { "ifcfg-${interface}":
+    ensure  => 'present',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
+    content => $iftemplate,
   }
 
   case $ensure {
-    up: {
-      exec { "ifup-$interface":
-        command     => "/sbin/ifdown $interface; /sbin/ifup $interface",
-        subscribe   => File["ifcfg-$interface"],
+    'up': {
+      exec { "ifup-${interface}":
+        command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
+        subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
     }
 
-    down: {
-      exec { "ifdown-$interface":
-        command     => "/sbin/ifdown $interface",
-        subscribe   => File["ifcfg-$interface"],
+    'down': {
+      exec { "ifdown-${interface}":
+        command     => "/sbin/ifdown ${interface}",
+        subscribe   => File["ifcfg-${interface}"],
         refreshonly => true,
       }
     }
+    default: {}
   }
 
 } # define network_if_base

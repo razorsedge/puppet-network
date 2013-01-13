@@ -1,6 +1,9 @@
 Puppet Network Module
 =====================
 
+master branch [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-network.png?branch=master)](http://travis-ci.org/razorsedge/puppet-network)
+develop branch [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-network.png?branch=develop)](http://travis-ci.org/razorsedge/puppet-network)
+
 Introduction
 ------------
 
@@ -30,7 +33,6 @@ Normal interface - static (minimal):
     network::if::static { "eth0":
       ipaddress  => "1.2.3.248",
       netmask    => "255.255.255.128",
-      macaddress => $macaddress_eth0,
       ensure     => "up",
     }
 
@@ -49,7 +51,6 @@ Normal interface - static:
 Normal interface - dhcp (minimal):
 
     network::if::dynamic { "eth2":
-      macaddress => $macaddress_eth2,
       ensure     => "up",
     }
 
@@ -151,8 +152,31 @@ TODO
 * Support IPv6.
 * Support for more than Ethernet links.
 
+See TODO.md for more items.
+
+Deprecation Warning
+-------------------
+
+The define `network::global` will be replaced by a paramterized class in version 3.0.0 of this module.  Please be aware that your manifests may need to change to account for the new syntax.
+
+This:
+
+    network::global { "default":
+      # blah
+    }
+
+would become this:
+
+    class { "network::global":
+      # blah
+    }
+
 Copyright
 ---------
 
 Copyright (C) 2011 Mike Arnold <mike@razorsedge.org>
+
+[razorsedge/puppet-network on GitHub](https://github.com/razorsedge/puppet-network)
+
+[razorsedge/network on Puppet Forge](http://forge.puppetlabs.com/razorsedge/network)
 

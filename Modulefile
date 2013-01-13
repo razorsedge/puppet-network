@@ -1,8 +1,8 @@
 name 'razorsedge-network'
-version '2.1.0'
+version '2.2.0'
 
 author 'razorsedge'
-license 'Apache 2.0'
+license 'Apache License, Version 2.0'
 project_page 'https://github.com/razorsedge/puppet-network'
 source 'git://github.com/razorsedge/puppet-network.git'
 summary 'Puppet module to manage RedHat/Fedora traditional network configuration.'
@@ -17,3 +17,4 @@ It can configure the following files:
 * /etc/sysconfig/networking-scripts/ifcfg-*
 
 Class and Define documentation is available via puppetdoc.'
+dependency 'puppetlabs/stdlib', '>= 2.3.0'

@@ -13,27 +13,30 @@
 #
 # Sample Usage:
 #  # bonded slave interface
-#  network::bond::slave { "eth1":
-#    macaddress => $macaddress_eth1,
-#    master     => "bond0",
+#  network::bond::slave { 'eth1':
+#    macaddress => $::macaddress_eth1,
+#    master     => 'bond0',
 #  }
 #
 define network::bond::slave (
   $macaddress,
   $master,
-  $ethtool_opts = ""
+  $ethtool_opts = ''
 ) {
+  # Validate our data
+  if ! is_mac_address($macaddress) { fail("${macaddress} is not a MAC address.") }
+
   $interface = $name
 
-  file { "ifcfg-$interface":
-    mode    => "644",
-    owner   => "root",
-    group   => "root",
-    ensure  => "present",
-    path    => "/etc/sysconfig/network-scripts/ifcfg-$interface",
-    content => template("network/ifcfg-bond.erb"),
-    before  => File["ifcfg-$master"],
-    # need to know $ensure since one of these execs is not defined.
-    #notify  => [ Exec["ifup-$master"], Exec["ifdown-$master"], ],
+  file { "ifcfg-${interface}":
+    ensure  => 'present',
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
+    content => template('network/ifcfg-bond.erb'),
+    before  => File["ifcfg-${master}"],
+    # TODO: need to know $ensure since one of these execs is not defined.
+    #notify  => [ Exec["ifup-${master}"], Exec["ifdown-${master}"], ],
   }
 } # define network::bond::slave

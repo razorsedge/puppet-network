@@ -20,14 +20,13 @@ TYPE=Ethernet
 <% end -%>
 <% if !ethtool_opts.empty? %>ETHTOOL_OPTS="<%= ethtool_opts %>"
 <% end -%>
-<% if !peerdns %><% if dns1.empty? %><% if dns2.empty? %>PEERDNS=no
+<% if !peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
-DNS1=<%= dns2 %>
-<% end -%><% else %>PEERDNS=yes
-DNS1=<%= dns1 %>
-<% if !dns2.empty? %>DNS2=<%= dns2 %>
+<% if !dns1_real.empty? %>DNS1=<%= dns1_real %>
+<% end -%>
+<% if !dns2_real.empty? %>DNS2=<%= dns2_real %>
+<% end -%>
+<% if !domain.empty? %>DOMAIN="<%= domain %>"
 <% end -%>
 <% end -%>
-<% end -%>
-<% if !domain.empty? %>DOMAIN="<%= domain %>"<% end -%>
-
+NM_CONTROLLED=no
