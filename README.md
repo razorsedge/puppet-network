@@ -159,9 +159,13 @@ Deprecation Warning
 
 The define `network::global` will be replaced by a paramterized class in version 3.0.0 of this module.  Please be aware that your manifests may need to change to account for the new syntax.
 
+This:
+
     network::global { "default":
       # blah
     }
+
+would become this:
 
     class { "network::global":
       # blah

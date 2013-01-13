@@ -5,54 +5,54 @@ TODO
 parameter.  This should remove all traces of the ifconfig file from the system
 and remove the interface.
 
-    $ensure - required - up|down|absent
+        $ensure - required - up|down|absent
 
 2. Consolidate the bonding config master and slave into one definition.
 
- Examples
- --------
+    Examples
+    --------
 
- Bonded interface - static:
+    Bonded interface - static:
 
-    network::bond::static { "bond0":
-      ipaddress    => "1.2.3.5",
-      netmask      => "255.255.255.0",
-      gateway      => "1.2.3.1",
-      slaves       => [ "eth0", "eth1", ],
-      macaddress   => [ "fe:fe:fe:ae:ae:ae", "ae:ae:ae:fe:fe:fe", ],
-      bonding_opts => "mode=active-backup",
-      mtu          => "1500",
-      ethtool_opts => "speed 100 duplex full autoneg off",
-      ensure       => "up",
-    }
+        network::bond::static { "bond0":
+          ipaddress    => "1.2.3.5",
+          netmask      => "255.255.255.0",
+          gateway      => "1.2.3.1",
+          slaves       => [ "eth0", "eth1", ],
+          macaddress   => [ "fe:fe:fe:ae:ae:ae", "ae:ae:ae:fe:fe:fe", ],
+          bonding_opts => "mode=active-backup",
+          mtu          => "1500",
+          ethtool_opts => "speed 100 duplex full autoneg off",
+          ensure       => "up",
+        }
 
- Bonded interface - dhcp:
+    Bonded interface - dhcp:
 
-    network::bond::dynamic { "bond2":
-      slaves       => [ "eth4", "eth7", ],
-      macaddress   => [ $macaddress_eth4, $macaddress_eth7, ],
-      bonding_opts => "mode=active-backup",
-      mtu          => "1500",
-      ethtool_opts => "speed 100 duplex full autoneg off",
-      ensure       => "up",
-    }
+        network::bond::dynamic { "bond2":
+          slaves       => [ "eth4", "eth7", ],
+          macaddress   => [ $macaddress_eth4, $macaddress_eth7, ],
+          bonding_opts => "mode=active-backup",
+          mtu          => "1500",
+          ethtool_opts => "speed 100 duplex full autoneg off",
+          ensure       => "up",
+        }
 
 3. Convert network::global from a define to a parameterized class.
 
 4. Change address to ipaddress for consistency.
 
-    $ grep address manifests/route.pp
-    #   $address - required
-    #     address => [ '192.168.2.0', '10.0.0.0', ],
-      $address,
+        $ grep address manifests/route.pp
+        #   $address - required
+        #     address => [ '192.168.2.0', '10.0.0.0', ],
+          $address,
 
 5. Add more input validation. For example:
 
-    class network::global (
-      $hostname = '',
-      $gateway = '',    # is_ip_address
-      $vlan = '',       # validate_re($vlan, [ '^yes$', '^no$' ])
-      $nozeroconf = '', # validate_re($vlan, [ '^yes$', '^no$' ])
-      $gatewaydev = ''
-    ) { blah }
+        class network::global (
+          $hostname = '',
+          $gateway = '',    # is_ip_address
+          $vlan = '',       # validate_re($vlan, [ '^yes$', '^no$' ])
+          $nozeroconf = '', # validate_re($vlan, [ '^yes$', '^no$' ])
+          $gatewaydev = ''
+        ) { blah }
 
