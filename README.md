@@ -152,6 +152,21 @@ TODO
 * Support IPv6.
 * Support for more than Ethernet links.
 
+See TODO.md for more items.
+
+Deprecation Warning
+-------------------
+
+The define `network::global` will be replaced by a paramterized class in version 3.0.0 of this module.  Please be aware that your manifests may need to change to account for the new syntax.
+
+    network::global { "default":
+      # blah
+    }
+
+    class { "network::global":
+      # blah
+    }
+
 Copyright
 ---------
 

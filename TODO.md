@@ -9,10 +9,10 @@ and remove the interface.
 
 2. Consolidate the bonding config master and slave into one definition.
 
-Examples
---------
+ Examples
+ --------
 
-Bonded interface - static:
+ Bonded interface - static:
 
     network::bond::static { "bond0":
       ipaddress    => "1.2.3.5",
@@ -26,7 +26,7 @@ Bonded interface - static:
       ensure       => "up",
     }
 
-Bonded interface - dhcp:
+ Bonded interface - dhcp:
 
     network::bond::dynamic { "bond2":
       slaves       => [ "eth4", "eth7", ],
@@ -38,4 +38,21 @@ Bonded interface - dhcp:
     }
 
 3. Convert network::global from a define to a parameterized class.
+
+4. Change address to ipaddress for consistency.
+
+    $ grep address manifests/route.pp
+    #   $address - required
+    #     address => [ '192.168.2.0', '10.0.0.0', ],
+      $address,
+
+5. Add more input validation. For example:
+
+    class network::global (
+      $hostname = '',
+      $gateway = '',    # is_ip_address
+      $vlan = '',       # validate_re($vlan, [ '^yes$', '^no$' ])
+      $nozeroconf = '', # validate_re($vlan, [ '^yes$', '^no$' ])
+      $gatewaydev = ''
+    ) { blah }
 
