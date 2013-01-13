@@ -17,4 +17,4 @@ It can configure the following files:
 * /etc/sysconfig/networking-scripts/ifcfg-*
 
 Class and Define documentation is available via puppetdoc.'
-dependency 'puppetlabs/stdlib', '>= 0.1.7'
+dependency 'puppetlabs/stdlib', '>= 2.3.0'
