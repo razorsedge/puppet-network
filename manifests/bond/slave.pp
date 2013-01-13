@@ -23,6 +23,9 @@ define network::bond::slave (
   $master,
   $ethtool_opts = ''
 ) {
+  # Validate our data
+  if ! is_mac_address($macaddress) { fail("${macaddress} is not a MAC address.") }
+
   $interface = $name
 
   file { "ifcfg-${interface}":

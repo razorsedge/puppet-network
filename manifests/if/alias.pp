@@ -35,6 +35,9 @@ define network::if::alias (
   $dns2 = '',
   $domain = ''
 ) {
+  # Validate our data
+  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+
   network_if_base { $title:
     ensure       => $ensure,
     ipaddress    => $ipaddress,

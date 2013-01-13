@@ -24,8 +24,8 @@ class network {
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
-#   $gateway      - optional
 #   $macaddress   - required
+#   $gateway      - optional
 #   $bootproto    - optional
 #   $mtu          - optional
 #   $ethtool_opts - optional
@@ -76,6 +76,9 @@ define network_if_base (
   # Validate our booleans
   validate_bool($isalias)
   validate_bool($peerdns)
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   $interface = $name
 

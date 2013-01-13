@@ -34,6 +34,9 @@ define network::if::dynamic (
   $mtu = '',
   $ethtool_opts = ''
 ) {
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   if ! is_mac_address($macaddress) {
     $macaddy = getvar("::macaddress_${title}")

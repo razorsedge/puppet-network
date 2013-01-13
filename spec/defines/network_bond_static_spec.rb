@@ -4,6 +4,32 @@ require 'spec_helper'
 
 describe 'network::bond::static', :type => 'define' do
 
+  context 'incorrect value: ensure' do
+    let(:title) { 'bond1' }
+    let :params do {
+      :ensure    => 'blah',
+      :ipaddress => '1.2.3.4',
+      :netmask   => '255.255.255.0',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-bond1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+    end
+  end
+
+  context 'incorrect value: ipaddress' do
+    let(:title) { 'bond1' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => 'notAnIP',
+      :netmask   => '255.255.255.0',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-bond1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+    end
+  end
+
   context 'required parameters' do
     let(:title) { 'bond0' }
     let :params do {

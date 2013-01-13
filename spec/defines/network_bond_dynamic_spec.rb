@@ -4,6 +4,17 @@ require 'spec_helper'
 
 describe 'network::bond::dynamic', :type => 'define' do
 
+  context 'incorrect value: ensure' do
+    let(:title) { 'bond1:1' }
+    let :params do {
+      :ensure => 'blah'
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-bond1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+    end
+  end
+
   context 'required parameters' do
     let(:title) { 'bond2' }
     let :params do {

@@ -4,6 +4,19 @@ require 'spec_helper'
 
 describe 'network::if::alias', :type => 'define' do
 
+  context 'incorrect value: ipaddress' do
+    let(:title) { 'eth77' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => 'notAnIP',
+      :netmask   => '255.255.255.0',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+    end
+  end
+
   context 'required parameters' do
     let(:title) { 'eth99:1' }
     let :params do {

@@ -4,6 +4,17 @@ require 'spec_helper'
 
 describe 'network::if::dynamic', :type => 'define' do
 
+  context 'incorrect value: ensure' do
+    let(:title) { 'eth77' }
+    let :params do {
+      :ensure => 'blah',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+    end
+  end
+
   context 'required parameters' do
     let(:title) { 'eth99' }
     let :params do {

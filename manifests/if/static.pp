@@ -42,6 +42,8 @@ define network::if::static (
   $dns2 = '',
   $domain = ''
 ) {
+  # Validate our data
+  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
 
   if ! is_mac_address($macaddress) {
     $macaddy = getvar("::macaddress_${title}")
