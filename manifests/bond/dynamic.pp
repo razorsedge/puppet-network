@@ -39,8 +39,9 @@ define network::bond::dynamic (
   }
 
   $ifstate = $ensure ? {
-    up   => Exec["ifup-${title}"],
-    down => Exec["ifdown-${title}"],
+    'up'    => Exec["ifup-${title}"],
+    'down'  => Exec["ifdown-${title}"],
+    default => undef,
   }
 
   augeas { "modprobe.conf_${title}":
