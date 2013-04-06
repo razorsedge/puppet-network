@@ -22,9 +22,11 @@ Class and Define documentation is available via puppetdoc.
 Examples
 --------
 
+Please note that the following examples do not depict all of the paramters supported by each class or define.
+
 Global network settings:
 
-    network::global { "default":
+    class { "network::global":
       gateway => "1.2.3.1",
     }
 
