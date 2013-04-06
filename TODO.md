@@ -37,16 +37,14 @@ and remove the interface.
           ensure       => "up",
         }
 
-3. Convert network::global from a define to a parameterized class.
-
-4. Change address to ipaddress for consistency.
+3. Change address to ipaddress for consistency.
 
         $ grep address manifests/route.pp
         #   $address - required
         #     address => [ '192.168.2.0', '10.0.0.0', ],
           $address,
 
-5. Add more input validation. For example:
+4. Add more input validation. For example:
 
         class network::global (
           $hostname = '',
