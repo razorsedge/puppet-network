@@ -173,6 +173,11 @@ would become this:
       # blah
     }
 
+License
+-------
+
+Please see LICENSE file.
+
 Copyright
 ---------
 

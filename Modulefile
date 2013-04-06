@@ -18,3 +18,7 @@ It can configure the following files:
 
 Class and Define documentation is available via puppetdoc.'
 dependency 'puppetlabs/stdlib', '>= 2.3.0'
+
+# Generate the changelog file
+system("git-log-to-changelog > CHANGELOG")
+$? == 0 or fail "changelog generation #{$?}!"
