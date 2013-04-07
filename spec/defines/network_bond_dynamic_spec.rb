@@ -46,11 +46,47 @@ describe 'network::bond::dynamic', :type => 'define' do
       :command     => '/sbin/ifdown bond2; /sbin/ifup bond2',
       :refreshonly => true
     )}
-    it { should contain_augeas('modprobe.conf_bond2').with(
-      :context => '/files/etc/modprobe.conf',
-      :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
-      :onlyif  => "match alias[*][. = 'bond2'] size == 0"
-    )}
+    it { should_not contain_augeas('modprobe.conf_bond2') }
+
+    context 'on an older operatingsystem with /etc/modprobe.conf' do
+      (['RedHat', 'CentOS', 'OEL', 'OracleLinux', 'SLC', 'Scientific']).each do |os|
+        context "for operatingsystem #{os}" do
+          (['4.8', '5.9']).each do |osv|
+            context "for operatingsystemrelease #{osv}" do
+              let :facts do {
+                :operatingsystem        => os,
+                :operatingsystemrelease => osv,
+              }
+              end
+              it { should contain_augeas('modprobe.conf_bond2').with(
+                :context => '/files/etc/modprobe.conf',
+                :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
+                :onlyif  => "match alias[*][. = 'bond2'] size == 0"
+              )}
+            end
+          end
+        end
+      end
+
+      (['Fedora']).each do |os|
+        context "for operatingsystem #{os}" do
+          (['6', '9', '11']).each do |osv|
+            context "for operatingsystemrelease #{osv}" do
+              let :facts do {
+                :operatingsystem        => os,
+                :operatingsystemrelease => osv,
+              }
+              end
+              it { should contain_augeas('modprobe.conf_bond2').with(
+                :context => '/files/etc/modprobe.conf',
+                :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
+                :onlyif  => "match alias[*][. = 'bond2'] size == 0"
+              )}
+            end
+          end
+        end
+      end
+    end
   end
 
   context 'optional parameters' do
@@ -90,11 +126,7 @@ describe 'network::bond::dynamic', :type => 'define' do
       :command     => '/sbin/ifdown bond2',
       :refreshonly => true
     )}
-    it { should contain_augeas('modprobe.conf_bond2').with(
-      :context => '/files/etc/modprobe.conf',
-      :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
-      :onlyif  => "match alias[*][. = 'bond2'] size == 0"
-    )}
+    it { should_not contain_augeas('modprobe.conf_bond2') }
   end
 
 end
