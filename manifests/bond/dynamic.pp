@@ -48,7 +48,8 @@ define network::bond::dynamic (
     default => undef,
   }
 
-  # Only install "alias bondN bonding" on old OSs that support /etc/modprobe.conf.
+  # Only install "alias bondN bonding" on old OSs that support
+  # /etc/modprobe.conf.
   case $::operatingsystem {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
       case $::operatingsystemrelease {
