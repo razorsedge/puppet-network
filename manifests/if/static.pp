@@ -60,7 +60,6 @@ define network::if::static (
     bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => '',
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,

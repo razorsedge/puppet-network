@@ -47,7 +47,6 @@ define network::if::alias (
     bootproto    => 'none',
     mtu          => '',
     ethtool_opts => '',
-    bonding_opts => '',
     isalias      => true,
     peerdns      => $peerdns,
     dns1         => $dns1,

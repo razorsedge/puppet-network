@@ -79,7 +79,6 @@ define network::bond::static (
               'set alias[last()]/modulename bonding',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
-            #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
             before  => $ifstate
           }
         }
@@ -96,7 +95,6 @@ define network::bond::static (
               'set alias[last()]/modulename bonding',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
-            #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
             before  => $ifstate
           }
         }

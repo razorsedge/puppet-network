@@ -66,7 +66,7 @@ define network_if_base (
   $bootproto = 'none',
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = '',
+  $bonding_opts = undef,
   $isalias = false,
   $peerdns = false,
   $dns1 = '',
