@@ -58,6 +58,7 @@ describe 'network::bond::static', :type => 'define' do
         'TYPE=Ethernet',
         'IPADDR=1.2.3.5',
         'NETMASK=255.255.255.0',
+        'BONDING_OPTS=""',
         'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])
@@ -66,11 +67,47 @@ describe 'network::bond::static', :type => 'define' do
       :command     => '/sbin/ifdown bond0; /sbin/ifup bond0',
       :refreshonly => true
     )}
-    it { should contain_augeas('modprobe.conf_bond0').with(
-      :context => '/files/etc/modprobe.conf',
-      :changes => ['set alias[last()+1] bond0', 'set alias[last()]/modulename bonding'],
-      :onlyif  => "match alias[*][. = 'bond0'] size == 0"
-    )}
+    it { should_not contain_augeas('modprobe.conf_bond0') }
+
+    context 'on an older operatingsystem with /etc/modprobe.conf' do
+      (['RedHat', 'CentOS', 'OEL', 'OracleLinux', 'SLC', 'Scientific']).each do |os|
+        context "for operatingsystem #{os}" do
+          (['4.8', '5.9']).each do |osv|
+            context "for operatingsystemrelease #{osv}" do
+              let :facts do {
+                :operatingsystem        => os,
+                :operatingsystemrelease => osv,
+              }
+              end
+              it { should contain_augeas('modprobe.conf_bond0').with(
+                :context => '/files/etc/modprobe.conf',
+                :changes => ['set alias[last()+1] bond0', 'set alias[last()]/modulename bonding'],
+                :onlyif  => "match alias[*][. = 'bond0'] size == 0"
+              )}
+            end
+          end
+        end
+      end
+
+      (['Fedora']).each do |os|
+        context "for operatingsystem #{os}" do
+          (['6', '9', '11']).each do |osv|
+            context "for operatingsystemrelease #{osv}" do
+              let :facts do {
+                :operatingsystem        => os,
+                :operatingsystemrelease => osv,
+              }
+              end
+              it { should contain_augeas('modprobe.conf_bond0').with(
+                :context => '/files/etc/modprobe.conf',
+                :changes => ['set alias[last()+1] bond0', 'set alias[last()]/modulename bonding'],
+                :onlyif  => "match alias[*][. = 'bond0'] size == 0"
+              )}
+            end
+          end
+        end
+      end
+    end
   end
 
   context 'optional parameters' do
@@ -120,11 +157,7 @@ describe 'network::bond::static', :type => 'define' do
       :command     => '/sbin/ifdown bond0',
       :refreshonly => true
     )}
-    it { should contain_augeas('modprobe.conf_bond0').with(
-      :context => '/files/etc/modprobe.conf',
-      :changes => ['set alias[last()+1] bond0', 'set alias[last()]/modulename bonding'],
-      :onlyif  => "match alias[*][. = 'bond0'] size == 0"
-    )}
+    it { should_not contain_augeas('modprobe.conf_bond0') }
   end
 
 end

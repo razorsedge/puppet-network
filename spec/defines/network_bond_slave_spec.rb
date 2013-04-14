@@ -44,6 +44,10 @@ describe 'network::bond::slave', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
+    it { should contain_exec('ifup-eth1').with(
+      :command     => '/sbin/ifdown eth1; /sbin/ifup eth1',
+      :refreshonly => true
+    )}
   end
 
   context 'optional parameters' do
@@ -76,6 +80,10 @@ describe 'network::bond::slave', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
+    it { should contain_exec('ifup-eth3').with(
+      :command     => '/sbin/ifdown eth3; /sbin/ifup eth3',
+      :refreshonly => true
+    )}
   end
 
 end

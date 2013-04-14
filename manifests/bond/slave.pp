@@ -36,7 +36,11 @@ define network::bond::slave (
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => template('network/ifcfg-bond.erb'),
     before  => File["ifcfg-${master}"],
-    # TODO: need to know $ensure since one of these execs is not defined.
-    #notify  => [ Exec["ifup-${master}"], Exec["ifdown-${master}"], ],
+  }
+
+  exec { "ifup-${interface}":
+    command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
+    subscribe   => File["ifcfg-${interface}"],
+    refreshonly => true,
   }
 } # define network::bond::slave

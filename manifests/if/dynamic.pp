@@ -53,6 +53,5 @@ define network::if::dynamic (
     bootproto    => $bootproto,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => '',
   }
 } # define network::if::dynamic

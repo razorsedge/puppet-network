@@ -16,7 +16,7 @@ TYPE=Ethernet
 <% end -%>
 <% if !mtu.empty? %>MTU=<%= mtu %>
 <% end -%>
-<% if !bonding_opts.empty? %>BONDING_OPTS="<%= bonding_opts %>"
+<% if @bonding_opts %>BONDING_OPTS="<%= @bonding_opts %>"
 <% end -%>
 <% if !ethtool_opts.empty? %>ETHTOOL_OPTS="<%= ethtool_opts %>"
 <% end -%>

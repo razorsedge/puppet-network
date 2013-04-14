@@ -48,14 +48,41 @@ define network::bond::dynamic (
     default => undef,
   }
 
-  augeas { "modprobe.conf_${title}":
-    context => '/files/etc/modprobe.conf',
-    changes => [
-      "set alias[last()+1] ${title}",
-      'set alias[last()]/modulename bonding',
-    ],
-    onlyif  => "match alias[*][. = '${title}'] size == 0",
-    #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
-    before  => $ifstate,
+  # Only install "alias bondN bonding" on old OSs that support
+  # /etc/modprobe.conf.
+  case $::operatingsystem {
+    /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
+      case $::operatingsystemrelease {
+        /^[45]/: {
+          augeas { "modprobe.conf_${title}":
+            context => '/files/etc/modprobe.conf',
+            changes => [
+              "set alias[last()+1] ${title}",
+              'set alias[last()]/modulename bonding',
+            ],
+            onlyif  => "match alias[*][. = '${title}'] size == 0",
+            before  => $ifstate
+          }
+        }
+        default: {}
+      }
+    }
+    'Fedora': {
+      case $::operatingsystemrelease {
+        /^(1|2|3|4|5|6|7|8|9|10|11)$/: {
+          augeas { "modprobe.conf_${title}":
+            context => '/files/etc/modprobe.conf',
+            changes => [
+              "set alias[last()+1] ${title}",
+              'set alias[last()]/modulename bonding',
+            ],
+            onlyif  => "match alias[*][. = '${title}'] size == 0",
+            before  => $ifstate
+          }
+        }
+        default: {}
+      }
+    }
+    default: {}
   }
 } # define network::bond::dynamic

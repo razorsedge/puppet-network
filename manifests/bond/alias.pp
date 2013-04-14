@@ -39,7 +39,6 @@ define network::bond::alias (
     bootproto    => 'none',
     mtu          => '',
     ethtool_opts => '',
-    bonding_opts => '',
     isalias      => true,
   }
 } # define network::bond::alias
