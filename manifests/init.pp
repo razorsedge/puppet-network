@@ -1,6 +1,26 @@
-# Class: network
+# == Class: network
 #
 # This module manages Red Hat/Fedora network configuration.
+#
+# === Parameters:
+#
+# None
+#
+# === Actions:
+#
+# Defines the network service so that other resources can notify it to restart.
+#
+# === Sample Usage:
+#
+#  include 'network'
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network {
   # Only run on RedHat derived systems.
@@ -9,6 +29,13 @@ class network {
     default: {
       fail('This network module only supports RedHat-based systems.')
     }
+  }
+
+  service { 'network':
+    ensure     => 'running',
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
   }
 } # class network
 
@@ -80,6 +107,8 @@ define network_if_base (
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
+  include 'network'
+
   $interface = $name
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
@@ -119,25 +148,6 @@ define network_if_base (
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => $iftemplate,
+    notify  => Service['network'],
   }
-
-  case $ensure {
-    'up': {
-      exec { "ifup-${interface}":
-        command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
-        subscribe   => File["ifcfg-${interface}"],
-        refreshonly => true,
-      }
-    }
-
-    'down': {
-      exec { "ifdown-${interface}":
-        command     => "/sbin/ifdown ${interface}",
-        subscribe   => File["ifcfg-${interface}"],
-        refreshonly => true,
-      }
-    }
-    default: {}
-  }
-
 } # define network_if_base

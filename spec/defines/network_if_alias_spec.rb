@@ -25,12 +25,14 @@ describe 'network::if::alias', :type => 'define' do
       :netmask   => '255.255.255.0',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-eth99:1').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99:1'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99:1',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth99:1] with required contents' do
       verify_contents(subject, 'ifcfg-eth99:1', [
@@ -44,10 +46,7 @@ describe 'network::if::alias', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-eth99:1').with(
-      :command     => '/sbin/ifdown eth99:1; /sbin/ifup eth99:1',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
   context 'optional parameters' do
@@ -63,12 +62,14 @@ describe 'network::if::alias', :type => 'define' do
       :domain    => 'somedomain.com',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-eth8:2').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth8:2'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth8:2',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth8:2] with required contents' do
       verify_contents(subject, 'ifcfg-eth8:2', [
@@ -86,10 +87,7 @@ describe 'network::if::alias', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-eth8:2').with(
-      :command     => '/sbin/ifdown eth8:2',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
 end

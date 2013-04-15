@@ -24,7 +24,11 @@ define network::bond::slave (
   $ethtool_opts = ''
 ) {
   # Validate our data
-  if ! is_mac_address($macaddress) { fail("${macaddress} is not a MAC address.") }
+  if ! is_mac_address($macaddress) {
+    fail("${macaddress} is not a MAC address.")
+  }
+
+  include 'network'
 
   $interface = $name
 
@@ -36,11 +40,6 @@ define network::bond::slave (
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => template('network/ifcfg-bond.erb'),
     before  => File["ifcfg-${master}"],
-  }
-
-  exec { "ifup-${interface}":
-    command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
-    subscribe   => File["ifcfg-${interface}"],
-    refreshonly => true,
+    notify  => Service['network'],
   }
 } # define network::bond::slave

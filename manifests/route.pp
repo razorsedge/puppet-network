@@ -25,6 +25,8 @@ define network::route (
   $netmask,
   $gateway
 ) {
+  include 'network'
+
   $interface = $name
 
   file { "route-${interface}":
@@ -35,14 +37,6 @@ define network::route (
     path    => "/etc/sysconfig/network-scripts/route-${interface}",
     content => template('network/route-eth.erb'),
     before  => File["ifcfg-${interface}"],
-    # TODO: need to know $ensure of $interface since one of these execs is not
-    # defined.
-    #notify  => [ Exec["ifup-${interface}"], Exec["ifdown-${interface}"], ],
+    notify  => Service['network'],
   }
-
-  # TODO: use "if defined(File['/tmp/myfile']) { ... }" ?
-  # check if interface is up and if so then add routes
-  #exec { "ifup-routes-${interface}":
-  #  command => "/etc/sysconfig/network-scripts/ifup-routes ${interface}",
-  #}
 } # define network::route

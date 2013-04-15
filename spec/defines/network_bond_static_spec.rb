@@ -39,6 +39,7 @@ describe 'network::bond::static', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily         => 'RedHat',
       :macaddress_bond0 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -47,7 +48,8 @@ describe 'network::bond::static', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond0] with required contents' do
       verify_contents(subject, 'ifcfg-bond0', [
@@ -63,10 +65,7 @@ describe 'network::bond::static', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-bond0').with(
-      :command     => '/sbin/ifdown bond0; /sbin/ifup bond0',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
     it { should_not contain_augeas('modprobe.conf_bond0') }
 
     context 'on an older operatingsystem with /etc/modprobe.conf' do
@@ -75,6 +74,7 @@ describe 'network::bond::static', :type => 'define' do
           (['4.8', '5.9']).each do |osv|
             context "for operatingsystemrelease #{osv}" do
               let :facts do {
+                :osfamily               => 'RedHat',
                 :operatingsystem        => os,
                 :operatingsystemrelease => osv,
               }
@@ -94,6 +94,7 @@ describe 'network::bond::static', :type => 'define' do
           (['6', '9', '11']).each do |osv|
             context "for operatingsystemrelease #{osv}" do
               let :facts do {
+                :osfamily               => 'RedHat',
                 :operatingsystem        => os,
                 :operatingsystemrelease => osv,
               }
@@ -126,12 +127,14 @@ describe 'network::bond::static', :type => 'define' do
       :domain       => 'somedomain.com',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-bond0').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond0] with required contents' do
       verify_contents(subject, 'ifcfg-bond0', [
@@ -153,10 +156,7 @@ describe 'network::bond::static', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-bond0').with(
-      :command     => '/sbin/ifdown bond0',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
     it { should_not contain_augeas('modprobe.conf_bond0') }
   end
 

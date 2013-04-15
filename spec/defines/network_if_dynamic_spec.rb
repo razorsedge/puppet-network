@@ -22,6 +22,7 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily         => 'RedHat',
       :macaddress_eth99 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -30,7 +31,8 @@ describe 'network::if::dynamic', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth99] with required contents' do
       verify_contents(subject, 'ifcfg-eth99', [
@@ -43,10 +45,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-eth99').with(
-      :command     => '/sbin/ifdown eth99; /sbin/ifup eth99',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
   context 'optional parameters' do
@@ -60,6 +59,7 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily         => 'RedHat',
       :macaddress_eth99 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -68,7 +68,8 @@ describe 'network::if::dynamic', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth99] with required contents' do
       verify_contents(subject, 'ifcfg-eth99', [
@@ -83,10 +84,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-eth99').with(
-      :command     => '/sbin/ifdown eth99',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
 end

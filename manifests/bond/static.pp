@@ -60,12 +60,6 @@ define network::bond::static (
     domain       => $domain,
   }
 
-  $ifstate = $ensure ? {
-    'up'    => Exec["ifup-${title}"],
-    'down'  => Exec["ifdown-${title}"],
-    default => undef,
-  }
-
   # Only install "alias bondN bonding" on old OSs that support
   # /etc/modprobe.conf.
   case $::operatingsystem {
@@ -79,7 +73,7 @@ define network::bond::static (
               'set alias[last()]/modulename bonding',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
-            before  => $ifstate
+            before  => Network_if_base[$title],
           }
         }
         default: {}
@@ -95,7 +89,7 @@ define network::bond::static (
               'set alias[last()]/modulename bonding',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
-            before  => $ifstate
+            before  => Network_if_base[$title],
           }
         }
         default: {}
