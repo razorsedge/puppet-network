@@ -60,7 +60,7 @@ describe 'network::bond::static', :type => 'define' do
         'TYPE=Ethernet',
         'IPADDR=1.2.3.5',
         'NETMASK=255.255.255.0',
-        'BONDING_OPTS=""',
+        'BONDING_OPTS="miimon=100"',
         'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])

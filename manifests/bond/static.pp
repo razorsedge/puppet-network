@@ -32,7 +32,7 @@ define network::bond::static (
   $gateway = '',
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = '',
+  $bonding_opts = 'miimon=100',
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',

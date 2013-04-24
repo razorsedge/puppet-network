@@ -41,7 +41,7 @@ describe 'network::bond::dynamic', :type => 'define' do
         'ONBOOT=yes',
         'HOTPLUG=yes',
         'TYPE=Ethernet',
-        'BONDING_OPTS=""',
+        'BONDING_OPTS="miimon=100"',
         'NM_CONTROLLED=no',
       ])
     end
