@@ -12,6 +12,7 @@ describe 'network::route', :type => 'define' do
       :gateway => '192.168.1.2',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('route-eth1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -26,6 +27,7 @@ describe 'network::route', :type => 'define' do
         'GATEWAY0=192.168.1.2',
       ])
     end
+    it { should contain_service('network') }
   end
 
   context 'array parameters' do
@@ -36,6 +38,7 @@ describe 'network::route', :type => 'define' do
       :gateway => [ '192.168.1.1', '10.0.0.1', ]
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('route-eth2').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -53,6 +56,7 @@ describe 'network::route', :type => 'define' do
         'GATEWAY1=10.0.0.1',
       ])
     end
+    it { should contain_service('network') }
   end
 
 end

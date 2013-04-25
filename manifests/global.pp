@@ -15,40 +15,46 @@
 #   $gatewaydev - optional - Determines the device to use as the default gateway
 #                            Overrides $gateway in network::global.  Must have
 #                            $gateway defined in network::if or network::bond.
+#   $nisdomain  - optional - Configures the NIS domainname.
 #   $vlan       - optional - yes|no to enable VLAN kernel module
 #   $nozeroconf - optional
 #
 # Actions:
-#   Performs 'service network restart' after any change to
-#   /etc/sysconfig/network.
-#
-# Requires:
-#   $::nisdomainname - optional - configures the NIS domainname
+#   Deploys the file /etc/sysconfig/network.
 #
 # Sample Usage:
 #   # global network settings
-#   class { 'network::global':
+#  class { 'network::global':
 #    hostname   => 'host.domain.tld',
 #    gateway    => '1.2.3.1',
 #    gatewaydev => 'eth0',
+#    nisdomain  => 'domain.tld',
 #    vlan       => 'yes',
 #    nozeroconf => 'yes',
-#   }
+#  }
 #
 # TODO:
 #   NETWORKING_IPV6=yes|no
 #
 class network::global (
-  $hostname = '',
-  $gateway = '',
-  $vlan = '',
-  $nozeroconf = '',
-  $gatewaydev = ''
+  $hostname   = '',
+  $gateway    = '',
+  $gatewaydev = '',
+  $nisdomain  = '',
+  $vlan       = '',
+  $nozeroconf = ''
 ) {
-  $nisdomain = $::nisdomainname ? {
-    ''      => '',
-    default => $::nisdomainname,
+  # Validate our data
+  if $gateway != '' {
+    if ! is_ip_address($gateway) { fail("${gateway} is not an IP address.") }
   }
+  # Validate our regular expressions
+  if $vlan != '' {
+    $states = [ '^yes$', '^no$' ]
+    validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
+  }
+
+  include 'network'
 
   file { 'network.sysconfig':
     ensure  => 'present',
@@ -58,12 +64,5 @@ class network::global (
     path    => '/etc/sysconfig/network',
     content => template('network/network.erb'),
     notify  => Service['network'],
-  }
-
-  service { 'network':
-    ensure     => 'running',
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
   }
 } # class global

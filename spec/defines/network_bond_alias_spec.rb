@@ -38,12 +38,14 @@ describe 'network::bond::alias', :type => 'define' do
       :netmask   => '255.255.255.0',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-bond2:1').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2:1] with required contents' do
       verify_contents(subject, 'ifcfg-bond2:1', [
@@ -57,10 +59,7 @@ describe 'network::bond::alias', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-bond2:1').with(
-      :command     => '/sbin/ifdown bond2:1; /sbin/ifup bond2:1',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
   context 'optional parameters' do
@@ -76,12 +75,14 @@ describe 'network::bond::alias', :type => 'define' do
 #      :domain    => 'somedomain.com',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-bond3:2').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond3:2'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond3:2',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond3:2] with required contents' do
       verify_contents(subject, 'ifcfg-bond3:2', [
@@ -100,10 +101,7 @@ describe 'network::bond::alias', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-bond3:2').with(
-      :command     => '/sbin/ifdown bond3:2',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
 end

@@ -24,7 +24,7 @@ define network::bond::dynamic (
   $ensure,
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = ''
+  $bonding_opts = 'miimon=100'
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -42,12 +42,6 @@ define network::bond::dynamic (
     bonding_opts => $bonding_opts,
   }
 
-  $ifstate = $ensure ? {
-    'up'    => Exec["ifup-${title}"],
-    'down'  => Exec["ifdown-${title}"],
-    default => undef,
-  }
-
   # Only install "alias bondN bonding" on old OSs that support
   # /etc/modprobe.conf.
   case $::operatingsystem {
@@ -61,7 +55,7 @@ define network::bond::dynamic (
               'set alias[last()]/modulename bonding',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
-            before  => $ifstate
+            before  => Network_if_base[$title],
           }
         }
         default: {}
@@ -77,7 +71,7 @@ define network::bond::dynamic (
               'set alias[last()]/modulename bonding',
             ],
             onlyif  => "match alias[*][. = '${title}'] size == 0",
-            before  => $ifstate
+            before  => Network_if_base[$title],
           }
         }
         default: {}
