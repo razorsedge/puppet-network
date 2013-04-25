@@ -1,22 +1,35 @@
-# Definition: network::bond::slave
+# == Definition: network::bond::slave
 #
 # Creates a bonded slave interface.
 #
-# Parameters:
+# === Parameters:
+#
 #   $macaddress   - required
 #   $master       - required
 #   $ethtool_opts - optional
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
 #
-# Sample Usage:
-#  # bonded slave interface
-#  network::bond::slave { 'eth1':
-#    macaddress => $::macaddress_eth1,
-#    master     => 'bond0',
-#  }
+# === Requires:
+#
+#   Service['network']
+#
+# === Sample Usage:
+#
+#   network::bond::slave { 'eth1':
+#     macaddress => $::macaddress_eth1,
+#     master     => 'bond0',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::slave (
   $macaddress,

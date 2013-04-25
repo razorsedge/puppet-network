@@ -26,102 +26,102 @@ Please note that the following examples do not depict all of the paramters suppo
 
 Global network settings:
 
-    class { "network::global":
-      gateway => "1.2.3.1",
+    class { 'network::global':
+      gateway => '1.2.3.1',
     }
 
 Normal interface - static (minimal):
 
-    network::if::static { "eth0":
-      ipaddress  => "1.2.3.248",
-      netmask    => "255.255.255.128",
-      ensure     => "up",
+    network::if::static { 'eth0':
+      ensure    => 'up',
+      ipaddress => '1.2.3.248',
+      netmask   => '255.255.255.128',
     }
 
 Normal interface - static:
 
-    network::if::static { "eth1":
-      ipaddress    => "1.2.3.4",
-      netmask      => "255.255.255.0",
-      gateway      => "1.2.3.1",
-      macaddress   => "fe:fe:fe:aa:aa:aa",
-      mtu          => "9000",
-      ethtool_opts => "speed 1000 duplex full autoneg off",
-      ensure       => "up",
+    network::if::static { 'eth1':
+      ensure       => 'up',
+      ipaddress    => '1.2.3.4',
+      netmask      => '255.255.255.0',
+      gateway      => '1.2.3.1',
+      macaddress   => 'fe:fe:fe:aa:aa:aa',
+      mtu          => '9000',
+      ethtool_opts => 'speed 1000 duplex full autoneg off',
     }
 
 Normal interface - dhcp (minimal):
 
-    network::if::dynamic { "eth2":
-      ensure     => "up",
+    network::if::dynamic { 'eth2':
+      ensure => 'up',
     }
 
 Normal interface - dhcp:
 
-    network::if::dynamic { "eth3":
-      macaddress   => "fe:fe:fe:ae:ae:ae",
-      mtu          => "1500",
-      ethtool_opts => "speed 100 duplex full autoneg off",
-      ensure       => "up",
+    network::if::dynamic { 'eth3':
+      ensure       => 'up',
+      macaddress   => 'fe:fe:fe:ae:ae:ae',
+      mtu          => '1500',
+      ethtool_opts => 'speed 100 duplex full autoneg off',
     }
 
 Normal interface - bootp (minimal):
 
-    network::if::dynamic { "eth2":
-      macaddress => "fe:fe:fe:fe:fe:fe",
-      bootproto  => "bootp",
-      ensure     => "up",
+    network::if::dynamic { 'eth2':
+      ensure     => 'up',
+      macaddress => 'fe:fe:fe:fe:fe:fe',
+      bootproto  => 'bootp',
     }
 
 Aliased interface:
 
-    network::if::alias { "eth0:1":
-      ipaddress => "1.2.3.5",
-      netmask   => "255.255.255.0",
-      ensure    => "up",
+    network::if::alias { 'eth0:1':
+      ensure    => 'up',
+      ipaddress => '1.2.3.5',
+      netmask   => '255.255.255.0',
     }
 
 Bonded master interface - static:
 
-    network::bond::static { "bond0":
-      ipaddress    => "1.2.3.5",
-      netmask      => "255.255.255.0",
-      gateway      => "1.2.3.1",
-      mtu          => "9000",
-      bonding_opts => "mode=active-backup miimon=100",
-      ensure       => "up",
+    network::bond::static { 'bond0':
+      ensure       => 'up',
+      ipaddress    => '1.2.3.5',
+      netmask      => '255.255.255.0',
+      gateway      => '1.2.3.1',
+      mtu          => '9000',
+      bonding_opts => 'mode=active-backup miimon=100',
     }
 
 Bonded master interface - dhcp:
 
-    network::bond::dynamic { "bond2":
-      mtu          => "8000",
-      bonding_opts => "mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254",
-      ensure       => "up",
+    network::bond::dynamic { 'bond2':
+      ensure       => 'up',
+      mtu          => '8000',
+      bonding_opts => 'mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254',
     }
 
 Bonded slave interface:
 
-    network::bond::slave { "eth1":
+    network::bond::slave { 'eth1':
       macaddress   => $macaddress_eth1,
-      ethtool_opts => "speed 1000 duplex full autoneg off",
-      master       => "bond0",
+      ethtool_opts => 'speed 1000 duplex full autoneg off',
+      master       => 'bond0',
     }
 
 Aliased bonded interface:
 
-    network::bond::alias { "bond2:1":
-      ipaddress => "1.2.3.6",
-      netmask   => "255.255.255.0",
-      ensure    => "up",
+    network::bond::alias { 'bond2:1':
+      ensure    => 'up',
+      ipaddress => '1.2.3.6',
+      netmask   => '255.255.255.0',
     }
 
 Static interface routes:
 
-    network::route { "eth0":
-      address => [ "192.168.2.0", "10.0.0.0", ],
-      netmask => [ "255.255.255.0", "255.0.0.0", ],
-      gateway => [ "192.168.1.1", "10.0.0.1", ],
+    network::route { 'eth0':
+      address => [ '192.168.2.0', '10.0.0.0', ],
+      netmask => [ '255.255.255.0', '255.0.0.0', ],
+      gateway => [ '192.168.1.1', '10.0.0.1', ],
     }
 
 Notes
@@ -143,7 +143,7 @@ Issues
 ------
 
 * Setting ETHTOOL_OPTS, MTU, or BONDING_OPTS and then unsetting will not revert the running config to defaults.
-* Changes to /etc/sysconfig/network are global and will result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect.
+* Changes to any configuration will result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect.
 * Modifying or creating a slave interface after the master has been created will not change the running config.
 * There is no support for removing an interface.
 
@@ -163,13 +163,13 @@ The define `network::global` will be replaced by a paramterized class in version
 
 This:
 
-    network::global { "default":
+    network::global { 'default':
       # blah
     }
 
 would become this:
 
-    class { "network::global":
+    class { 'network::global':
       # blah
     }
 

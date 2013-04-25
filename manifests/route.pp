@@ -1,24 +1,43 @@
-# Definition: network::route
+# == Definition: network::route
 #
-# Configures /etc/sysconfig/networking-scripts/route-$name
+# Configures /etc/sysconfig/networking-scripts/route-$name.
 #
-# Parameters:
+# === Parameters:
+#
 #   $address - required
 #   $netmask - required
 #   $gateway - required
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/route-$name.
+#
+# === Requires:
+#
 #   File["ifcfg-$name"]
+#   Service['network']
 #
-# Sample Usage:
-#   # interface routes
+# === Sample Usage:
+#
 #   network::route { 'eth0':
+#     address => '192.168.17.0',
+#     netmask => '255.255.255.0',
+#     gateway => '192.168.17.250',
+#   }
+#
+#   network::route { 'bond2':
 #     address => [ '192.168.2.0', '10.0.0.0', ],
 #     netmask => [ '255.255.255.0', '255.0.0.0', ],
 #     gateway => [ '192.168.1.1', '10.0.0.1', ],
 #   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::route (
   $address,

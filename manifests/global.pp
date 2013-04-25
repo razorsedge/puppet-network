@@ -1,14 +1,15 @@
-# Class: network::global
+# == Class: network::global
 #
 # Configures /etc/sysconfig/network
 #
-# Parameters:
+# === Parameters:
+#
 #   $hostname   - optional - Changes the hostname (be aware that it will break
 #                            something)
-#                            Note: when you'll reboot/restart puppet, it will
+#                            Note: When you reboot/restart puppet, it will
 #                            generate a new certificate and a new certificate
-#                            request, based on the new hostname; you'll have to
-#                            sign it (if autosign is off).  You'll also have to
+#                            request, based on the new hostname; you will have to
+#                            sign it (if autosign is off).  You will also have to
 #                            provide a new node definition in the manifest based
 #                            on the new hostname.
 #   $gateway    - optional - Sets the default gateway
@@ -19,22 +20,36 @@
 #   $vlan       - optional - yes|no to enable VLAN kernel module
 #   $nozeroconf - optional
 #
-# Actions:
+# === Actions:
+#
 #   Deploys the file /etc/sysconfig/network.
 #
-# Sample Usage:
-#   # global network settings
-#  class { 'network::global':
-#    hostname   => 'host.domain.tld',
-#    gateway    => '1.2.3.1',
-#    gatewaydev => 'eth0',
-#    nisdomain  => 'domain.tld',
-#    vlan       => 'yes',
-#    nozeroconf => 'yes',
-#  }
+# === Requires:
 #
-# TODO:
+#   Service['network']
+#
+# === Sample Usage:
+#
+#   class { 'network::global':
+#     hostname   => 'host.domain.tld',
+#     gateway    => '1.2.3.1',
+#     gatewaydev => 'eth0',
+#     nisdomain  => 'domain.tld',
+#     vlan       => 'yes',
+#     nozeroconf => 'yes',
+#   }
+#
+# === TODO:
+#
 #   NETWORKING_IPV6=yes|no
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network::global (
   $hostname   = '',

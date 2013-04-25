@@ -1,9 +1,10 @@
-# Definition: network::bond::static
+# == Definition: network::bond::static
 #
 # Creates a bonded interface with static IP address and enables the bonding
 # driver.
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
@@ -12,18 +13,27 @@
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
+# Updates /etc/modprobe.conf with bonding driver parameters.
 #
-# Sample Usage:
-#  # bonded master interface - static
-#  network::bond::static { 'bond0':
-#    ensure       => 'up',
-#    ipaddress    => '1.2.3.5',
-#    netmask      => '255.255.255.0',
-#    bonding_opts => 'mode=active-backup miimon=100',
-#  }
+# === Sample Usage:
+#
+#   network::bond::static { 'bond0':
+#     ensure       => 'up',
+#     ipaddress    => '1.2.3.5',
+#     netmask      => '255.255.255.0',
+#     bonding_opts => 'mode=active-backup miimon=100',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::static (
   $ensure,

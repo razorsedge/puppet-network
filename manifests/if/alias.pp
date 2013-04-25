@@ -1,29 +1,38 @@
-# Definition: network::if::alias
+# == Definition: network::if::alias
 #
 # Creates an alias on a normal interface with static IP address.
 # There is an assumption that an aliased interface will never use DHCP.
 #
-# Parameters:
-#   $ensure       - required - up|down
-#   $ipaddress    - required
-#   $netmask      - required
-#   $gateway      - optional
-#   $peerdns      - optional
-#   $dns1         - optional
-#   $dns2         - optional
-#   $domain       - optional
+# === Parameters:
 #
-# Actions:
+#   $ensure    - required - up|down
+#   $ipaddress - required
+#   $netmask   - required
+#   $gateway   - optional
+#   $peerdns   - optional
+#   $dns1      - optional
+#   $dns2      - optional
+#   $domain    - optional
 #
-# Requires:
+# === Actions:
 #
-# Sample Usage:
-#  # aliased interface
-#  network::if::alias { 'eth0:1':
-#    ensure    => 'up',
-#    ipaddress => '1.2.3.5',
-#    netmask   => '255.255.255.0',
-#  }
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
+#
+# === Sample Usage:
+#
+#   network::if::alias { 'eth0:1':
+#     ensure    => 'up',
+#     ipaddress => '1.2.3.5',
+#     netmask   => '255.255.255.0',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::if::alias (
   $ensure,

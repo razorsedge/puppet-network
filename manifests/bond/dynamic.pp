@@ -1,24 +1,34 @@
-# Definition: network::bond::dynamic
+# == Definition: network::bond::dynamic
 #
 # Creates a bonded interface with static IP address and enables the bonding
 # driver.  bootp support is unknown for bonded interfaces.  Thus no bootp
 # bond support in this module.
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
+# Updates /etc/modprobe.conf with bonding driver parameters.
 #
-# Sample Usage:
-#  # bonded master interface - dhcp
-#  network::bond::dynamic { 'bond2':
-#    ensure => 'up',
-#  }
+# === Sample Usage:
+#
+#   network::bond::dynamic { 'bond2':
+#     ensure => 'up',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::dynamic (
   $ensure,

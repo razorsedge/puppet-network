@@ -43,14 +43,3 @@ and remove the interface.
         #   $address - required
         #     address => [ '192.168.2.0', '10.0.0.0', ],
           $address,
-
-4. Add more input validation. For example:
-
-        class network::global (
-          $hostname = '',
-          $gateway = '',    # is_ip_address
-          $vlan = '',       # validate_re($vlan, [ '^yes$', '^no$' ])
-          $nozeroconf = '', # validate_re($vlan, [ '^yes$', '^no$' ])
-          $gatewaydev = ''
-        ) { blah }
-

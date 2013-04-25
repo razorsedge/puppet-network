@@ -12,7 +12,7 @@
 #
 # === Sample Usage:
 #
-#  include 'network'
+#   include 'network'
 #
 # === Authors:
 #
@@ -39,7 +39,7 @@ class network {
   }
 } # class network
 
-# Definition: network_if_base
+# == Definition: network_if_base
 #
 # This definition is private, i.e. it is not intended to be called directly
 # by users.  It can be used to write out the following device files:
@@ -47,7 +47,8 @@ class network {
 #  /etc/sysconfig/networking-scripts/ifcfg-eth:alias
 #  /etc/sysconfig/networking-scripts/ifcfg-bond(master)
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
@@ -63,14 +64,12 @@ class network {
 #   $dns2         - optional
 #   $domain       - optional
 #
-# Actions:
-#   Performs 'ifup/ifdown $name' after any changes to the ifcfg file.
+# === Actions:
 #
-# Requires:
+# Performs 'service network restart' after any changes to the ifcfg file.
 #
-# Sample Usage:
+# === TODO:
 #
-# TODO:
 #   METRIC=
 #   HOTPLUG=yes|no
 #   USERCTL=yes|no
@@ -83,6 +82,14 @@ class network {
 #   DHCLIENT_IGNORE_GATEWAY=yes|no|1|0
 #   LINKDELAY=
 #   REORDER_HDR=yes|no
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network_if_base (
   $ensure,

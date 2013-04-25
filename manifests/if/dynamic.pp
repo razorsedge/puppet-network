@@ -1,31 +1,39 @@
-# Definition: network::if::dynamic
+# == Definition: network::if::dynamic
 #
 # Creates a normal interface with dynamic IP information.
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $macaddress   - optional - defaults to macaddress_$title
 #   $bootproto    - optional - defaults to "dhcp"
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
 #
-# Sample Usage:
-#  # normal interface - dhcp (minimal)
-#  network::if::dynamic { 'eth2':
-#    ensure     => 'up',
-#    macaddress => $::macaddress_eth2,
-#  }
+# === Sample Usage:
 #
-#  # normal interface - bootp (minimal)
-#  network::if::dynamic { 'eth2':
-#    ensure     => 'up',
-#    macaddress => 'fe:fe:fe:fe:fe:fe',
-#    bootproto  => 'bootp',
-#  }
+#   network::if::dynamic { 'eth2':
+#     ensure     => 'up',
+#     macaddress => $::macaddress_eth2,
+#   }
+#
+#   network::if::dynamic { 'eth3':
+#     ensure     => 'up',
+#     macaddress => 'fe:fe:fe:fe:fe:fe',
+#     bootproto  => 'bootp',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::if::dynamic (
   $ensure,
