@@ -9,10 +9,6 @@
 #   $ipaddress - required
 #   $netmask   - required
 #   $gateway   - optional
-#   $peerdns   - optional
-#   $dns1      - optional
-#   $dns2      - optional
-#   $domain    - optional
 #
 # === Actions:
 #
@@ -38,11 +34,7 @@ define network::if::alias (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = '',
-  $peerdns = false,  # TODO: strip this out like in network::bond::alias?
-  $dns1 = '',
-  $dns2 = '',
-  $domain = ''
+  $gateway = ''
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -57,9 +49,5 @@ define network::if::alias (
     mtu          => '',
     ethtool_opts => '',
     isalias      => true,
-    peerdns      => $peerdns,
-    dns1         => $dns1,
-    dns2         => $dns2,
-    domain       => $domain,
   }
 } # define network::if::alias

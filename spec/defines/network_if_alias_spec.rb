@@ -56,10 +56,6 @@ describe 'network::if::alias', :type => 'define' do
       :ipaddress => '33.2.3.8',
       :netmask   => '255.255.0.0',
       :gateway   => '33.2.3.255',
-      :peerdns   => true,
-      :dns1      => '2.3.4.5',
-      :dns2      => '5.6.7.8',
-      :domain    => 'somedomain.com',
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -80,10 +76,7 @@ describe 'network::if::alias', :type => 'define' do
         'IPADDR=33.2.3.8',
         'NETMASK=255.255.0.0',
         'GATEWAY=33.2.3.255',
-        'PEERDNS=yes',
-        'DNS1=2.3.4.5',
-        'DNS2=5.6.7.8',
-        'DOMAIN="somedomain.com"',
+        'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])
     end

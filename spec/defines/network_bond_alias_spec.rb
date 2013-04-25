@@ -69,10 +69,6 @@ describe 'network::bond::alias', :type => 'define' do
       :ipaddress => '33.2.3.127',
       :netmask   => '255.255.0.0',
       :gateway   => '33.2.3.1',
-#      :peerdns   => true,
-#      :dns1      => '2.3.4.5',
-#      :dns2      => '5.6.7.8',
-#      :domain    => 'somedomain.com',
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -94,10 +90,6 @@ describe 'network::bond::alias', :type => 'define' do
         'NETMASK=255.255.0.0',
         'GATEWAY=33.2.3.1',
         'PEERDNS=no',
-#        'PEERDNS=yes',
-#        'DNS1=2.3.4.5',
-#        'DNS2=5.6.7.8',
-#        'DOMAIN="somedomain.com"',
         'NM_CONTROLLED=no',
       ])
     end
