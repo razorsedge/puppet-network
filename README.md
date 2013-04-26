@@ -81,6 +81,16 @@ Aliased interface:
       netmask   => '255.255.255.0',
     }
 
+Aliased interface (range):
+
+    network::if::alias::range { 'eth1':
+      ensure          => 'up',
+      ipaddress_start => '1.2.3.5',
+      ipaddress_end   => '1.2.3.20',
+      clonenum_start  => '0',
+      noaliasrouting  => true,
+    }
+
 Bonded master interface - static:
 
     network::bond::static { 'bond0':
@@ -116,6 +126,16 @@ Aliased bonded interface:
       netmask   => '255.255.255.0',
     }
 
+Aliased bonded interface (range):
+
+    network::bond::alias::range { 'bond1':
+      ensure          => 'up',
+      ipaddress_start => '1.2.3.5',
+      ipaddress_end   => '1.2.3.20',
+      clonenum_start  => '0',
+      noaliasrouting  => true,
+    }
+
 Static interface routes:
 
     network::route { 'eth0':
@@ -131,6 +151,7 @@ Notes
 * Only works with RedHat-ish systems.
 * Read /usr/share/doc/initscripts-*/sysconfig.txt for underlying details.
 * Read /usr/share/doc/kernel-doc-*/Documentation/networking/bonding.txt for underlying details.
+* Read /etc/sysconfig/network-scripts/ifup-aliases for underlying details.
 * Only tested on CentOS 5.5 and CentOS 6.3.
 * There is an assumption that an aliased interface will never use DHCP.
 * bootp support is unknown for bonded interfaces. Thus no bootp bond support in this module.
@@ -181,7 +202,7 @@ Please see LICENSE file.
 Copyright
 ---------
 
-Copyright (C) 2011 Mike Arnold <mike@razorsedge.org>
+Copyright (C) 2013 Mike Arnold <mike@razorsedge.org>
 
 [razorsedge/puppet-network on GitHub](https://github.com/razorsedge/puppet-network)
 
