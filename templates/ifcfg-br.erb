@@ -1,0 +1,25 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= interface %>
+BOOTPROTO=<%= bootproto %>
+ONBOOT=<%= onboot %>
+TYPE=Bridge
+<% if !ipaddress.empty? %>IPADDR=<%= ipaddress %>
+<% end -%>
+<% if !netmask.empty? %>NETMASK=<%= netmask %>
+<% end -%>
+<% if !gateway.empty? %>GATEWAY=<%= gateway %>
+<% end -%>
+<% if !peerdns %><% if dns1.empty? %><% if dns2.empty? %>PEERDNS=no
+<% else %>PEERDNS=yes
+DNS1=<%= dns2 %>
+<% end -%><% else %>PEERDNS=yes
+DNS1=<%= dns1 %>
+<% if !dns2.empty? %>DNS2=<%= dns2 %>
+<% end -%>
+<% end -%>
+<% end -%>
+<% if !domain.empty? %>DOMAIN="<%= domain %>"<% end -%>
+DELAY=0
+
