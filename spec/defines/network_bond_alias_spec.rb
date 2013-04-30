@@ -55,7 +55,6 @@ describe 'network::bond::alias', :type => 'define' do
         'TYPE=Ethernet',
         'IPADDR=1.2.3.6',
         'NETMASK=255.255.255.0',
-        'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])
     end
@@ -89,7 +88,6 @@ describe 'network::bond::alias', :type => 'define' do
         'IPADDR=33.2.3.127',
         'NETMASK=255.255.0.0',
         'GATEWAY=33.2.3.1',
-        'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])
     end
