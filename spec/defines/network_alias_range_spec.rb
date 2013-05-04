@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'network::if::alias::range', :type => 'define' do
+describe 'network::alias::range', :type => 'define' do
 
   context 'incorrect value: ensure' do
     let(:title) { 'bond77' }
@@ -48,7 +48,7 @@ describe 'network::if::alias::range', :type => 'define' do
 
 
   context 'required parameters: ensure => up' do
-    let(:title) { 'bond99' }
+    let(:title) { 'eth99' }
     let :params do {
       :ensure          => 'up',
       :ipaddress_start => '1.2.3.99',
@@ -57,16 +57,16 @@ describe 'network::if::alias::range', :type => 'define' do
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
-    it { should contain_file('ifcfg-bond99-range3').with(
+    it { should contain_file('ifcfg-eth99-range3').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond99-range3',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99-range3',
       :notify => 'Service[network]'
     )}
-    it 'should contain File[ifcfg-bond99-range3] with required contents' do
-      verify_contents(subject, 'ifcfg-bond99-range3', [
+    it 'should contain File[ifcfg-eth99-range3] with required contents' do
+      verify_contents(subject, 'ifcfg-eth99-range3', [
         'IPADDR_START=1.2.3.99',
         'IPADDR_END=1.2.3.200',
         'CLONENUM_START=3',
@@ -129,7 +129,7 @@ describe 'network::if::alias::range', :type => 'define' do
   end
 
   context 'optional parameters' do
-    let(:title) { 'bond8' }
+    let(:title) { 'eth8' }
     let :params do {
       :ensure          => 'up',
       :ipaddress_start => '1.2.3.3',
@@ -139,16 +139,16 @@ describe 'network::if::alias::range', :type => 'define' do
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
-    it { should contain_file('ifcfg-bond8-range9').with(
+    it { should contain_file('ifcfg-eth8-range9').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond8-range9',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth8-range9',
       :notify => 'Service[network]'
     )}
-    it 'should contain File[ifcfg-bond8-range9] with required contents' do
-      verify_contents(subject, 'ifcfg-bond8-range9', [
+    it 'should contain File[ifcfg-eth8-range9] with required contents' do
+      verify_contents(subject, 'ifcfg-eth8-range9', [
         'IPADDR_START=1.2.3.3',
         'IPADDR_END=1.2.3.4',
         'CLONENUM_START=9',

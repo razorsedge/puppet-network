@@ -1,6 +1,6 @@
-# == Definition: network::if::alias
+# == Definition: network::alias
 #
-# Creates an alias on a normal interface with static IP address.
+# Creates an alias on an interface with a static IP address.
 # There is an assumption that an aliased interface will never use DHCP.
 #
 # === Parameters:
@@ -16,7 +16,7 @@
 #
 # === Sample Usage:
 #
-#   network::if::alias { 'eth0:1':
+#   network::alias { 'eth0:1':
 #     ensure    => 'up',
 #     ipaddress => '1.2.3.5',
 #     netmask   => '255.255.255.0',
@@ -30,7 +30,7 @@
 #
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
-define network::if::alias (
+define network::alias (
   $ensure,
   $ipaddress,
   $netmask,
@@ -50,4 +50,4 @@ define network::if::alias (
     ethtool_opts => '',
     isalias      => true,
   }
-} # define network::if::alias
+} # define network::alias

@@ -1,6 +1,6 @@
-# == Definition: network::if::alias::range
+# == Definition: network::alias::range
 #
-# Creates a range of aliases on a normal interface with static IP address.
+# Creates a range of aliases on an interface with static IP addresses.
 # There is an assumption that an aliased interface will never use DHCP.
 #
 # === Parameters:
@@ -17,7 +17,7 @@
 #
 # === Sample Usage:
 #
-#   network::if::alias::range { 'eth1':
+#   network::alias::range { 'eth1':
 #     ensure          => 'up',
 #     ipaddress_start => '1.2.3.5',
 #     ipaddress_end   => '1.2.3.20',
@@ -33,7 +33,7 @@
 #
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
-define network::if::alias::range (
+define network::alias::range (
   $ensure,
   $ipaddress_start,
   $ipaddress_end,
@@ -74,4 +74,4 @@ define network::if::alias::range (
     before  => File["ifcfg-${interface}"],
     notify  => Service['network'],
   }
-} # define network::if::alias::range
+} # define network::alias::range

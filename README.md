@@ -75,7 +75,7 @@ Normal interface - bootp (minimal):
 
 Aliased interface:
 
-    network::if::alias { 'eth0:1':
+    network::alias { 'eth0:1':
       ensure    => 'up',
       ipaddress => '1.2.3.5',
       netmask   => '255.255.255.0',
@@ -83,7 +83,7 @@ Aliased interface:
 
 Aliased interface (range):
 
-    network::if::alias::range { 'eth1':
+    network::alias::range { 'eth1':
       ensure          => 'up',
       ipaddress_start => '1.2.3.5',
       ipaddress_end   => '1.2.3.20',
@@ -116,24 +116,6 @@ Bonded slave interface:
       macaddress   => $macaddress_eth1,
       ethtool_opts => 'speed 1000 duplex full autoneg off',
       master       => 'bond0',
-    }
-
-Aliased bonded interface:
-
-    network::bond::alias { 'bond2:1':
-      ensure    => 'up',
-      ipaddress => '1.2.3.6',
-      netmask   => '255.255.255.0',
-    }
-
-Aliased bonded interface (range):
-
-    network::bond::alias::range { 'bond1':
-      ensure          => 'up',
-      ipaddress_start => '1.2.3.5',
-      ipaddress_end   => '1.2.3.20',
-      clonenum_start  => '0',
-      noaliasrouting  => true,
     }
 
 Static interface routes:
@@ -191,6 +173,20 @@ This:
 would become this:
 
     class { 'network::global':
+      # blah
+    }
+
+The define `network::if::alias` and `network::bond::alias` will be merged into `network::alias` in version 3.0.0 of this module.  Please be aware that your manifests may need to change to account for the new syntax.
+
+This:
+
+    network::if::alias { 'eth0:1':
+      # blah
+    }
+
+would become this:
+
+    network::alias { 'eth0:1':
       # blah
     }
 
