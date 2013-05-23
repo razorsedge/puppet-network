@@ -23,8 +23,9 @@
 define network::route (
   $address,
   $netmask,
-  $gateway
+  $gateway,
 ) {
+
   $interface = $name
 
   file { "route-${interface}":
@@ -45,4 +46,4 @@ define network::route (
   #exec { "ifup-routes-${interface}":
   #  command => "/etc/sysconfig/network-scripts/ifup-routes ${interface}",
   #}
-} # define network::route
+}

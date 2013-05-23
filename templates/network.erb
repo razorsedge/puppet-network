@@ -1,18 +1,18 @@
-###
-### File managed by Puppet
-###
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
 NETWORKING=yes
-NETWORKING_IPV6=no
-<% if !hostname.empty? %>HOSTNAME=<%= hostname %>
-<% else %>HOSTNAME=<%= fqdn %>
+NETWORKING_IPV6=<%= @ipv6_support %>
+HOSTNAME=<%= @hostname %>
+<% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
-<% if !gateway.empty? %>GATEWAY=<%= gateway %>
+<% if @gatewaydev %>GATEWAYDEV=<%= @gateway_device %>
 <% end -%>
-<% if !gatewaydev.empty? %>GATEWAYDEV=<%= gatewaydev %>
+<% if @nisdomain %>NISDOMAIN=<%= @nisdomain %>
 <% end -%>
-<% if !nisdomain.empty? %>NISDOMAIN=<%= nisdomain %>
+<% if @vlan %>VLAN=<%= @vlan %>
 <% end -%>
-<% if !vlan.empty? %>VLAN=<%= vlan %>
+<% if @nozeroconf %>NOZEROCONF=<%= @nozeroconf %>
 <% end -%>
-<% if !nozeroconf.empty? %>NOZEROCONF=<%= nozeroconf %>
-<% end -%>
+PEERDNS=<%= @peerdns %>
+PEERNTP=<%= @peerntp %>
