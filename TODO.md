@@ -1,7 +1,7 @@
 TODO
 ====
 
-1. Change definition network_if_base $ensure to also take "absent" as a
+1. Change definition network::if::base $ensure to also take "absent" as a
 parameter.  This should remove all traces of the ifconfig file from the system
 and remove the interface.
 

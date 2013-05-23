@@ -33,12 +33,13 @@ define network::if::alias (
   $peerdns = false,  # TODO: strip this out like in network::bond::alias?
   $dns1 = '',
   $dns2 = '',
-  $domain = ''
+  $domain = '',
 ) {
+
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
 
-  network_if_base { $title:
+  network::if::base { $title:
     ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
@@ -54,4 +55,4 @@ define network::if::alias (
     dns2         => $dns2,
     domain       => $domain,
   }
-} # define network::if::alias
+}

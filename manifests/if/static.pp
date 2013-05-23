@@ -40,10 +40,13 @@ define network::if::static (
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
-  $domain = ''
+  $domain = '',
 ) {
+
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if ! is_ip_address($ipaddress) {
+    fail("${ipaddress} is not an IP address.")
+  }
 
   if ! is_mac_address($macaddress) {
     $macaddy = getvar("::macaddress_${title}")
@@ -51,7 +54,7 @@ define network::if::static (
     $macaddy = $macaddress
   }
 
-  network_if_base { $title:
+  network::if::base { $title:
     ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
@@ -66,4 +69,4 @@ define network::if::static (
     dns2         => $dns2,
     domain       => $domain,
   }
-} # define network::if::static
+}

@@ -32,8 +32,9 @@ define network::if::dynamic (
   $macaddress = '',
   $bootproto = 'dhcp',
   $mtu = '',
-  $ethtool_opts = ''
+  $ethtool_opts = '',
 ) {
+
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
@@ -44,7 +45,7 @@ define network::if::dynamic (
     $macaddy = $macaddress
   }
 
-  network_if_base { $title:
+  network::if::base { $title:
     ensure       => $ensure,
     ipaddress    => '',
     netmask      => '',
@@ -55,4 +56,4 @@ define network::if::dynamic (
     ethtool_opts => $ethtool_opts,
     bonding_opts => '',
   }
-} # define network::if::dynamic
+}

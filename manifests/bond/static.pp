@@ -39,12 +39,15 @@ define network::bond::static (
   $domain = ''
 ) {
   # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
-  # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  $states_re = [ '^up$', '^down$' ]
+  validate_re($ensure, $states_re, "network::bond::static::${name} ensure is <${ensure}> and must be either \'up\' or \'down\'.")
 
-  network_if_base { $title:
+  # Validate our data
+  if ! is_ip_address($ipaddress) {
+    fail("${ipaddress} is not an IP address.")
+  }
+
+  network::if::base { $title:
     ensure       => $ensure,
     ipaddress    => $ipaddress,
     netmask      => $netmask,
@@ -76,4 +79,4 @@ define network::bond::static (
     #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
     before  => $ifstate
   }
-} # define network::bond::static
+}

@@ -21,10 +21,13 @@
 define network::bond::slave (
   $macaddress,
   $master,
-  $ethtool_opts = ''
+  $ethtool_opts = '',
 ) {
+
   # Validate our data
-  if ! is_mac_address($macaddress) { fail("${macaddress} is not a MAC address.") }
+  if ! is_mac_address($macaddress) {
+    fail("${macaddress} is not a MAC address.")
+  }
 
   $interface = $name
 
@@ -39,4 +42,4 @@ define network::bond::slave (
     # TODO: need to know $ensure since one of these execs is not defined.
     #notify  => [ Exec["ifup-${master}"], Exec["ifdown-${master}"], ],
   }
-} # define network::bond::slave
+}
