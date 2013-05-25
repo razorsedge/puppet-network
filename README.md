@@ -75,10 +75,20 @@ Normal interface - bootp (minimal):
 
 Aliased interface:
 
-    network::if::alias { 'eth0:1':
+    network::alias { 'eth0:1':
       ensure    => 'up',
       ipaddress => '1.2.3.5',
       netmask   => '255.255.255.0',
+    }
+
+Aliased interface (range):
+
+    network::alias::range { 'eth1':
+      ensure          => 'up',
+      ipaddress_start => '1.2.3.5',
+      ipaddress_end   => '1.2.3.20',
+      clonenum_start  => '0',
+      noaliasrouting  => true,
     }
 
 Bonded master interface - static:
@@ -108,14 +118,6 @@ Bonded slave interface:
       master       => 'bond0',
     }
 
-Aliased bonded interface:
-
-    network::bond::alias { 'bond2:1':
-      ensure    => 'up',
-      ipaddress => '1.2.3.6',
-      netmask   => '255.255.255.0',
-    }
-
 Static interface routes:
 
     network::route { 'eth0':
@@ -131,6 +133,7 @@ Notes
 * Only works with RedHat-ish systems.
 * Read /usr/share/doc/initscripts-*/sysconfig.txt for underlying details.
 * Read /usr/share/doc/kernel-doc-*/Documentation/networking/bonding.txt for underlying details.
+* Read /etc/sysconfig/network-scripts/ifup-aliases for underlying details.
 * Only tested on CentOS 5.5 and CentOS 6.3.
 * There is an assumption that an aliased interface will never use DHCP.
 * bootp support is unknown for bonded interfaces. Thus no bootp bond support in this module.
@@ -173,6 +176,20 @@ would become this:
       # blah
     }
 
+The define `network::if::alias` and `network::bond::alias` will be merged into `network::alias` in version 3.0.0 of this module.  Please be aware that your manifests may need to change to account for the new syntax.
+
+This:
+
+    network::if::alias { 'eth0:1':
+      # blah
+    }
+
+would become this:
+
+    network::alias { 'eth0:1':
+      # blah
+    }
+
 License
 -------
 
@@ -181,7 +198,7 @@ Please see LICENSE file.
 Copyright
 ---------
 
-Copyright (C) 2011 Mike Arnold <mike@razorsedge.org>
+Copyright (C) 2013 Mike Arnold <mike@razorsedge.org>
 
 [razorsedge/puppet-network on GitHub](https://github.com/razorsedge/puppet-network)
 

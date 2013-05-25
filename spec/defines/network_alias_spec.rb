@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 
-describe 'network::bond::alias', :type => 'define' do
+describe 'network::alias', :type => 'define' do
 
   context 'incorrect value: ensure' do
-    let(:title) { 'bond1:1' }
+    let(:title) { 'eth1:1' }
     let :params do {
       :ensure    => 'blah',
       :ipaddress => '1.2.3.4',
@@ -13,12 +13,12 @@ describe 'network::bond::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
     end
   end
 
   context 'incorrect value: ipaddress' do
-    let(:title) { 'bond1:1' }
+    let(:title) { 'eth1:1' }
     let :params do {
       :ensure    => 'up',
       :ipaddress => 'notAnIP',
@@ -26,7 +26,7 @@ describe 'network::bond::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond1:1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
     end
   end
 
