@@ -9,7 +9,7 @@ Introduction
 
 This module manages Red Hat/Fedora traditional network configuration.
 
-It allows for static, dhcp, and bootp configuration of normal and bonded interfaces.  There is support for aliases on normal and bonded interfaces.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
+It allows for static, dhcp, and bootp configuration of normal and bonded interfaces.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
 
 It can configure the following files:
 
@@ -198,7 +198,7 @@ Please see LICENSE file.
 Copyright
 ---------
 
-Copyright (C) 2013 Mike Arnold <mike@razorsedge.org>
+Copyright (C) 2011 Mike Arnold <mike@razorsedge.org>
 
 [razorsedge/puppet-network on GitHub](https://github.com/razorsedge/puppet-network)
 
