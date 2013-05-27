@@ -148,7 +148,7 @@ Issues
 * Setting ETHTOOL_OPTS, MTU, or BONDING_OPTS and then unsetting will not revert the running config to defaults.
 * Changes to any configuration will result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect.
 * Modifying or creating a slave interface after the master has been created will not change the running config.
-* There is no support for removing an interface.
+* There is presently no support for removing an interface.
 
 TODO
 ----
@@ -156,6 +156,8 @@ TODO
 * Support /etc/sysconfig/network-scripts/rule-\<interface-name\>
 * Support IPv6.
 * Support for more than Ethernet links.
+* Support for bridge interfaces.
+* Testing of VLAN support (it should Just Work(TM)).
 
 See TODO.md for more items.
 
@@ -187,6 +189,22 @@ This:
 would become this:
 
     network::alias { 'eth0:1':
+      # blah
+    }
+
+The define `network::route` will have parameter `address` renamed to `ipaddress` in version 3.0.0 of this module.  This is for the purpose of consistency with all the other defines in the `network` class.  Please be aware that your manifests may need to change to account for the new syntax.
+
+This:
+
+    network::route { 'eth0':
+      address => '192.168.17.0',
+      # blah
+    }
+
+would become this:
+
+    network::route { 'eth0':
+      ipaddress => '192.168.17.0',
       # blah
     }
 

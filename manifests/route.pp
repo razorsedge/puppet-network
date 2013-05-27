@@ -4,9 +4,9 @@
 #
 # === Parameters:
 #
-#   $address - required
-#   $netmask - required
-#   $gateway - required
+#   $ipaddress - required
+#   $netmask   - required
+#   $gateway   - required
 #
 # === Actions:
 #
@@ -20,15 +20,15 @@
 # === Sample Usage:
 #
 #   network::route { 'eth0':
-#     address => '192.168.17.0',
-#     netmask => '255.255.255.0',
-#     gateway => '192.168.17.250',
+#     ipaddress => '192.168.17.0',
+#     netmask   => '255.255.255.0',
+#     gateway   => '192.168.17.250',
 #   }
 #
 #   network::route { 'bond2':
-#     address => [ '192.168.2.0', '10.0.0.0', ],
-#     netmask => [ '255.255.255.0', '255.0.0.0', ],
-#     gateway => [ '192.168.1.1', '10.0.0.1', ],
+#     ipaddress => [ '192.168.2.0', '10.0.0.0', ],
+#     netmask   => [ '255.255.255.0', '255.0.0.0', ],
+#     gateway   => [ '192.168.1.1', '10.0.0.1', ],
 #   }
 #
 # === Authors:
@@ -40,7 +40,7 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::route (
-  $address,
+  $ipaddress,
   $netmask,
   $gateway
 ) {

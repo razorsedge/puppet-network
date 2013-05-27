@@ -37,9 +37,3 @@ and remove the interface.
           ensure       => "up",
         }
 
-3. Change address to ipaddress for consistency.
-
-        $ grep address manifests/route.pp
-        #   $address - required
-        #     address => [ '192.168.2.0', '10.0.0.0', ],
-          $address,
