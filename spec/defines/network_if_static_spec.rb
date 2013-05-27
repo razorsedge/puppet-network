@@ -26,6 +26,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily        => 'RedHat',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -34,7 +35,8 @@ describe 'network::if::static', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(subject, 'ifcfg-eth1', [
@@ -50,10 +52,7 @@ describe 'network::if::static', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-eth1').with(
-      :command     => '/sbin/ifdown eth1; /sbin/ifup eth1',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
   context 'optional parameters' do
@@ -73,6 +72,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily        => 'RedHat',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -81,7 +81,8 @@ describe 'network::if::static', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(subject, 'ifcfg-eth1', [
@@ -103,10 +104,7 @@ describe 'network::if::static', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-eth1').with(
-      :command     => '/sbin/ifdown eth1',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
 end

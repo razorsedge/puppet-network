@@ -1,9 +1,10 @@
-# Definition: network::bond::static
+# == Definition: network::bond::static
 #
 # Creates a bonded interface with static IP address and enables the bonding
 # driver.
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
@@ -12,18 +13,27 @@
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
+# Updates /etc/modprobe.conf with bonding driver parameters.
 #
-# Sample Usage:
-#  # bonded master interface - static
-#  network::bond::static { 'bond0':
-#    ensure       => 'up',
-#    ipaddress    => '1.2.3.5',
-#    netmask      => '255.255.255.0',
-#    bonding_opts => 'mode=active-backup miimon=100',
-#  }
+# === Sample Usage:
+#
+#   network::bond::static { 'bond0':
+#     ensure       => 'up',
+#     ipaddress    => '1.2.3.5',
+#     netmask      => '255.255.255.0',
+#     bonding_opts => 'mode=active-backup miimon=100',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::static (
   $ensure,
@@ -32,7 +42,7 @@ define network::bond::static (
   $gateway = '',
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = '',
+  $bonding_opts = 'miimon=100',
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
@@ -60,20 +70,41 @@ define network::bond::static (
     domain       => $domain,
   }
 
-  $ifstate = $ensure ? {
-    'up'    => Exec["ifup-${title}"],
-    'down'  => Exec["ifdown-${title}"],
-    default => undef,
-  }
-
-  augeas { "modprobe.conf_${title}":
-    context => '/files/etc/modprobe.conf',
-    changes => [
-      "set alias[last()+1] ${title}",
-      'set alias[last()]/modulename bonding',
-    ],
-    onlyif  => "match alias[*][. = '${title}'] size == 0",
-    #onlyif  => 'match */modulename[. = 'bonding'] size == 0',
-    before  => $ifstate
+  # Only install "alias bondN bonding" on old OSs that support
+  # /etc/modprobe.conf.
+  case $::operatingsystem {
+    /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
+      case $::operatingsystemrelease {
+        /^[45]/: {
+          augeas { "modprobe.conf_${title}":
+            context => '/files/etc/modprobe.conf',
+            changes => [
+              "set alias[last()+1] ${title}",
+              'set alias[last()]/modulename bonding',
+            ],
+            onlyif  => "match alias[*][. = '${title}'] size == 0",
+            before  => Network_if_base[$title],
+          }
+        }
+        default: {}
+      }
+    }
+    'Fedora': {
+      case $::operatingsystemrelease {
+        /^(1|2|3|4|5|6|7|8|9|10|11)$/: {
+          augeas { "modprobe.conf_${title}":
+            context => '/files/etc/modprobe.conf',
+            changes => [
+              "set alias[last()+1] ${title}",
+              'set alias[last()]/modulename bonding',
+            ],
+            onlyif  => "match alias[*][. = '${title}'] size == 0",
+            before  => Network_if_base[$title],
+          }
+        }
+        default: {}
+      }
+    }
+    default: {}
   }
 } # define network::bond::static

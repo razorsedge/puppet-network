@@ -1,0 +1,11 @@
+###
+### File managed by Puppet
+###
+IPADDR_START=<%= @ipaddress_start %>
+IPADDR_END=<%= @ipaddress_end %>
+CLONENUM_START=<%= @clonenum_start %>
+<% if !@noaliasrouting %>NO_ALIASROUTING=no
+<% else %>NO_ALIASROUTING=yes
+<% end -%>
+ONPARENT=<%= @onparent %>
+NM_CONTROLLED=no

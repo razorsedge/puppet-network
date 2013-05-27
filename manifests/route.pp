@@ -1,30 +1,51 @@
-# Definition: network::route
+# == Definition: network::route
 #
-# Configures /etc/sysconfig/networking-scripts/route-$name
+# Configures /etc/sysconfig/networking-scripts/route-$name.
 #
-# Parameters:
-#   $address - required
-#   $netmask - required
-#   $gateway - required
+# === Parameters:
 #
-# Actions:
+#   $ipaddress - required
+#   $netmask   - required
+#   $gateway   - required
 #
-# Requires:
+# === Actions:
+#
+# Deploys the file /etc/sysconfig/network-scripts/route-$name.
+#
+# === Requires:
+#
 #   File["ifcfg-$name"]
+#   Service['network']
 #
-# Sample Usage:
-#   # interface routes
+# === Sample Usage:
+#
 #   network::route { 'eth0':
-#     address => [ '192.168.2.0', '10.0.0.0', ],
-#     netmask => [ '255.255.255.0', '255.0.0.0', ],
-#     gateway => [ '192.168.1.1', '10.0.0.1', ],
+#     ipaddress => '192.168.17.0',
+#     netmask   => '255.255.255.0',
+#     gateway   => '192.168.17.250',
 #   }
 #
+#   network::route { 'bond2':
+#     ipaddress => [ '192.168.2.0', '10.0.0.0', ],
+#     netmask   => [ '255.255.255.0', '255.0.0.0', ],
+#     gateway   => [ '192.168.1.1', '10.0.0.1', ],
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
+#
 define network::route (
-  $address,
+  $ipaddress,
   $netmask,
   $gateway
 ) {
+  include 'network'
+
   $interface = $name
 
   file { "route-${interface}":
@@ -35,14 +56,6 @@ define network::route (
     path    => "/etc/sysconfig/network-scripts/route-${interface}",
     content => template('network/route-eth.erb'),
     before  => File["ifcfg-${interface}"],
-    # TODO: need to know $ensure of $interface since one of these execs is not
-    # defined.
-    #notify  => [ Exec["ifup-${interface}"], Exec["ifdown-${interface}"], ],
+    notify  => Service['network'],
   }
-
-  # TODO: use "if defined(File['/tmp/myfile']) { ... }" ?
-  # check if interface is up and if so then add routes
-  #exec { "ifup-routes-${interface}":
-  #  command => "/etc/sysconfig/network-scripts/ifup-routes ${interface}",
-  #}
 } # define network::route

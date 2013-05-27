@@ -1,6 +1,26 @@
-# Class: network
+# == Class: network
 #
 # This module manages Red Hat/Fedora network configuration.
+#
+# === Parameters:
+#
+# None
+#
+# === Actions:
+#
+# Defines the network service so that other resources can notify it to restart.
+#
+# === Sample Usage:
+#
+#   include 'network'
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network {
   # Only run on RedHat derived systems.
@@ -10,9 +30,16 @@ class network {
       fail('This network module only supports RedHat-based systems.')
     }
   }
+
+  service { 'network':
+    ensure     => 'running',
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
+  }
 } # class network
 
-# Definition: network_if_base
+# == Definition: network_if_base
 #
 # This definition is private, i.e. it is not intended to be called directly
 # by users.  It can be used to write out the following device files:
@@ -20,7 +47,8 @@ class network {
 #  /etc/sysconfig/networking-scripts/ifcfg-eth:alias
 #  /etc/sysconfig/networking-scripts/ifcfg-bond(master)
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
@@ -36,14 +64,12 @@ class network {
 #   $dns2         - optional
 #   $domain       - optional
 #
-# Actions:
-#   Performs 'ifup/ifdown $name' after any changes to the ifcfg file.
+# === Actions:
 #
-# Requires:
+# Performs 'service network restart' after any changes to the ifcfg file.
 #
-# Sample Usage:
+# === TODO:
 #
-# TODO:
 #   METRIC=
 #   HOTPLUG=yes|no
 #   USERCTL=yes|no
@@ -57,6 +83,14 @@ class network {
 #   LINKDELAY=
 #   REORDER_HDR=yes|no
 #
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
+#
 define network_if_base (
   $ensure,
   $ipaddress,
@@ -66,7 +100,7 @@ define network_if_base (
   $bootproto = 'none',
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = '',
+  $bonding_opts = undef,
   $isalias = false,
   $peerdns = false,
   $dns1 = '',
@@ -79,6 +113,8 @@ define network_if_base (
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+
+  include 'network'
 
   $interface = $name
 
@@ -119,25 +155,6 @@ define network_if_base (
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => $iftemplate,
+    notify  => Service['network'],
   }
-
-  case $ensure {
-    'up': {
-      exec { "ifup-${interface}":
-        command     => "/sbin/ifdown ${interface}; /sbin/ifup ${interface}",
-        subscribe   => File["ifcfg-${interface}"],
-        refreshonly => true,
-      }
-    }
-
-    'down': {
-      exec { "ifdown-${interface}":
-        command     => "/sbin/ifdown ${interface}",
-        subscribe   => File["ifcfg-${interface}"],
-        refreshonly => true,
-      }
-    }
-    default: {}
-  }
-
 } # define network_if_base

@@ -22,6 +22,7 @@ describe 'network::bond::dynamic', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily         => 'RedHat',
       :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -30,7 +31,8 @@ describe 'network::bond::dynamic', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2] with required contents' do
       verify_contents(subject, 'ifcfg-bond2', [
@@ -39,18 +41,54 @@ describe 'network::bond::dynamic', :type => 'define' do
         'ONBOOT=yes',
         'HOTPLUG=yes',
         'TYPE=Ethernet',
+        'BONDING_OPTS="miimon=100"',
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-bond2').with(
-      :command     => '/sbin/ifdown bond2; /sbin/ifup bond2',
-      :refreshonly => true
-    )}
-    it { should contain_augeas('modprobe.conf_bond2').with(
-      :context => '/files/etc/modprobe.conf',
-      :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
-      :onlyif  => "match alias[*][. = 'bond2'] size == 0"
-    )}
+    it { should contain_service('network') }
+    it { should_not contain_augeas('modprobe.conf_bond2') }
+
+    context 'on an older operatingsystem with /etc/modprobe.conf' do
+      (['RedHat', 'CentOS', 'OEL', 'OracleLinux', 'SLC', 'Scientific']).each do |os|
+        context "for operatingsystem #{os}" do
+          (['4.8', '5.9']).each do |osv|
+            context "for operatingsystemrelease #{osv}" do
+              let :facts do {
+                :osfamily               => 'RedHat',
+                :operatingsystem        => os,
+                :operatingsystemrelease => osv,
+              }
+              end
+              it { should contain_augeas('modprobe.conf_bond2').with(
+                :context => '/files/etc/modprobe.conf',
+                :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
+                :onlyif  => "match alias[*][. = 'bond2'] size == 0"
+              )}
+            end
+          end
+        end
+      end
+
+      (['Fedora']).each do |os|
+        context "for operatingsystem #{os}" do
+          (['6', '9', '11']).each do |osv|
+            context "for operatingsystemrelease #{osv}" do
+              let :facts do {
+                :osfamily               => 'RedHat',
+                :operatingsystem        => os,
+                :operatingsystemrelease => osv,
+              }
+              end
+              it { should contain_augeas('modprobe.conf_bond2').with(
+                :context => '/files/etc/modprobe.conf',
+                :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
+                :onlyif  => "match alias[*][. = 'bond2'] size == 0"
+              )}
+            end
+          end
+        end
+      end
+    end
   end
 
   context 'optional parameters' do
@@ -63,6 +101,7 @@ describe 'network::bond::dynamic', :type => 'define' do
     }
     end
     let :facts do {
+      :osfamily         => 'RedHat',
       :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -71,7 +110,8 @@ describe 'network::bond::dynamic', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2] with required contents' do
       verify_contents(subject, 'ifcfg-bond2', [
@@ -86,15 +126,8 @@ describe 'network::bond::dynamic', :type => 'define' do
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-bond2').with(
-      :command     => '/sbin/ifdown bond2',
-      :refreshonly => true
-    )}
-    it { should contain_augeas('modprobe.conf_bond2').with(
-      :context => '/files/etc/modprobe.conf',
-      :changes => ['set alias[last()+1] bond2', 'set alias[last()]/modulename bonding'],
-      :onlyif  => "match alias[*][. = 'bond2'] size == 0"
-    )}
+    it { should contain_service('network') }
+    it { should_not contain_augeas('modprobe.conf_bond2') }
   end
 
 end

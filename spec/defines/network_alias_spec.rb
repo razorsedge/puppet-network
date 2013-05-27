@@ -2,10 +2,10 @@
 
 require 'spec_helper'
 
-describe 'network::bond::alias', :type => 'define' do
+describe 'network::alias', :type => 'define' do
 
   context 'incorrect value: ensure' do
-    let(:title) { 'bond1:1' }
+    let(:title) { 'eth1:1' }
     let :params do {
       :ensure    => 'blah',
       :ipaddress => '1.2.3.4',
@@ -13,12 +13,12 @@ describe 'network::bond::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
     end
   end
 
   context 'incorrect value: ipaddress' do
-    let(:title) { 'bond1:1' }
+    let(:title) { 'eth1:1' }
     let :params do {
       :ensure    => 'up',
       :ipaddress => 'notAnIP',
@@ -26,7 +26,7 @@ describe 'network::bond::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond1:1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
     end
   end
 
@@ -38,12 +38,14 @@ describe 'network::bond::alias', :type => 'define' do
       :netmask   => '255.255.255.0',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-bond2:1').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2:1] with required contents' do
       verify_contents(subject, 'ifcfg-bond2:1', [
@@ -53,14 +55,10 @@ describe 'network::bond::alias', :type => 'define' do
         'TYPE=Ethernet',
         'IPADDR=1.2.3.6',
         'NETMASK=255.255.255.0',
-        'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifup-bond2:1').with(
-      :command     => '/sbin/ifdown bond2:1; /sbin/ifup bond2:1',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
   context 'optional parameters' do
@@ -70,18 +68,16 @@ describe 'network::bond::alias', :type => 'define' do
       :ipaddress => '33.2.3.127',
       :netmask   => '255.255.0.0',
       :gateway   => '33.2.3.1',
-#      :peerdns   => true,
-#      :dns1      => '2.3.4.5',
-#      :dns2      => '5.6.7.8',
-#      :domain    => 'somedomain.com',
     }
     end
+    let(:facts) {{ :osfamily => 'RedHat' }}
     it { should contain_file('ifcfg-bond3:2').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond3:2'
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond3:2',
+      :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond3:2] with required contents' do
       verify_contents(subject, 'ifcfg-bond3:2', [
@@ -92,18 +88,10 @@ describe 'network::bond::alias', :type => 'define' do
         'IPADDR=33.2.3.127',
         'NETMASK=255.255.0.0',
         'GATEWAY=33.2.3.1',
-        'PEERDNS=no',
-#        'PEERDNS=yes',
-#        'DNS1=2.3.4.5',
-#        'DNS2=5.6.7.8',
-#        'DOMAIN="somedomain.com"',
         'NM_CONTROLLED=no',
       ])
     end
-    it { should contain_exec('ifdown-bond3:2').with(
-      :command     => '/sbin/ifdown bond3:2',
-      :refreshonly => true
-    )}
+    it { should contain_service('network') }
   end
 
 end

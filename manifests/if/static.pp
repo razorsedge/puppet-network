@@ -1,8 +1,9 @@
-# Definition: network::if::static
+# == Definition: network::if::static
 #
 # Creates a normal interface with static IP address.
 #
-# Parameters:
+# === Parameters:
+#
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
@@ -15,19 +16,27 @@
 #   $dns2         - optional
 #   $domain       - optional
 #
-# Actions:
+# === Actions:
 #
-# Requires:
+# Deploys the file /etc/sysconfig/network-scripts/ifcfg-$name.
 #
-# Sample Usage:
-#  # normal interface - static (minimal)
-#  network::if::static { 'eth0':
-#    ensure     => 'up',
-#    ipaddress  => '10.21.30.248',
-#    netmask    => '255.255.255.128',
-#    macaddress => $::macaddress_eth0,
-#    domain     => 'is.domain.com domain.com',
-#  }
+# === Sample Usage:
+#
+#   network::if::static { 'eth0':
+#     ensure     => 'up',
+#     ipaddress  => '10.21.30.248',
+#     netmask    => '255.255.255.128',
+#     macaddress => $::macaddress_eth0,
+#     domain     => 'is.domain.com domain.com',
+#   }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::if::static (
   $ensure,
@@ -60,7 +69,6 @@ define network::if::static (
     bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
-    bonding_opts => '',
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
