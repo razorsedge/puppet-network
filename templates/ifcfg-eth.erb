@@ -29,4 +29,6 @@ TYPE=Ethernet
 <% if !domain.empty? %>DOMAIN="<%= domain %>"
 <% end -%>
 <% end -%>
+<% if userctl %>USERCTL=yes
+<% end -%>
 NM_CONTROLLED=no

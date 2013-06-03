@@ -9,6 +9,7 @@
 #   $ipaddress - required
 #   $netmask   - required
 #   $gateway   - optional
+#   $userctl   - optional - defaults to false
 #
 # === Actions:
 #
@@ -34,10 +35,13 @@ define network::alias (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = ''
+  $gateway = '',
+  $userctl = false
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  # Validate our booleans
+  validate_bool($userctl)
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -46,8 +50,9 @@ define network::alias (
     gateway      => $gateway,
     macaddress   => '',
     bootproto    => 'none',
+    userctl      => $userctl,
     mtu          => '',
     ethtool_opts => '',
-    isalias      => true,
+    isalias      => true
   }
 } # define network::alias
