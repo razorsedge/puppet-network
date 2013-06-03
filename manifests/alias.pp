@@ -36,7 +36,7 @@ define network::alias (
   $ipaddress,
   $netmask,
   $gateway = '',
-  $userctl = false,
+  $userctl = false
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -53,6 +53,6 @@ define network::alias (
     userctl      => $userctl,
     mtu          => '',
     ethtool_opts => '',
-    isalias      => true,
+    isalias      => true
   }
 } # define network::alias
