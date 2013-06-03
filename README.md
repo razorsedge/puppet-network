@@ -81,6 +81,15 @@ Aliased interface:
       netmask   => '255.255.255.0',
     }
 
+Aliased interface (Allow non-root to manage):
+
+    network::alias { 'eth0:1':
+      ensure    => 'up',
+      ipaddress => '1.2.3.5',
+      netmask   => '255.255.255.0',
+      userctl   => true
+    }
+
 Aliased interface (range):
 
     network::alias::range { 'eth1':
