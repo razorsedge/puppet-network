@@ -7,6 +7,7 @@
 #   $ensure       - required - up|down
 #   $macaddress   - optional - defaults to macaddress_$title
 #   $bootproto    - optional - defaults to "dhcp"
+#   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #
@@ -39,6 +40,7 @@ define network::if::dynamic (
   $ensure,
   $macaddress = '',
   $bootproto = 'dhcp',
+  $userctl = false,
   $mtu = '',
   $ethtool_opts = ''
 ) {
@@ -51,6 +53,8 @@ define network::if::dynamic (
   } else {
     $macaddy = $macaddress
   }
+  # Validate booleans
+  validate_bool($userctl)
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -59,6 +63,7 @@ define network::if::dynamic (
     gateway      => '',
     macaddress   => $macaddy,
     bootproto    => $bootproto,
+    userctl      => $userctl,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
   }

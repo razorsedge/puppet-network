@@ -54,6 +54,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :ensure       => 'down',
       :macaddress   => 'ef:ef:ef:ef:ef:ef',
       :bootproto    => 'bootp',
+      :userctl      => true,
       :mtu          => '1500',
       :ethtool_opts => 'speed 100 duplex full autoneg off',
     }
@@ -81,6 +82,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'TYPE=Ethernet',
         'MTU=1500',
         'ETHTOOL_OPTS="speed 100 duplex full autoneg off"',
+        'USERCTL=yes',
         'NM_CONTROLLED=no',
       ])
     end

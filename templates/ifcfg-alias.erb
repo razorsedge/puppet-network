@@ -11,4 +11,6 @@ TYPE=Ethernet
 <% end -%>
 <% if !gateway.empty? %>GATEWAY=<%= gateway %>
 <% end -%>
+<% if userctl %>USERCTL=yes
+<% end -%>
 NM_CONTROLLED=no

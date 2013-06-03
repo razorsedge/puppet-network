@@ -55,6 +55,7 @@ class network {
 #   $macaddress   - required
 #   $gateway      - optional
 #   $bootproto    - optional
+#   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
@@ -72,7 +73,6 @@ class network {
 #
 #   METRIC=
 #   HOTPLUG=yes|no
-#   USERCTL=yes|no
 #   WINDOW=
 #   SCOPE=
 #   SRCADDR=
@@ -98,6 +98,7 @@ define network_if_base (
   $macaddress,
   $gateway = '',
   $bootproto = 'none',
+  $userctl = false,
   $mtu = '',
   $ethtool_opts = '',
   $bonding_opts = undef,
@@ -108,6 +109,7 @@ define network_if_base (
   $domain = ''
 ) {
   # Validate our booleans
+  validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
   # Validate our regular expressions
