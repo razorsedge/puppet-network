@@ -1,16 +1,16 @@
 ###
 ### File managed by Puppet
 ###
-DEVICE=<%= interface %>
-BOOTPROTO=<%= bootproto %>
-ONPARENT=<%= onparent %>
+DEVICE=<%= @interface %>
+BOOTPROTO=<%= @bootproto %>
+ONPARENT=<%= @onparent %>
 TYPE=Ethernet
-<% if !ipaddress.empty? %>IPADDR=<%= ipaddress %>
+<% if !@ipaddress.empty? %>IPADDR=<%= @ipaddress %>
 <% end -%>
-<% if !netmask.empty? %>NETMASK=<%= netmask %>
+<% if !@netmask.empty? %>NETMASK=<%= @netmask %>
 <% end -%>
-<% if !gateway.empty? %>GATEWAY=<%= gateway %>
+<% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
 <% end -%>
-<% if userctl %>USERCTL=yes
+<% if @userctl %>USERCTL=yes
 <% end -%>
 NM_CONTROLLED=no
