@@ -3,16 +3,16 @@
 ###
 NETWORKING=yes
 NETWORKING_IPV6=no
-<% if !hostname.empty? %>HOSTNAME=<%= hostname %>
+<% if !@hostname.empty? %>HOSTNAME=<%= @hostname %>
 <% else %>HOSTNAME=<%= fqdn %>
 <% end -%>
-<% if !gateway.empty? %>GATEWAY=<%= gateway %>
+<% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
 <% end -%>
-<% if !gatewaydev.empty? %>GATEWAYDEV=<%= gatewaydev %>
+<% if !@gatewaydev.empty? %>GATEWAYDEV=<%= @gatewaydev %>
 <% end -%>
-<% if !nisdomain.empty? %>NISDOMAIN=<%= nisdomain %>
+<% if !@nisdomain.empty? %>NISDOMAIN=<%= @nisdomain %>
 <% end -%>
-<% if !vlan.empty? %>VLAN=<%= vlan %>
+<% if !@vlan.empty? %>VLAN=<%= @vlan %>
 <% end -%>
-<% if !nozeroconf.empty? %>NOZEROCONF=<%= nozeroconf %>
+<% if !@nozeroconf.empty? %>NOZEROCONF=<%= @nozeroconf %>
 <% end -%>
