@@ -9,6 +9,7 @@
 #   $netmask      - required
 #   $gateway      - optional
 #   $macaddress   - optional - defaults to macaddress_$title
+#   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $peerdns      - optional
@@ -44,6 +45,7 @@ define network::if::static (
   $netmask,
   $gateway = '',
   $macaddress = '',
+  $userctl = false,
   $mtu = '',
   $ethtool_opts = '',
   $peerdns = false,
@@ -59,6 +61,8 @@ define network::if::static (
   } else {
     $macaddy = $macaddress
   }
+  # Validate booleans
+  validate_bool($userctl)
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -67,6 +71,7 @@ define network::if::static (
     gateway      => $gateway,
     macaddress   => $macaddy,
     bootproto    => 'none',
+    userctl      => $userctl,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     peerdns      => $peerdns,

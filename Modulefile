@@ -1,5 +1,5 @@
 name 'razorsedge-network'
-version '3.0.0'
+version '3.1.0'
 
 author 'razorsedge'
 license 'Apache License, Version 2.0'
@@ -10,5 +10,5 @@ description 'This module manages Red Hat/Fedora traditional network configuratio
 dependency 'puppetlabs/stdlib', '>= 2.3.0'
 
 # Generate the changelog file
-system("git-log-to-changelog > CHANGELOG")
-$? == 0 or fail "changelog generation #{$?}!"
+#system("git-log-to-changelog > CHANGELOG")
+#$? == 0 or fail "changelog generation #{$?}!"

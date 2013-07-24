@@ -63,6 +63,7 @@ describe 'network::if::static', :type => 'define' do
       :netmask      => '255.255.255.0',
       :gateway      => '1.2.3.1',
       :macaddress   => 'ef:ef:ef:ef:ef:ef',
+      :userctl      => true,
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
       :peerdns      => true,
@@ -101,6 +102,7 @@ describe 'network::if::static', :type => 'define' do
         'DNS1=3.4.5.6',
         'DNS2=5.6.7.8',
         'DOMAIN="somedomain.com"',
+        'USERCTL=yes',
         'NM_CONTROLLED=no',
       ])
     end

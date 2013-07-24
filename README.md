@@ -22,7 +22,7 @@ Class and Define documentation is available via puppetdoc.
 Examples
 --------
 
-Please note that the following examples do not depict all of the paramters supported by each class or define.
+Please note that the following examples do not depict all of the parameters supported by each class or define.
 
 Global network settings:
 
@@ -79,6 +79,15 @@ Aliased interface:
       ensure    => 'up',
       ipaddress => '1.2.3.5',
       netmask   => '255.255.255.0',
+    }
+
+Aliased interface (allow non-root user to manage):
+
+    network::alias { 'em2:1':
+      ensure    => 'up',
+      ipaddress => '10.22.33.45',
+      netmask   => '255.255.254.0',
+      userctl   => true,
     }
 
 Aliased interface (range):

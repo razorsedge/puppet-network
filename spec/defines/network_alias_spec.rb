@@ -68,6 +68,7 @@ describe 'network::alias', :type => 'define' do
       :ipaddress => '33.2.3.127',
       :netmask   => '255.255.0.0',
       :gateway   => '33.2.3.1',
+      :userctl   => true,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -88,6 +89,7 @@ describe 'network::alias', :type => 'define' do
         'IPADDR=33.2.3.127',
         'NETMASK=255.255.0.0',
         'GATEWAY=33.2.3.1',
+        'USERCTL=yes',
         'NM_CONTROLLED=no',
       ])
     end

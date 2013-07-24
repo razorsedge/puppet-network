@@ -7,9 +7,9 @@ describe 'network::route', :type => 'define' do
   context 'singular parameters' do
     let(:title) { 'eth1' }
     let :params do {
-      :ipaddress => '192.168.2.1',
-      :netmask   => '255.255.255.1',
-      :gateway   => '192.168.1.2',
+      :ipaddress => [ '192.168.2.1', ],
+      :netmask   => [ '255.255.255.1', ],
+      :gateway   => [ '192.168.1.2', ],
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}

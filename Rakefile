@@ -8,10 +8,13 @@ RSpec::Core::RakeTask.new(:spec_standalonev) do |t|
 end
 
 # https://github.com/stahnma/puppet-modules/blob/master/common/Rakefile
-desc "Run puppet in noop mode and check for syntax errors."
+desc "Check puppet and ERB for syntax errors."
 task :validate do
   Dir['manifests/**/*.pp'].each do |path|
     sh "puppet parser validate --noop #{path}"
+  end
+  Dir['templates/**/*.erb'].each do |path|
+    sh "erb -P -x -T '-' #{path} | ruby -c"
   end
 end
 

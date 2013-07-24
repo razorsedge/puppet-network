@@ -20,9 +20,9 @@
 # === Sample Usage:
 #
 #   network::route { 'eth0':
-#     ipaddress => '192.168.17.0',
-#     netmask   => '255.255.255.0',
-#     gateway   => '192.168.17.250',
+#     ipaddress => [ '192.168.17.0', ],
+#     netmask   => [ '255.255.255.0', ],
+#     gateway   => [ '192.168.17.250', ],
 #   }
 #
 #   network::route { 'bond2':
@@ -44,6 +44,11 @@ define network::route (
   $netmask,
   $gateway
 ) {
+  # Validate our arrays
+  validate_array($ipaddress)
+  validate_array($netmask)
+  validate_array($gateway)
+
   include 'network'
 
   $interface = $name
