@@ -217,6 +217,11 @@ would become this:
       # blah
     }
 
+Contributing
+------------
+
+Please see DEVELOP.md for contribution information.
+
 License
 -------
 
