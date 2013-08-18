@@ -13,6 +13,7 @@
 #   $dns1         - optional
 #   $dns2         - optional
 #   $domain       - optional
+#   $delay        - optional - defaults to 0
 #
 # === Actions:
 #
@@ -48,7 +49,8 @@ define network::bridge::static (
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
-  $domain = ''
+  $domain = '',
+  $delay = '0'
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }

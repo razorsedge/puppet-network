@@ -9,6 +9,7 @@
 #   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $delay        - optional - defaults to 0
 #
 # === Actions:
 #
@@ -45,7 +46,8 @@ define network::bridge::dynamic (
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
-  $domain = ''
+  $domain = '',
+  $delay = '0'
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
