@@ -37,7 +37,7 @@ define network::bond::bridge (
   $bridge,
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = ''
+  $bonding_opts = 'miimon=100'
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

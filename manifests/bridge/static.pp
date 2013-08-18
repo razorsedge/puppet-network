@@ -43,15 +43,17 @@ define network::bridge::static (
   $ipaddress,
   $netmask,
   $gateway = '',
-  $userctl = false,
   $bootproto = 'static',
-  $onboot = 'yes',
+  $userctl = false,
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = '',
   $delay = '0'
 ) {
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
   # Validate booleans
@@ -60,6 +62,26 @@ define network::bridge::static (
   include 'network'
 
   $interface = $name
+
+  # Deal with the case where $dns2 is non-empty and $dns1 is empty.
+  if $dns2 != '' {
+    if $dns1 == '' {
+      $dns1_real = $dns2
+      $dns2_real = ''
+    } else {
+      $dns1_real = $dns1
+      $dns2_real = $dns2
+    }
+  } else {
+    $dns1_real = $dns1
+    $dns2_real = $dns2
+  }
+
+  $onboot = $ensure ? {
+    'up'    => 'yes',
+    'down'  => 'no',
+    default => undef,
+  }
 
   file { "ifcfg-${interface}":
     ensure  => 'present',

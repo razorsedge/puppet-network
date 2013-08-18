@@ -7,8 +7,6 @@
 #   $ensure       - required - up|down
 #   $bootproto    - optional - defaults to "dhcp"
 #   $userctl      - optional - defaults to false
-#   $mtu          - optional
-#   $ethtool_opts - optional
 #   $delay        - optional - defaults to 0
 #
 # === Actions:
@@ -40,13 +38,8 @@
 #
 define network::bridge::dynamic (
   $ensure,
-  $userctl = false,
   $bootproto = 'dhcp',
-  $onboot = 'yes',
-  $peerdns = false,
-  $dns1 = '',
-  $dns2 = '',
-  $domain = '',
+  $userctl = false,
   $delay = '0'
 ) {
   # Validate our regular expressions
@@ -58,6 +51,15 @@ define network::bridge::dynamic (
   include 'network'
 
   $interface = $name
+  $ipaddress = ''
+  $netmask = ''
+  $gateway = ''
+
+  $onboot = $ensure ? {
+    'up'    => 'yes',
+    'down'  => 'no',
+    default => undef,
+  }
 
   file { "ifcfg-${interface}":
     ensure  => 'present',

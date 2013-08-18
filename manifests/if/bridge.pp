@@ -1,12 +1,11 @@
-# == Definition: network::if::static
+# == Definition: network::if::bridge
 #
-# Creates a bridged interface.
+# Creates a normal, bridge interface.
 #
 # === Parameters:
 #
 #   $ensure       - required - up|down
 #   $bridge       - required - bridge interface name
-#   $macaddress   - optional - defaults to macaddress_$title
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #
@@ -32,25 +31,22 @@
 define network::if::bridge (
   $ensure,
   $bridge,
-  $macaddress = '',
   $mtu = '',
-  $ethtool_opts = '',
+  $ethtool_opts = ''
 ) {
-  # Validate our data
-  if ! is_mac_address($macaddress) {
-    $macaddy = getvar("::macaddress_${title}")
-  } else {
-    $macaddy = $macaddress
-  }
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   network_if_base { $title:
     ensure       => $ensure,
     ipaddress    => '',
     netmask      => '',
-    bridge       => $bridge,
-    macaddress   => $macaddy,
+    gateway      => '',
+    macaddress   => '',
     bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
+    bridge       => $bridge,
   }
-} # define network::if::bridged
+} # define network::if::bridge
