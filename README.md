@@ -9,7 +9,7 @@ Introduction
 
 This module manages Red Hat/Fedora traditional network configuration.
 
-It allows for static, dhcp, and bootp configuration of normal and bonded interfaces.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
+It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
 
 It can configure the following files:
 
@@ -194,7 +194,6 @@ TODO
 * Support /etc/sysconfig/network-scripts/rule-\<interface-name\>
 * Support IPv6.
 * Support for more than Ethernet links.
-* Support for bridge interfaces.
 * Testing of VLAN support (it should Just Work(TM)).
 
 See TODO.md for more items.
