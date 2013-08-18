@@ -7,7 +7,7 @@
 #   $ensure       - required - up|down
 #   $bootproto    - optional - defaults to "dhcp"
 #   $userctl      - optional - defaults to false
-#   $delay        - optional - defaults to 0
+#   $delay        - optional - defaults to 30
 #
 # === Actions:
 #
@@ -15,15 +15,15 @@
 #
 # === Sample Usage:
 #
-#   # normal interface - dhcp (minimal)
+#   # bridge interface - dhcp (minimal)
 #   network::bridge::dynamic { 'br0':
 #     ensure => 'up',
 #   }
 #
-#   # normal interface - bootp (minimal)
+#   # bridge interface - bootp (minimal)
 #   network::bridge::dynamic { 'br3':
 #     ensure     => 'up',
-#     bootproto  => 'dhcp',
+#     bootproto  => 'bootp',
 #   }
 #
 # === Authors:
@@ -40,7 +40,7 @@ define network::bridge::dynamic (
   $ensure,
   $bootproto = 'dhcp',
   $userctl = false,
-  $delay = '0'
+  $delay = '30'
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

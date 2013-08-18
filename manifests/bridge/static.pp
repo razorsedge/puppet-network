@@ -13,7 +13,7 @@
 #   $dns1         - optional
 #   $dns2         - optional
 #   $domain       - optional
-#   $delay        - optional - defaults to 0
+#   $delay        - optional - defaults to 30
 #
 # === Actions:
 #
@@ -49,7 +49,7 @@ define network::bridge::static (
   $dns1 = '',
   $dns2 = '',
   $domain = '',
-  $delay = '0'
+  $delay = '30'
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

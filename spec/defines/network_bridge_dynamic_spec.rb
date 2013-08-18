@@ -40,7 +40,7 @@ describe 'network::bridge::dynamic', :type => 'define' do
         'ONBOOT=yes',
         'TYPE=Bridge',
         'PEERDNS=no',
-        'DELAY=0',
+        'DELAY=30',
         'NM_CONTROLLED=no',
       ])
     end
