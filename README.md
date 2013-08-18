@@ -47,7 +47,7 @@ Normal interface - static:
       gateway      => '1.2.3.1',
       macaddress   => 'fe:fe:fe:aa:aa:aa',
       mtu          => '9000',
-      ethtool_opts => 'speed 1000 duplex full autoneg off',
+      ethtool_opts => 'autoneg off speed 1000 duplex full',
     }
 
 Normal interface - dhcp (minimal):
@@ -62,7 +62,7 @@ Normal interface - dhcp:
       ensure       => 'up',
       macaddress   => 'fe:fe:fe:ae:ae:ae',
       mtu          => '1500',
-      ethtool_opts => 'speed 100 duplex full autoneg off',
+      ethtool_opts => 'autoneg off speed 100 duplex full',
     }
 
 Normal interface - bootp (minimal):
@@ -71,6 +71,13 @@ Normal interface - bootp (minimal):
       ensure     => 'up',
       macaddress => 'fe:fe:fe:fe:fe:fe',
       bootproto  => 'bootp',
+    }
+
+Normal interface - bridged (the corresponding network::bridge::* may also have to be defined):
+
+    network::if::bridge { 'eth0':
+      ensure => 'up',
+      bridge => 'br0'
     }
 
 Aliased interface:
@@ -119,12 +126,34 @@ Bonded master interface - dhcp:
       bonding_opts => 'mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254',
     }
 
+Bonded master interface - bridged (the corresponding network::bridge::* may also have to be defined):
+
+    network::bond::bridge { 'bond2':
+      ensure       => 'up',
+      bridge       => 'br3',
+      bonding_opts => 'mode=802.3ad lacp_rate=fast miimon=100',
+    }
+
 Bonded slave interface:
 
     network::bond::slave { 'eth1':
       macaddress   => $macaddress_eth1,
-      ethtool_opts => 'speed 1000 duplex full autoneg off',
+      ethtool_opts => 'autoneg off speed 1000 duplex full',
       master       => 'bond0',
+    }
+
+Bridge interface - static (minimal):
+
+    network::bridge::static { 'br0':
+      ensure    => 'up',
+      ipaddress => '10.21.30.248',
+      netmask   => '255.255.255.128',
+    }
+
+Bridge interface - dhcp (minimal):
+
+    network::bridge::dynamic { 'br45':
+      ensure => 'up',
     }
 
 Static interface routes:
