@@ -29,7 +29,7 @@
 #
 # Copyright (C) 2013 Alex Barbur, unless otherwise noted.
 #
-define network::if::bridged (
+define network::if::bridge (
   $ensure,
   $bridge,
   $macaddress = '',
