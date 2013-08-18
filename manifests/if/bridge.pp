@@ -16,7 +16,7 @@
 #
 # === Sample Usage:
 #
-#   network::if::static { 'eth0':
+#   network::if::bridge { 'eth0':
 #     ensure => 'up',
 #     bridge => 'br0'
 #   }
