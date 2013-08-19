@@ -37,3 +37,5 @@ and remove the interface.
           ensure       => "up",
         }
 
+3. Make sure bridge-utils package is installed when using bridging configs.
+
