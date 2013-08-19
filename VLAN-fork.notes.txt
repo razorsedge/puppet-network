@@ -1,0 +1,100 @@
+Hi,
+   Excuse the unconventional format and stuff. I'm new to git and new to puppet. I'm also not a coder.
+When I try to create a vlan on centos it fails on a couple of counts.
+puppet --version 2.7.22
+Centos 6.4
+
+I created a simple manifest to make a vlan
+
+import "/etc/puppet/modules/network/manifests/*.pp"
+
+network::if::static { 'eth0.209':
+     netmask      => '255.255.255.0',
+     ipaddress    => '1.2.3.4',
+     ensure       => 'up',
+     macaddress   => 'fe:fe:fe:aa:aa:aa',
+}
+
+Then I run:  puppet apply /etc/puppet/manifests/network.pp --debug
+
+This creates /etc/sysconfig/network-scripts/ifcfg-eth0.209
+
+### File managed by Puppet
+###
+DEVICE=eth0.209
+BOOTPROTO=none
+HWADDR=fe:fe:fe:aa:aa:aa
+ONBOOT=yes
+HOTPLUG=yes
+TYPE=Ethernet
+IPADDR=1.2.3.4
+NETMASK=255.255.255.0
+PEERDNS=no
+NM_CONTROLLED=no
+
+Which fails to start the interface (edited output)
+# service network restart
+Shutting down interface eth0.209:  Device eth0.209 has MAC address 00:50:56:B7:2F:8A, instead of configured address FE:FE:FE:AA:AA:AA. Ignoring.
+                                                           [FAILED]
+Bringing up interface eth0.209:  Device eth0.209 has different MAC address than expected, ignoring.
+                                                           [FAILED]
+
+If you leave out the MAC it fails:
+Must pass macaddress to Network_if_base[eth0.209] at /etc/puppet/modules/network/manifests/init.pp:95
+
+If you manually add the MAC of eth0, for instance, it builds cleanly, but fails to start the interface as the "VLAN=yes" statement is missing.
+
+If you add 'vlan' to the manifest it fails
+network::if::static { 'eth0.219':
+     netmask      => '255.255.255.0',
+     ipaddress    => '1.2.3.4',
+     ensure       => 'up',
+     vlan         => 'yes',
+...
+Invalid parameter vlan at /etc/puppet/manifests/network.pp:10
+
+So I hacked a module to make a VLAN as a proof of concept really. It works, but its kinda ugly (a bit like me :)
+I know that 'vlan' is a reservered word/variable, so I called my var's 'vlan2' and 'vlanis' for clarity. This could probably be cleaned up.
+
+my new manifest:
+
+import "/etc/puppet/modules/network/manifests/*.pp"
+
+network::if::vlan2 { 'eth0.201':
+     netmask      => '255.255.255.0',
+     ipaddress    => '1.2.3.4',
+     ensure       => 'up',
+     vlanis       => 'yes',
+}
+
+
+The output is below:
+Notice the "VLAN=yes" which is needed by centos to accept the vlan and make it active.
+It has picked up the MAC of the eth0
+
+# cat /etc/sysconfig/network-scripts/ifcfg-eth0.201 
+###
+### File managed by Puppet
+###
+DEVICE=eth0.201
+BOOTPROTO=static
+HWADDR=00:50:56:B7:2F:8A
+ONBOOT=yes
+HOTPLUG=yes
+TYPE=Ethernet
+IPADDR=1.2.3.4
+NETMASK=255.255.255.0
+PEERDNS=no
+VLAN=yes
+NM_CONTROLLED=no 
+
+We use bonded interfaces with vlans, in some places (eg bond0.201), but I've not tested this with that.
+
+In sumary. You could probably clean up the existing code so that the 'vlan' option adds "VLAN=yes" and the MAC is populated automatically from the ethx interface.
+
+Anyway first git commit, so please be gentle with me. No doubt I've missed somthing from the manual that allows vlan creation with out hacking.
+I've learned a lot from this process, some of it possibly useful. I hope you can understand and / or build on what I have suggested. 
+Feed back, comments, or abuse apprecieated.
+
+Regards
+Neil

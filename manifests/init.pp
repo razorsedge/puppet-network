@@ -108,7 +108,8 @@ define network_if_base (
   $dns1 = '',
   $dns2 = '',
   $domain = '',
-  $bridge = ''
+  $bridge = '',
+  $vlanis = ''
 ) {
   # Validate our booleans
   validate_bool($userctl)
