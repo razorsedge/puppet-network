@@ -1,5 +1,5 @@
 name 'razorsedge-network'
-version '3.1.0'
+version '3.2.0'
 
 author 'razorsedge'
 license 'Apache License, Version 2.0'

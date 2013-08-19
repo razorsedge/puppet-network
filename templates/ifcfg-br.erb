@@ -3,22 +3,13 @@
 ###
 DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
-<% if !@macaddress.empty? %>HWADDR=<%= @macaddress %>
-<% end -%>
 ONBOOT=<%= @onboot %>
-HOTPLUG=<%= @onboot %>
-TYPE=Ethernet
+TYPE=Bridge
 <% if !@ipaddress.empty? %>IPADDR=<%= @ipaddress %>
 <% end -%>
 <% if !@netmask.empty? %>NETMASK=<%= @netmask %>
 <% end -%>
 <% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
-<% end -%>
-<% if !@mtu.empty? %>MTU=<%= @mtu %>
-<% end -%>
-<% if @bonding_opts %>BONDING_OPTS="<%= @bonding_opts %>"
-<% end -%>
-<% if !@ethtool_opts.empty? %>ETHTOOL_OPTS="<%= @ethtool_opts %>"
 <% end -%>
 <% if !@peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
@@ -31,6 +22,10 @@ TYPE=Ethernet
 <% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>
-<% if !@bridge.empty? %>BRIDGE=<%= @bridge %>
+DELAY=<%= @delay %>
+<% if !@stp %>STP=no
+<% else %>STP=yes
+<% end -%>
+<% if @bridging_opts %>BRIDGING_OPTS="<%= @bridging_opts %>"
 <% end -%>
 NM_CONTROLLED=no

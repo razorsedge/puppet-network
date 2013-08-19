@@ -9,7 +9,7 @@ Introduction
 
 This module manages Red Hat/Fedora traditional network configuration.
 
-It allows for static, dhcp, and bootp configuration of normal and bonded interfaces.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
+It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
 
 It can configure the following files:
 
@@ -47,7 +47,7 @@ Normal interface - static:
       gateway      => '1.2.3.1',
       macaddress   => 'fe:fe:fe:aa:aa:aa',
       mtu          => '9000',
-      ethtool_opts => 'speed 1000 duplex full autoneg off',
+      ethtool_opts => 'autoneg off speed 1000 duplex full',
     }
 
 Normal interface - dhcp (minimal):
@@ -62,7 +62,7 @@ Normal interface - dhcp:
       ensure       => 'up',
       macaddress   => 'fe:fe:fe:ae:ae:ae',
       mtu          => '1500',
-      ethtool_opts => 'speed 100 duplex full autoneg off',
+      ethtool_opts => 'autoneg off speed 100 duplex full',
     }
 
 Normal interface - bootp (minimal):
@@ -71,6 +71,13 @@ Normal interface - bootp (minimal):
       ensure     => 'up',
       macaddress => 'fe:fe:fe:fe:fe:fe',
       bootproto  => 'bootp',
+    }
+
+Normal interface - bridged (the corresponding network::bridge::* may also have to be defined):
+
+    network::if::bridge { 'eth0':
+      ensure => 'up',
+      bridge => 'br0'
     }
 
 Aliased interface:
@@ -119,12 +126,45 @@ Bonded master interface - dhcp:
       bonding_opts => 'mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254',
     }
 
+Bonded master interface - bridged (the corresponding network::bridge::* may also have to be defined):
+
+    network::bond::bridge { 'bond2':
+      ensure       => 'up',
+      bridge       => 'br3',
+      bonding_opts => 'mode=802.3ad lacp_rate=fast miimon=100',
+    }
+
 Bonded slave interface:
 
     network::bond::slave { 'eth1':
       macaddress   => $macaddress_eth1,
-      ethtool_opts => 'speed 1000 duplex full autoneg off',
+      ethtool_opts => 'autoneg off speed 1000 duplex full',
       master       => 'bond0',
+    }
+
+Bridge interface - static (minimal):
+
+    network::bridge::static { 'br1':
+      ensure    => 'up',
+      ipaddress => '10.21.30.248',
+      netmask   => '255.255.255.128',
+    }
+
+Bridge interface - static:
+
+    network::bridge::static { 'br2':
+      ensure        => 'up',
+      ipaddress     => '1.2.3.8',
+      netmask       => '255.255.0.0',
+      stp           => true,
+      delay         => '0',
+      bridging_opts => 'priority=65535',
+    }
+
+Bridge interface - dhcp (minimal):
+
+    network::bridge::dynamic { 'br3':
+      ensure => 'up',
     }
 
 Static interface routes:
@@ -165,7 +205,6 @@ TODO
 * Support /etc/sysconfig/network-scripts/rule-\<interface-name\>
 * Support IPv6.
 * Support for more than Ethernet links.
-* Support for bridge interfaces.
 * Testing of VLAN support (it should Just Work(TM)).
 
 See TODO.md for more items.
@@ -216,6 +255,11 @@ would become this:
       ipaddress => '192.168.17.0',
       # blah
     }
+
+Contributing
+------------
+
+Please see DEVELOP.md for contribution information.
 
 License
 -------
