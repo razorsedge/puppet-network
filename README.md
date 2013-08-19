@@ -142,6 +142,15 @@ Bonded slave interface:
       master       => 'bond0',
     }
 
+Bridge interface - no IP:
+
+    network::bridge { 'br0':
+      ensure        => 'up',
+      stp           => true,
+      delay         => '0',
+      bridging_opts => 'priority=65535',
+    }
+
 Bridge interface - static (minimal):
 
     network::bridge::static { 'br1':
