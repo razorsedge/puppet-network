@@ -15,6 +15,18 @@ describe 'network::bridge::dynamic', :type => 'define' do
     end
   end
 
+  context 'incorrect value: stp' do
+    let(:title) { 'br77' }
+    let :params do {
+      :ensure => 'up',
+      :stp    => 'notABool',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /"notABool" is not a boolean./)
+    end
+  end
+
   context 'required parameters' do
     let(:title) { 'br1' }
     let :params do {
@@ -41,6 +53,7 @@ describe 'network::bridge::dynamic', :type => 'define' do
         'TYPE=Bridge',
         'PEERDNS=no',
         'DELAY=30',
+        'STP=no',
         'NM_CONTROLLED=no',
       ])
     end
@@ -50,10 +63,12 @@ describe 'network::bridge::dynamic', :type => 'define' do
   context 'optional parameters' do
     let(:title) { 'br1' }
     let :params do {
-      :ensure    => 'down',
-      :bootproto => 'bootp',
-      :userctl   => true,
-      :delay     => '1000',
+      :ensure        => 'down',
+      :bootproto     => 'bootp',
+      :userctl       => true,
+      :stp           => true,
+      :delay         => '1000',
+      :bridging_opts => 'hello_time=200 priority=65535',
     }
     end
     let :facts do {
@@ -75,6 +90,8 @@ describe 'network::bridge::dynamic', :type => 'define' do
         'ONBOOT=no',
         'TYPE=Bridge',
         'DELAY=1000',
+        'STP=yes',
+        'BRIDGING_OPTS="hello_time=200 priority=65535"',
         'NM_CONTROLLED=no',
       ])
     end

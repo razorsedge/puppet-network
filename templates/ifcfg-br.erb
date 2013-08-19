@@ -23,4 +23,9 @@ TYPE=Bridge
 <% if @userctl %>USERCTL=yes
 <% end -%>
 DELAY=<%= @delay %>
+<% if !@stp %>STP=no
+<% else %>STP=yes
+<% end -%>
+<% if @bridging_opts %>BRIDGING_OPTS="<%= @bridging_opts %>"
+<% end -%>
 NM_CONTROLLED=no

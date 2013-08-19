@@ -144,15 +144,26 @@ Bonded slave interface:
 
 Bridge interface - static (minimal):
 
-    network::bridge::static { 'br0':
+    network::bridge::static { 'br1':
       ensure    => 'up',
       ipaddress => '10.21.30.248',
       netmask   => '255.255.255.128',
     }
 
+Bridge interface - static:
+
+    network::bridge::static { 'br2':
+      ensure        => 'up',
+      ipaddress     => '1.2.3.8',
+      netmask       => '255.255.0.0',
+      stp           => true,
+      delay         => '0',
+      bridging_opts => 'priority=65535',
+    }
+
 Bridge interface - dhcp (minimal):
 
-    network::bridge::dynamic { 'br45':
+    network::bridge::dynamic { 'br3':
       ensure => 'up',
     }
 

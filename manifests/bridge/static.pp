@@ -4,16 +4,18 @@
 #
 # === Parameters:
 #
-#   $ensure       - required - up|down
-#   $ipaddress    - required
-#   $netmask      - required
-#   $gateway      - optional
-#   $userctl      - optional - defaults to false
-#   $peerdns      - optional
-#   $dns1         - optional
-#   $dns2         - optional
-#   $domain       - optional
-#   $delay        - optional - defaults to 30
+#   $ensure        - required - up|down
+#   $ipaddress     - required
+#   $netmask       - required
+#   $gateway       - optional
+#   $userctl       - optional - defaults to false
+#   $peerdns       - optional
+#   $dns1          - optional
+#   $dns2          - optional
+#   $domain        - optional
+#   $stp           - optional - defaults to false
+#   $delay         - optional - defaults to 30
+#   $bridging_opts - optional
 #
 # === Actions:
 #
@@ -22,10 +24,13 @@
 # === Sample Usage:
 #
 #   network::bridge::static { 'br0':
-#     ensure    => 'up',
-#     ipaddress => '10.21.30.248',
-#     netmask   => '255.255.255.128',
-#     domain    => 'is.domain.com domain.com',
+#     ensure        => 'up',
+#     ipaddress     => '10.21.30.248',
+#     netmask       => '255.255.255.128',
+#     domain        => 'is.domain.com domain.com',
+#     stp           => true,
+#     delay         => '0',
+#     bridging_opts => 'priority=65535',
 #   }
 #
 # === Authors:
@@ -49,7 +54,9 @@ define network::bridge::static (
   $dns1 = '',
   $dns2 = '',
   $domain = '',
-  $delay = '30'
+  $stp = false,
+  $delay = '30',
+  $bridging_opts = ''
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -58,6 +65,7 @@ define network::bridge::static (
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
   # Validate booleans
   validate_bool($userctl)
+  validate_bool($stp)
 
   include 'network'
 

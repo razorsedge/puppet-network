@@ -4,10 +4,12 @@
 #
 # === Parameters:
 #
-#   $ensure       - required - up|down
-#   $bootproto    - optional - defaults to "dhcp"
-#   $userctl      - optional - defaults to false
-#   $delay        - optional - defaults to 30
+#   $ensure        - required - up|down
+#   $bootproto     - optional - defaults to "dhcp"
+#   $userctl       - optional - defaults to false
+#   $stp           - optional - defaults to false
+#   $delay         - optional - defaults to 30
+#   $bridging_opts - optional
 #
 # === Actions:
 #
@@ -15,15 +17,11 @@
 #
 # === Sample Usage:
 #
-#   # bridge interface - dhcp (minimal)
-#   network::bridge::dynamic { 'br0':
-#     ensure => 'up',
-#   }
-#
-#   # bridge interface - bootp (minimal)
-#   network::bridge::dynamic { 'br3':
-#     ensure     => 'up',
-#     bootproto  => 'bootp',
+#   network::bridge::dynamic { 'br1':
+#     ensure        => 'up',
+#     stp           => true,
+#     delay         => '0',
+#     bridging_opts => 'priority=65535',
 #   }
 #
 # === Authors:
@@ -40,13 +38,16 @@ define network::bridge::dynamic (
   $ensure,
   $bootproto = 'dhcp',
   $userctl = false,
-  $delay = '30'
+  $stp = false,
+  $delay = '30',
+  $bridging_opts = ''
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate booleans
   validate_bool($userctl)
+  validate_bool($stp)
 
   include 'network'
 
