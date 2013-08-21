@@ -49,7 +49,9 @@ define network::if::dynamic (
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   if ! is_mac_address($macaddress) {
-    $macaddy = getvar("::macaddress_${title}")
+    # Strip off any tailing VLAN (ie eth5.90 -> eth5).
+    $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
+    $macaddy = getvar("::macaddress_${title_clean}")
   } else {
     $macaddy = $macaddress
   }
