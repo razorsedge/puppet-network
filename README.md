@@ -170,9 +170,9 @@ Bridge interface - dhcp (minimal):
 Static interface routes:
 
     network::route { 'eth0':
-      address => [ '192.168.2.0', '10.0.0.0', ],
-      netmask => [ '255.255.255.0', '255.0.0.0', ],
-      gateway => [ '192.168.1.1', '10.0.0.1', ],
+      ipaddress => [ '192.168.2.0', '10.0.0.0', ],
+      netmask   => [ '255.255.255.0', '255.0.0.0', ],
+      gateway   => [ '192.168.1.1', '10.0.0.1', ],
     }
 
 Normal interface - VLAN - static (minimal):
