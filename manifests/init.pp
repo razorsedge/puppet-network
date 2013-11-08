@@ -11,6 +11,7 @@ class network (
   $ipv6_support = 'no',
   $peerdns      = 'no',
   $peerntp      = 'no',
+  $nisdomain    = undef,
 ) {
 
   # Only run on RedHat derived systems.
@@ -63,11 +64,6 @@ class network (
       $network_routes = hiera_hash('network::route',undef)
       if $network_routes != undef {
         create_resources('network::route', $network_routes)
-      }
-
-      $nisdomain = $::nisdomainname ? {
-        ''      => undef,
-        default => $::nisdomainname,
       }
 
       file { 'network_sysconfig':
