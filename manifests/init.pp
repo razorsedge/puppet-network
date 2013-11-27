@@ -68,6 +68,9 @@ class network {
         create_resources( 'network::bond::static',  $network['bond']['static'] )
       }
     }
+    if $network['alias'] {
+      create_resources( 'network::alias', $network['alias'], { ensure => 'up' }  )
+    }
   }
   service { 'network':
     ensure     => 'running',
