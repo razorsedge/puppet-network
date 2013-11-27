@@ -50,14 +50,8 @@ class network {
       if $network['if']['dynamic'] {
         create_resources( 'network::if::dynamic', $network['if']['dynamic'], { ensure => 'up' } )
       }
-      if $network['if']['alias'] {
-        create_resources( 'network::if::alias',   $network['if']['alias'],   { ensure => 'up' } )
-      }
     }
     if $network['bond'] {
-      if $network['bond']['alias'] {
-        create_resources( 'network::bond::alias',   $network['bond']['alias'] )
-      }
       if $network['bond']['dynamic'] {
         create_resources( 'network::bond::dynamic', $network['bond']['dynamic'] )
       }
