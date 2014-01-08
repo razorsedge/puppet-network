@@ -269,8 +269,3 @@ Copyright
 ---------
 
 Copyright (C) 2011 Mike Arnold <mike@razorsedge.org>
-
-[razorsedge/puppet-network on GitHub](https://github.com/razorsedge/puppet-network)
-
-[razorsedge/network on Puppet Forge](http://forge.puppetlabs.com/razorsedge/network)
-
