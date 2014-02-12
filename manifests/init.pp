@@ -113,7 +113,7 @@ define network_if_base (
   $dns2 = '',
   $domain = '',
   $bridge = '',
-  $linkdelay = ''
+  $linkdelay = '',
 ) {
   # Validate our booleans
   validate_bool($userctl)
