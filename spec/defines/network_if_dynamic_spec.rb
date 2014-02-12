@@ -57,6 +57,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :userctl      => true,
       :mtu          => '1500',
       :ethtool_opts => 'speed 100 duplex full autoneg off',
+      :linkdelay    => '5',
     }
     end
     let :facts do {
@@ -84,6 +85,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'ETHTOOL_OPTS="speed 100 duplex full autoneg off"',
         'USERCTL=yes',
         'NM_CONTROLLED=no',
+        'LINKDELAY=5',
       ])
     end
     it { should contain_service('network') }

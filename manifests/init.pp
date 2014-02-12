@@ -81,7 +81,6 @@ class network {
 #   PERSISTENT_DHCLIENT=yes|no|1|0
 #   DHCPRELEASE=yes|no|1|0
 #   DHCLIENT_IGNORE_GATEWAY=yes|no|1|0
-#   LINKDELAY=
 #   REORDER_HDR=yes|no
 #
 # === Authors:
@@ -113,7 +112,8 @@ define network_if_base (
   $dns1 = '',
   $dns2 = '',
   $domain = '',
-  $bridge = ''
+  $bridge = '',
+  $linkdelay = '',
 ) {
   # Validate our booleans
   validate_bool($userctl)

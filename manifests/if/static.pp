@@ -56,7 +56,8 @@ define network::if::static (
   $ipv6peerdns = false,
   $dns1 = '',
   $dns2 = '',
-  $domain = ''
+  $domain = '',
+  $linkdelay = ''
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -75,23 +76,24 @@ define network::if::static (
   validate_bool($userctl)
 
   network_if_base { $title:
-    ensure       	=> $ensure,
-    ipv6init	 	=> $ipv6init,
-    ipaddress    	=> $ipaddress,
-    ipv6address    	=> $ipv6address,
-    netmask      	=> $netmask,
-    gateway      	=> $gateway,
-    ipv6gateway      	=> $ipv6gateway,
-    ipv6autoconf	=> $ipv6autoconf,
-    macaddress   	=> $macaddy,
-    bootproto    	=> 'none',
-    userctl      	=> $userctl,
-    mtu          	=> $mtu,
-    ethtool_opts 	=> $ethtool_opts,
-    peerdns      	=> $peerdns,
-    ipv6peerdns      	=> $ipv6peerdns,
-    dns1         	=> $dns1,
-    dns2         	=> $dns2,
-    domain       	=> $domain,
+    ensure       => $ensure,
+    ipv6init	 => $ipv6init,
+    ipaddress    => $ipaddress,
+    ipv6address  => $ipv6address,
+    netmask      => $netmask,
+    gateway      => $gateway,
+    ipv6gateway  => $ipv6gateway,
+    ipv6autoconf => $ipv6autoconf,
+    macaddress   => $macaddy,
+    bootproto    => 'none',
+    userctl      => $userctl,
+    mtu          => $mtu,
+    ethtool_opts => $ethtool_opts,
+    peerdns      => $peerdns,
+    ipv6peerdns  => $ipv6peerdns,
+    dns1         => $dns1,
+    dns2         => $dns2,
+    domain       => $domain,
+    linkdelay    => $linkdelay,
   }
 } # define network::if::static

@@ -46,4 +46,6 @@ IPV6INIT=yes
 <% end -%>
 <% if !@bridge.empty? %>BRIDGE=<%= @bridge %>
 <% end -%>
+<% if !@linkdelay.empty? %>LINKDELAY=<%= @linkdelay %>
+<% end -%>
 NM_CONTROLLED=no
