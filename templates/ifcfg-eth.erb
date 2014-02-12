@@ -34,3 +34,6 @@ TYPE=Ethernet
 <% if !@bridge.empty? %>BRIDGE=<%= @bridge %>
 <% end -%>
 NM_CONTROLLED=no
+<% if !@linkdelay.empty? %>LINKDELAY=<%= @linkdelay %>
+<% end -%>
+
