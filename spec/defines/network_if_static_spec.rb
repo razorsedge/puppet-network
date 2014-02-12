@@ -70,6 +70,7 @@ describe 'network::if::static', :type => 'define' do
       :dns1         => '3.4.5.6',
       :dns2         => '5.6.7.8',
       :domain       => 'somedomain.com',
+      :linkdelay    => '5',
     }
     end
     let :facts do {
@@ -104,6 +105,7 @@ describe 'network::if::static', :type => 'define' do
         'DOMAIN="somedomain.com"',
         'USERCTL=yes',
         'NM_CONTROLLED=no',
+        'LINKDELAY=5',
       ])
     end
     it { should contain_service('network') }
