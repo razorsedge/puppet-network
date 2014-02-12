@@ -116,6 +116,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'HOTPLUG=yes',
         'TYPE=Ethernet',
         'NM_CONTROLLED=no',
+        'LINKDELAY=5',
       ])
     end
     it { should contain_service('network') }
