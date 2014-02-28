@@ -57,7 +57,8 @@ class network::global (
   $gatewaydev = '',
   $nisdomain  = '',
   $vlan       = '',
-  $nozeroconf = ''
+  $nozeroconf = '',
+  $ipv6       = 'no'
 ) {
   # Validate our data
   if $gateway != '' {
@@ -67,6 +68,10 @@ class network::global (
   if $vlan != '' {
     $states = [ '^yes$', '^no$' ]
     validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
+  }
+  # Validate ipv6 vavlues
+  if ($ipv6 != 'no') and ($ipv6 != 'yes') {
+    fail('ipv6 must be either "yes" or "no".')
   }
 
   include 'network'

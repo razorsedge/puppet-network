@@ -49,6 +49,7 @@ describe 'network::global', :type => 'class' do
       :nisdomain  => 'myNisDomain',
       :vlan       => 'yes',
       :nozeroconf => 'yes',
+      :ipv6       => 'yes',
     }
     end
     let :facts do {
@@ -59,7 +60,7 @@ describe 'network::global', :type => 'class' do
     it 'should contain File[network.sysconfig] with correct contents' do
       verify_contents(subject, 'network.sysconfig', [
         'NETWORKING=yes',
-        'NETWORKING_IPV6=no',
+        'NETWORKING_IPV6=yes',
         'HOSTNAME=myHostname',
         'GATEWAY=1.2.3.4',
         'GATEWAYDEV=eth2',
@@ -89,6 +90,16 @@ describe 'network::global', :type => 'class' do
       it 'should fail' do
         expect {
           should raise_error(Puppet::Error, /$vlan must be either "yes" or "no"./)
+        }
+      end
+    end
+
+    context 'ipv6 = foo' do
+      let(:params) {{ :ipv6 => 'foo' }}
+
+      it 'should fail' do
+        expect {
+          should raise_error(Puppet::Error, /$ipv6 must be either "yes" or "no"./)
         }
       end
     end
