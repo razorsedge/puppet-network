@@ -32,7 +32,7 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::slave (
-  $macaddress,
+  $macaddress = '',
   $master,
   $ethtool_opts = ''
 ) {
