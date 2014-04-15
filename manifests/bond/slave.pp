@@ -38,7 +38,9 @@ define network::bond::slave (
 ) {
   # Validate our data
   if ! is_mac_address($macaddress) {
-    fail("${macaddress} is not a MAC address.")
+    $macaddy = getvar("::macaddress_${title}")
+  } else {
+    $macaddy = $macaddress
   }
 
   include 'network'
