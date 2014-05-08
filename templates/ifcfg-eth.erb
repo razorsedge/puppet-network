@@ -10,7 +10,7 @@ HOTPLUG=<%= onboot %>
 TYPE=Ethernet
 IPADDR=<%= ipaddress %>
 NETMASK=<%= netmask %>
-<% if @gateway %>GATEWAY=<%= gateway %>
+<% if @gateway != '' %>GATEWAY=<%= gateway %>
 <% end -%>
 <% if @mtu != '' %>MTU=<%= mtu %>
 <% end -%>
