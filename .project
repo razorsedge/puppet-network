@@ -31,5 +31,14 @@
 				<arguments>1.0-name-matches-false-false-pkg</arguments>
 			</matcher>
 		</filter>
+		<filter>
+			<id>1378879474985</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-projectRelativePath-matches-false-false-spec/fixtures/modules</arguments>
+			</matcher>
+		</filter>
 	</filteredResources>
 </projectDescription>
