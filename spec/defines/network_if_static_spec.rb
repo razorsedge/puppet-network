@@ -104,8 +104,8 @@ describe 'network::if::static', :type => 'define' do
         'DNS2=5.6.7.8',
         'DOMAIN="somedomain.com"',
         'USERCTL=yes',
-        'NM_CONTROLLED=no',
         'LINKDELAY=5',
+        'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }
