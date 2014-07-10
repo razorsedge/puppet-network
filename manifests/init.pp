@@ -63,9 +63,14 @@ class network {
       }
     }
     if $network['alias'] {
-      create_resources( 'network::alias', $network['alias'], { ensure => 'up' }  )
+      if $network['alias']['if'] {
+        create_resources( 'network::alias::if', $network['alias']['if'], { ensure => 'up' }  )
+      }
+      if $network['alias']['range'] {
+        create_resources( 'network::alias::range', $network['alias']['range'], { ensure => 'up' }  )
+      }
     }
-  }
+ }
   service { 'network':
     ensure     => 'running',
     enable     => true,
