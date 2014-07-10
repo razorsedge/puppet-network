@@ -81,7 +81,7 @@ Normal interface - bridged (the corresponding network::bridge::* may also have t
 
 Aliased interface:
 
-    network::alias { 'eth0:1':
+    network::alias::if { 'eth0:1':
       ensure    => 'up',
       ipaddress => '1.2.3.5',
       netmask   => '255.255.255.0',
@@ -89,7 +89,7 @@ Aliased interface:
 
 Aliased interface (allow non-root user to manage):
 
-    network::alias { 'em2:1':
+    network::alias::if { 'em2:1':
       ensure    => 'up',
       ipaddress => '10.22.33.45',
       netmask   => '255.255.254.0',
@@ -98,10 +98,12 @@ Aliased interface (allow non-root user to manage):
 
 Aliased interface (range):
 
-    network::alias::range { 'eth1':
+    network::alias::range { '1':
       ensure          => 'up',
+      iface           => 'eth0'
       ipaddress_start => '1.2.3.5',
       ipaddress_end   => '1.2.3.20',
+      netmask         => '255.255.255.0'
       clonenum_start  => '0',
       noaliasrouting  => true,
     }
