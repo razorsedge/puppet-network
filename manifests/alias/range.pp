@@ -35,8 +35,10 @@
 #
 define network::alias::range (
   $ensure,
+  $iface,
   $ipaddress_start,
   $ipaddress_end,
+  $netmask,
   $clonenum_start,
   $noaliasrouting = false
 ) {
@@ -51,8 +53,9 @@ define network::alias::range (
 
   include 'network'
 
-  $interface = $name
-  $onparent = $ensure ? {
+  $interface = $iface
+  $rangename = $name
+  $onparent  = $ensure ? {
     'up'    => 'yes',
     'down'  => 'no',
     default => undef,
@@ -64,14 +67,14 @@ define network::alias::range (
     default  => undef,
   }
 
-  file { "ifcfg-${interface}-range${clonenum_start}":
+  file { "ifcfg-${interface}-range${rangename}":
     ensure  => $file_ensure,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}-range${clonenum_start}",
+    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}-range${rangename}",
     content => template('network/ifcfg-alias-range.erb'),
-    before  => File["ifcfg-${interface}"],
+    #    before  => File["ifcfg-${interface}"],
     notify  => Service['network'],
   }
 } # define network::alias::range

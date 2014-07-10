@@ -1,8 +1,7 @@
 Puppet Network Module
 =====================
 
-master branch [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-network.png?branch=master)](http://travis-ci.org/razorsedge/puppet-network)
-develop branch [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-network.png?branch=develop)](http://travis-ci.org/razorsedge/puppet-network)
+[![Build Status](http://jenkins.cipsoft.de/buildStatus/icon?job=puppet-network)](http://jenkins.cipsoft.de/view/PUPPET/job/puppet-network/)
 
 Introduction
 ------------
@@ -82,7 +81,7 @@ Normal interface - bridged (the corresponding network::bridge::* may also have t
 
 Aliased interface:
 
-    network::alias { 'eth0:1':
+    network::alias::if { 'eth0:1':
       ensure    => 'up',
       ipaddress => '1.2.3.5',
       netmask   => '255.255.255.0',
@@ -90,7 +89,7 @@ Aliased interface:
 
 Aliased interface (allow non-root user to manage):
 
-    network::alias { 'em2:1':
+    network::alias::if { 'em2:1':
       ensure    => 'up',
       ipaddress => '10.22.33.45',
       netmask   => '255.255.254.0',
@@ -99,10 +98,12 @@ Aliased interface (allow non-root user to manage):
 
 Aliased interface (range):
 
-    network::alias::range { 'eth1':
+    network::alias::range { '1':
       ensure          => 'up',
+      iface           => 'eth0'
       ipaddress_start => '1.2.3.5',
       ipaddress_end   => '1.2.3.20',
+      netmask         => '255.255.255.0'
       clonenum_start  => '0',
       noaliasrouting  => true,
     }
@@ -270,8 +271,3 @@ Copyright
 ---------
 
 Copyright (C) 2011 Mike Arnold <mike@razorsedge.org>
-
-[razorsedge/puppet-network on GitHub](https://github.com/razorsedge/puppet-network)
-
-[razorsedge/network on Puppet Forge](http://forge.puppetlabs.com/razorsedge/network)
-
