@@ -58,6 +58,8 @@ class network {
 #   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $subchannels  - optional
+#   $nettype      - optional
 #   $bonding_opts - optional
 #   $isalias      - optional
 #   $peerdns      - optional
@@ -102,6 +104,8 @@ define network_if_base (
   $userctl = false,
   $mtu = '',
   $ethtool_opts = '',
+  $subchannels = '',
+  $nettype = '',
   $bonding_opts = undef,
   $isalias = false,
   $peerdns = false,

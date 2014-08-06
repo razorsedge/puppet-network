@@ -12,6 +12,8 @@
 #   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $subchannels  - optional
+#   $nettype      - optional
 #   $peerdns      - optional
 #   $dns1         - optional
 #   $dns2         - optional
@@ -48,6 +50,8 @@ define network::if::static (
   $userctl = false,
   $mtu = '',
   $ethtool_opts = '',
+  $subchannels = '',
+  $nettype = '',
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
@@ -74,6 +78,8 @@ define network::if::static (
     userctl      => $userctl,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
+    subchannels  => $subchannels,
+    nettype      => $nettype,
     peerdns      => $peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
