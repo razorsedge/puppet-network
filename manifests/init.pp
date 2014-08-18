@@ -52,6 +52,7 @@ class network {
 #   $ensure       - required - up|down
 #   $ipaddress    - required
 #   $netmask      - required
+#   $hwaddr_disable   - optional
 #   $macaddress   - required
 #   $gateway      - optional
 #   $bootproto    - optional
@@ -96,6 +97,7 @@ define network_if_base (
   $ensure,
   $ipaddress,
   $netmask,
+  $hwaddr_disable = false,
   $macaddress,
   $gateway = '',
   $bootproto = 'none',
