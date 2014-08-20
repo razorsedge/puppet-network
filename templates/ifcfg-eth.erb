@@ -20,6 +20,10 @@ TYPE=Ethernet
 <% end -%>
 <% if !@ethtool_opts.empty? %>ETHTOOL_OPTS="<%= @ethtool_opts %>"
 <% end -%>
+<% if !@subchannels.empty? %>SUBCHANNELS="<%= @subchannels %>"
+<% end -%>
+<% if !@nettype.empty? %>NETTYPE="<%= @nettype %>"
+<% end -%>
 <% if !@peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
 <% if !@dns1_real.empty? %>DNS1=<%= @dns1_real %>
