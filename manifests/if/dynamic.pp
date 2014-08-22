@@ -10,6 +10,7 @@
 #   $userctl      - optional - defaults to false
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $zone         - optional
 #
 # === Actions:
 #
@@ -42,7 +43,8 @@ define network::if::dynamic (
   $bootproto = 'dhcp',
   $userctl = false,
   $mtu = '',
-  $ethtool_opts = ''
+  $ethtool_opts = '',
+  $zone = ''
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -66,5 +68,6 @@ define network::if::dynamic (
     userctl      => $userctl,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
+    zone         => $zone,
   }
 } # define network::if::dynamic
