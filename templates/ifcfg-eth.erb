@@ -36,8 +36,6 @@ IPV6INIT=yes
 <% if !@ipv6autoconf %>IPV6_AUTOCONF=no
 <% else %>IPV6_AUTOCONF=yes
 <% end -%>
-<% if ! @ipv6autoconf.empty? %>IPV6_AUTOCONF=<%= @ipv6autoconf%>
-<% end -%>
 <% if !@ipv6address.empty? %>IPV6ADDR=<%= @ipv6address %>
 <% end -%>
 <% if !@ipv6gateway.empty? %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
