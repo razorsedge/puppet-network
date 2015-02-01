@@ -63,6 +63,8 @@ define network::if::dynamic (
     gateway      => '',
     macaddress   => $macaddy,
     bootproto    => $bootproto,
+    ipv6address	 => '',
+    ipv6gateway	 => '',
     userctl      => $userctl,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,

@@ -34,6 +34,7 @@
 define network::alias (
   $ensure,
   $ipaddress,
+  $ipv6address = '',
   $netmask,
   $gateway = '',
   $userctl = false
@@ -50,6 +51,7 @@ define network::alias (
     gateway      => $gateway,
     macaddress   => '',
     bootproto    => 'none',
+    ipv6address	 => $ipv6adress,
     userctl      => $userctl,
     mtu          => '',
     ethtool_opts => '',
