@@ -58,8 +58,8 @@ class network::global (
   $gatewaydev 	= '',
   $nisdomain  	= '',
   $vlan       	= '',
-  $nozeroconf 	= '',
   $ipv6networking = false,
+  $nozeroconf 	= ''
 ) {
   # Validate our data
   if $gateway != '' {
