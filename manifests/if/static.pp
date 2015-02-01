@@ -41,20 +41,28 @@
 #
 define network::if::static (
   $ensure,
+  $ipv6init = false,
   $ipaddress,
+  $ipv6address = '',
   $netmask,
   $gateway = '',
+  $ipv6gateway = '',
   $macaddress = '',
+  $ipv6autoconf = false,
   $userctl = false,
   $mtu = '',
   $ethtool_opts = '',
   $peerdns = false,
+  $ipv6peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = ''
 ) {
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IPv4 address.") }
+  if $ipv6address != '' {
+    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
+  }
 
   if ! is_mac_address($macaddress) {
     $macaddy = getvar("::macaddress_${title}")
@@ -65,18 +73,23 @@ define network::if::static (
   validate_bool($userctl)
 
   network_if_base { $title:
-    ensure       => $ensure,
-    ipaddress    => $ipaddress,
-    netmask      => $netmask,
-    gateway      => $gateway,
-    macaddress   => $macaddy,
-    bootproto    => 'none',
-    userctl      => $userctl,
-    mtu          => $mtu,
-    ethtool_opts => $ethtool_opts,
-    peerdns      => $peerdns,
-    dns1         => $dns1,
-    dns2         => $dns2,
-    domain       => $domain,
+    ensure       	=> $ensure,
+    ipv6init	 	=> $ipv6init,
+    ipaddress    	=> $ipaddress,
+    ipv6address    	=> $ipv6address,
+    netmask      	=> $netmask,
+    gateway      	=> $gateway,
+    ipv6gateway      	=> $ipv6gateway,
+    ipv6autoconf	=> $ipv6autoconf,
+    macaddress   	=> $macaddy,
+    bootproto    	=> 'none',
+    userctl      	=> $userctl,
+    mtu          	=> $mtu,
+    ethtool_opts 	=> $ethtool_opts,
+    peerdns      	=> $peerdns,
+    ipv6peerdns      	=> $ipv6peerdns,
+    dns1         	=> $dns1,
+    dns2         	=> $dns2,
+    domain       	=> $domain,
   }
 } # define network::if::static
