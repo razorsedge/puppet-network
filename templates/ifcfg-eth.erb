@@ -32,9 +32,9 @@ TYPE=Ethernet
 <% if @userctl %>USERCTL=yes
 <% end -%>
 <% if @ipv6init %>
-<% if ! @ipv6init.empty? %>IPV6INIT=<%= @ipv6init%>
-<% end -%>
-<% if ! @ipv6autoconf.empty? %>IPV6_AUTOCONF=<%= @ipv6autoconf%>
+IPV6INIT=yes
+<% if !@ipv6autoconf %>IPV6_AUTOCONF=no
+<% else %>IPV6_AUTOCONF=yes
 <% end -%>
 <% if !@ipv6address.empty? %>IPV6ADDR=<%= @ipv6address %>
 <% end -%>

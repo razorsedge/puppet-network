@@ -2,8 +2,9 @@
 ### File managed by Puppet
 ###
 NETWORKING=yes
-<% if !@ipv6init %>NETWORKING_IPV6=no
+<% if !@ipv6networking %>NETWORKING_IPV6=no
 <% else %>NETWORKING_IPV6=yes
+<% end -%>
 <% if !@hostname.empty? %>HOSTNAME=<%= @hostname %>
 <% else %>HOSTNAME=<%= fqdn %>
 <% end -%>

@@ -58,13 +58,19 @@ class network::global (
   $gatewaydev 	= '',
   $nisdomain  	= '',
   $vlan       	= '',
-  $nozeroconf 	= ''
+  $nozeroconf 	= '',
+  $ipv6networking = false,
 ) {
   # Validate our data
   if $gateway != '' {
     if ! is_ip_address($gateway) { fail("${gateway} is not an IPv4 address.") }
+  }
+  if $ipv6gateway != '' {
     if ! is_ip_address($ipv6gateway) { fail("${ipv6gateway} is not an IPv6 address.") }
   }
+
+  validate_bool($ipv6networking)
+
   # Validate our regular expressions
   if $vlan != '' {
     $states = [ '^yes$', '^no$' ]
