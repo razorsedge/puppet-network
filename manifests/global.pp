@@ -52,14 +52,14 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network::global (
-  $hostname   	= '',
-  $gateway    	= '',
-  $ipv6gateway  = '',
-  $gatewaydev 	= '',
-  $nisdomain  	= '',
-  $vlan       	= '',
+  $hostname       = '',
+  $gateway        = '',
+  $ipv6gateway    = '',
+  $gatewaydev     = '',
+  $nisdomain      = '',
+  $vlan           = '',
   $ipv6networking = false,
-  $nozeroconf 	= ''
+  $nozeroconf     = ''
 ) {
   # Validate our data
   if $gateway != '' {

@@ -41,10 +41,10 @@
 #
 define network::if::static (
   $ensure,
-  $ipv6init = false,
   $ipaddress,
   $netmask,
   $gateway = '',
+  $ipv6init = false,
   $ipv6gateway = '',
   $macaddress = '',
   $ipv6autoconf = false,
@@ -73,26 +73,30 @@ define network::if::static (
   }
   # Validate booleans
   validate_bool($userctl)
+  validate_bool($ipv6init)
+  validate_bool($ipv6autoconf)
+  validate_bool($peerdns)
+  validate_bool($ipv6peerdns)
 
   network_if_base { $title:
-    ensure        => $ensure,
-    ipv6init      => $ipv6init,
-    ipaddress     => $ipaddress,
-    ipv6address   => $ipv6address,
-    netmask       => $netmask,
-    gateway       => $gateway,
-    ipv6gateway   => $ipv6gateway,
-    ipv6autoconf  => $ipv6autoconf,
-    macaddress    => $macaddy,
-    bootproto     => 'none',
-    userctl       => $userctl,
-    mtu           => $mtu,
-    ethtool_opts  => $ethtool_opts,
-    peerdns       => $peerdns,
-    ipv6peerdns   => $ipv6peerdns,
-    dns1          => $dns1,
-    dns2          => $dns2,
-    domain        => $domain,
-    linkdelay     => $linkdelay,
+    ensure       => $ensure,
+    ipv6init     => $ipv6init,
+    ipaddress    => $ipaddress,
+    ipv6address  => $ipv6address,
+    netmask      => $netmask,
+    gateway      => $gateway,
+    ipv6gateway  => $ipv6gateway,
+    ipv6autoconf => $ipv6autoconf,
+    macaddress   => $macaddy,
+    bootproto    => 'none',
+    userctl      => $userctl,
+    mtu          => $mtu,
+    ethtool_opts => $ethtool_opts,
+    peerdns      => $peerdns,
+    ipv6peerdns  => $ipv6peerdns,
+    dns1         => $dns1,
+    dns2         => $dns2,
+    domain       => $domain,
+    linkdelay    => $linkdelay,
   }
 } # define network::if::static
