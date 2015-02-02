@@ -3,4 +3,5 @@ class { 'network::global':
   gatewaydev => 'eth0',
   vlan       => 'yes',
   nozeroconf => 'yes',
+  ipv6networking => true,
 }
