@@ -43,7 +43,6 @@ define network::if::static (
   $ensure,
   $ipv6init = false,
   $ipaddress,
-  $ipv6address = '',
   $netmask,
   $gateway = '',
   $ipv6gateway = '',
