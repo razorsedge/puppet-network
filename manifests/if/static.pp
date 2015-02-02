@@ -41,10 +41,10 @@
 #
 define network::if::static (
   $ensure,
-  $ipv6init = false,
   $ipaddress,
   $netmask,
   $gateway = '',
+  $ipv6init = false,
   $ipv6gateway = '',
   $macaddress = '',
   $ipv6autoconf = false,
