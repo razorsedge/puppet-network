@@ -44,6 +44,7 @@ define network::if::static (
   $ipaddress,
   $netmask,
   $gateway = '',
+  $ipv6address = '',
   $ipv6init = false,
   $ipv6gateway = '',
   $macaddress = '',
