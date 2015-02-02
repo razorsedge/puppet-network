@@ -34,7 +34,6 @@
 define network::alias (
   $ensure,
   $ipaddress,
-  $ipv6address = '',
   $netmask,
   $gateway = '',
   $ipv6address = '',
