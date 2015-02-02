@@ -59,7 +59,7 @@ define network::if::static (
   $domain = ''
 ) {
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IPv4 address.") }
+  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
   if $ipv6address != '' {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
   }
