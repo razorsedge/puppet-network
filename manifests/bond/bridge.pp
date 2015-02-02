@@ -50,6 +50,8 @@ define network::bond::bridge (
     gateway      => '',
     macaddress   => '',
     bootproto    => 'none',
+    ipv6address    => '',
+    ipv6gateway      => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,

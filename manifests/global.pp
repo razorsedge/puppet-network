@@ -52,17 +52,25 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network::global (
-  $hostname   = '',
-  $gateway    = '',
-  $gatewaydev = '',
-  $nisdomain  = '',
-  $vlan       = '',
-  $nozeroconf = ''
+  $hostname   	= '',
+  $gateway    	= '',
+  $ipv6gateway  = '',
+  $gatewaydev 	= '',
+  $nisdomain  	= '',
+  $vlan       	= '',
+  $ipv6networking = false,
+  $nozeroconf 	= ''
 ) {
   # Validate our data
   if $gateway != '' {
-    if ! is_ip_address($gateway) { fail("${gateway} is not an IP address.") }
+    if ! is_ip_address($gateway) { fail("${gateway} is not an IPv4 address.") }
   }
+  if $ipv6gateway != '' {
+    if ! is_ip_address($ipv6gateway) { fail("${ipv6gateway} is not an IPv6 address.") }
+  }
+
+  validate_bool($ipv6networking)
+
   # Validate our regular expressions
   if $vlan != '' {
     $states = [ '^yes$', '^no$' ]
