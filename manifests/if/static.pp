@@ -51,13 +51,16 @@ define network::if::static (
   $peerdns = false,
   $dns1 = '',
   $dns2 = '',
-  $domain = ''
+  $domain = '',
+  $linkdelay = ''
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
 
   if ! is_mac_address($macaddress) {
-    $macaddy = getvar("::macaddress_${title}")
+    # Strip off any tailing VLAN (ie eth5.90 -> eth5).
+    $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
+    $macaddy = getvar("::macaddress_${title_clean}")
   } else {
     $macaddy = $macaddress
   }
@@ -78,5 +81,6 @@ define network::if::static (
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,
+    linkdelay    => $linkdelay,
   }
 } # define network::if::static

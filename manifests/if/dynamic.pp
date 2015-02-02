@@ -42,14 +42,17 @@ define network::if::dynamic (
   $bootproto = 'dhcp',
   $userctl = false,
   $mtu = '',
-  $ethtool_opts = ''
+  $ethtool_opts = '',
+  $linkdelay = ''
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   if ! is_mac_address($macaddress) {
-    $macaddy = getvar("::macaddress_${title}")
+    # Strip off any tailing VLAN (ie eth5.90 -> eth5).
+    $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
+    $macaddy = getvar("::macaddress_${title_clean}")
   } else {
     $macaddy = $macaddress
   }
@@ -66,5 +69,6 @@ define network::if::dynamic (
     userctl      => $userctl,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
+    linkdelay    => $linkdelay,
   }
 } # define network::if::dynamic

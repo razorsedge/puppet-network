@@ -1,25 +1,18 @@
-require 'rubygems'
 require 'puppetlabs_spec_helper/rake_tasks'
-
-desc "Run visual spec tests on an existing fixtures directory"
-RSpec::Core::RakeTask.new(:spec_standalonev) do |t|
-  t.rspec_opts = ['--color', '--format documentation']
-  t.pattern = 'spec/{classes,defines,unit}/**/*_spec.rb'
-end
-
-# https://github.com/stahnma/puppet-modules/blob/master/common/Rakefile
-desc "Check puppet and ERB for syntax errors."
-task :validate do
-  Dir['manifests/**/*.pp'].each do |path|
-    sh "puppet parser validate --noop #{path}"
-  end
-  Dir['templates/**/*.erb'].each do |path|
-    sh "erb -P -x -T '-' #{path} | ruby -c"
-  end
-end
-
-# Enable puppet-lint for all manifests: rake lint
 require 'puppet-lint/tasks/puppet-lint'
-#PuppetLint.configuration.send("disable_80chars") # no warnings on lines over 80 chars.
-PuppetLint.configuration.ignore_paths = ["spec/fixtures/**/*.pp", "pkg/**/*"]
 
+PuppetLint.configuration.fail_on_warnings = true
+PuppetLint.configuration.send('relative')
+PuppetLint.configuration.send('disable_80chars')
+PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+PuppetLint.configuration.send('disable_documentation')
+PuppetLint.configuration.send('disable_single_quote_string_with_variables')
+PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vender/**/*.pp"]
+
+PuppetSyntax.exclude_paths = ["spec/**/*", "pkg/**/*", "vender/**/*"]
+PuppetSyntax.hieradata_paths = ["**/data/**/*.yaml", "hieradata/**/*.yaml", "hiera*.yaml"]
+
+desc "Check puppet metadata.json with metadata-json-lint."
+task :metadata do
+  sh "metadata-json-lint metadata.json"
+end

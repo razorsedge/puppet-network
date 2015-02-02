@@ -4,7 +4,7 @@
 NETWORKING=yes
 NETWORKING_IPV6=no
 <% if !@hostname.empty? %>HOSTNAME=<%= @hostname %>
-<% else %>HOSTNAME=<%= fqdn %>
+<% else %>HOSTNAME=<%= scope.lookupvar('::fqdn') %>
 <% end -%>
 <% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
 <% end -%>
