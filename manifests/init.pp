@@ -93,13 +93,13 @@ class network {
 #
 define network_if_base (
   $ensure,
-  $ipv6init = false,
   $ipaddress,
-  $ipv6address,
   $netmask,
   $macaddress,
   $gateway = '',
+  $ipv6address = '',
   $ipv6gateway = '',
+  $ipv6init = false,
   $ipv6autoconf = false,
   $bootproto = 'none',
   $userctl = false,
