@@ -54,6 +54,8 @@ define network::alias (
     ipv6gateway  => $ipv6gateway,
     macaddress   => '',
     bootproto    => 'none',
+    ipv6address	 => $ipv6adress,
+    ipv6gateway	 => $ipv6gateway,
     userctl      => $userctl,
     mtu          => '',
     ethtool_opts => '',
