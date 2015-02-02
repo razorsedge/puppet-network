@@ -81,7 +81,6 @@ class network {
 #   PERSISTENT_DHCLIENT=yes|no|1|0
 #   DHCPRELEASE=yes|no|1|0
 #   DHCLIENT_IGNORE_GATEWAY=yes|no|1|0
-#   LINKDELAY=
 #   REORDER_HDR=yes|no
 #
 # === Authors:
@@ -98,6 +97,10 @@ define network_if_base (
   $netmask,
   $macaddress,
   $gateway = '',
+  $ipv6address = '',
+  $ipv6gateway = '',
+  $ipv6init = false,
+  $ipv6autoconf = false,
   $bootproto = 'none',
   $userctl = false,
   $mtu = '',
@@ -105,15 +108,20 @@ define network_if_base (
   $bonding_opts = undef,
   $isalias = false,
   $peerdns = false,
+  $ipv6peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = '',
-  $bridge = ''
+  $bridge = '',
+  $linkdelay = ''
 ) {
   # Validate our booleans
   validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
+  validate_bool($ipv6init)
+  validate_bool($ipv6autoconf)
+  validate_bool($ipv6peerdns)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')

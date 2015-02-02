@@ -44,6 +44,8 @@ define network::bond::static (
   $ethtool_opts = '',
   $bonding_opts = 'miimon=100',
   $peerdns = false,
+  $ipv6address = '',
+  $ipv6peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = ''
@@ -65,6 +67,8 @@ define network::bond::static (
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
     peerdns      => $peerdns,
+    ipv6address  => $ipv6address,
+    ipv6peerdns  => $ipv6peerdns,
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,

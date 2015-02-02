@@ -9,7 +9,7 @@ Introduction
 
 This module manages Red Hat/Fedora traditional network configuration.
 
-It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
+It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges and VLANs.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
 
 It can configure the following files:
 
@@ -142,6 +142,15 @@ Bonded slave interface:
       master       => 'bond0',
     }
 
+Bridge interface - no IP:
+
+    network::bridge { 'br0':
+      ensure        => 'up',
+      stp           => true,
+      delay         => '0',
+      bridging_opts => 'priority=65535',
+    }
+
 Bridge interface - static (minimal):
 
     network::bridge::static { 'br1':
@@ -170,9 +179,21 @@ Bridge interface - dhcp (minimal):
 Static interface routes:
 
     network::route { 'eth0':
-      address => [ '192.168.2.0', '10.0.0.0', ],
-      netmask => [ '255.255.255.0', '255.0.0.0', ],
-      gateway => [ '192.168.1.1', '10.0.0.1', ],
+      ipaddress => [ '192.168.2.0', '10.0.0.0', ],
+      netmask   => [ '255.255.255.0', '255.0.0.0', ],
+      gateway   => [ '192.168.1.1', '10.0.0.1', ],
+    }
+
+Normal interface - VLAN - static (minimal):
+
+    class { 'network::global':
+      vlan => 'yes',
+    }
+
+    network::if::static { 'eth0.330':
+      ensure    => 'up',
+      ipaddress => '10.2.3.248',
+      netmask   => '255.255.255.0',
     }
 
 Notes
@@ -190,6 +211,7 @@ Notes
 * It is assumed that if you create an alias that you also create the parent interface.
 * There is currently no IPv6 support in this module.
 * network::route requires the referenced device to also be defined via network::if or network::bond.
+* For VLANs to work, `Class['network::global']` must have parameter `vlan` set to `yes`.
 
 Issues
 ------

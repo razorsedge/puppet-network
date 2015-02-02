@@ -92,6 +92,46 @@ describe 'network::global', :type => 'class' do
         }
       end
     end
+
+    context 'ipv6networking = foo' do
+      let(:params) {{ :ipv6networking => 'foo' }}
+
+      it 'should fail' do
+        expect { 
+          should raise_error(Puppet::Error, /$ipv6networking is not a boolean.  It looks to be a String./)
+        }
+      end
+    end
+
   end
 
+  context 'on a supported operatingsystem, custom parameters' do
+    let :params do {
+      :hostname       => 'myHostname',
+      :gateway        => '1.2.3.4',
+      :gatewaydev     => 'eth2',
+      :nisdomain      => 'myNisDomain',
+      :vlan           => 'yes',
+      :nozeroconf     => 'yes',
+      :ipv6networking => true,
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+      :fqdn     => 'localhost.localdomain',
+    }
+    end
+    it 'should contain File[network.sysconfig] with correct contents' do
+      verify_contents(subject, 'network.sysconfig', [
+        'NETWORKING=yes',
+        'NETWORKING_IPV6=yes',
+        'HOSTNAME=myHostname',
+        'GATEWAY=1.2.3.4',
+        'GATEWAYDEV=eth2',
+        'NISDOMAIN=myNisDomain',
+        'VLAN=yes',
+        'NOZEROCONF=yes',
+      ])
+    end
+  end
 end
