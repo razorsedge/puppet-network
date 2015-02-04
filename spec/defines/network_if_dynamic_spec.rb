@@ -51,13 +51,14 @@ describe 'network::if::dynamic', :type => 'define' do
   context 'optional parameters' do
     let(:title) { 'eth99' }
     let :params do {
-      :ensure       => 'down',
-      :macaddress   => 'ef:ef:ef:ef:ef:ef',
-      :bootproto    => 'bootp',
-      :userctl      => true,
-      :mtu          => '1500',
-      :ethtool_opts => 'speed 100 duplex full autoneg off',
-      :linkdelay    => '5',
+      :ensure        => 'down',
+      :macaddress    => 'ef:ef:ef:ef:ef:ef',
+      :bootproto     => 'bootp',
+      :userctl       => true,
+      :mtu           => '1500',
+      :ethtool_opts  => 'speed 100 duplex full autoneg off',
+      :dhcp_hostname => 'hostname',
+      :linkdelay     => '5',
     }
     end
     let :facts do {
@@ -82,6 +83,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'HOTPLUG=no',
         'TYPE=Ethernet',
         'MTU=1500',
+        'DHCP_HOSTNAME="hostname"',
         'ETHTOOL_OPTS="speed 100 duplex full autoneg off"',
         'USERCTL=yes',
         'LINKDELAY=5',
