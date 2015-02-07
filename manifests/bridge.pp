@@ -36,7 +36,8 @@ define network::bridge (
   $userctl = false,
   $stp = false,
   $delay = '30',
-  $bridging_opts = ''
+  $bridging_opts = '',
+  $ipv6init = false,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -44,6 +45,7 @@ define network::bridge (
   # Validate booleans
   validate_bool($userctl)
   validate_bool($stp)
+  validate_bool($ipv6init)
 
   include 'network'
 
@@ -52,6 +54,8 @@ define network::bridge (
   $ipaddress = ''
   $netmask = ''
   $gateway = ''
+  $ipv6address = ''
+  $ipv6gateway = ''
 
   $onboot = $ensure ? {
     'up'    => 'yes',

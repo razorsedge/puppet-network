@@ -11,6 +11,14 @@ TYPE=Bridge
 <% end -%>
 <% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
 <% end -%>
+<% if @ipv6init %>IPV6INIT=yes
+<% if !@ipv6address.empty? %>IPV6_ADDRESS=<%= @ipv6address %>
+<% end -%>
+<% if !@ipv6gateway.empty? %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
+<% end -%>
+<% if @ipv6peerdns %>IPV6_PEERDNS=yes
+<% end -%>
+<% end -%>
 <% if !@peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
 <% if !@dns1_real.empty? %>DNS1=<%= @dns1_real %>

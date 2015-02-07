@@ -48,9 +48,13 @@ define network::bridge::static (
   $ipaddress,
   $netmask,
   $gateway = '',
+  $ipv6address = '',
+  $ipv6gateway = '',
   $bootproto = 'static',
   $userctl = false,
   $peerdns = false,
+  $ipv6init = false,
+  $ipv6peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = '',
@@ -63,9 +67,14 @@ define network::bridge::static (
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipv6address != '' {
+    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
+  }
   # Validate booleans
   validate_bool($userctl)
   validate_bool($stp)
+  validate_bool($ipv6init)
+  validate_bool($ipv6peerdns)
 
   include 'network'
 
