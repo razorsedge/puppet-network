@@ -37,7 +37,7 @@ describe 'network::if::bridge', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
         'ONBOOT=yes',
@@ -74,7 +74,7 @@ describe 'network::if::bridge', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
         'ONBOOT=no',

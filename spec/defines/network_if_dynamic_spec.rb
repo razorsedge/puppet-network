@@ -35,7 +35,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth99] with required contents' do
-      verify_contents(subject, 'ifcfg-eth99', [
+      verify_contents(catalogue, 'ifcfg-eth99', [
         'DEVICE=eth99',
         'BOOTPROTO=dhcp',
         'HWADDR=ff:aa:ff:aa:ff:aa',
@@ -51,13 +51,14 @@ describe 'network::if::dynamic', :type => 'define' do
   context 'optional parameters' do
     let(:title) { 'eth99' }
     let :params do {
-      :ensure       => 'down',
-      :macaddress   => 'ef:ef:ef:ef:ef:ef',
-      :bootproto    => 'bootp',
-      :userctl      => true,
-      :mtu          => '1500',
-      :ethtool_opts => 'speed 100 duplex full autoneg off',
-      :linkdelay    => '5',
+      :ensure        => 'down',
+      :macaddress    => 'ef:ef:ef:ef:ef:ef',
+      :bootproto     => 'bootp',
+      :userctl       => true,
+      :mtu           => '1500',
+      :ethtool_opts  => 'speed 100 duplex full autoneg off',
+      :dhcp_hostname => 'hostname',
+      :linkdelay     => '5',
     }
     end
     let :facts do {
@@ -74,7 +75,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth99] with required contents' do
-      verify_contents(subject, 'ifcfg-eth99', [
+      verify_contents(catalogue, 'ifcfg-eth99', [
         'DEVICE=eth99',
         'BOOTPROTO=bootp',
         'HWADDR=ef:ef:ef:ef:ef:ef',
@@ -82,6 +83,7 @@ describe 'network::if::dynamic', :type => 'define' do
         'HOTPLUG=no',
         'TYPE=Ethernet',
         'MTU=1500',
+        'DHCP_HOSTNAME="hostname"',
         'ETHTOOL_OPTS="speed 100 duplex full autoneg off"',
         'USERCTL=yes',
         'LINKDELAY=5',
@@ -108,7 +110,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth45.302] with required contents' do
-      verify_contents(subject, 'ifcfg-eth45.302', [
+      verify_contents(catalogue, 'ifcfg-eth45.302', [
         'DEVICE=eth45.302',
         'BOOTPROTO=dhcp',
         'HWADDR=bb:cc:bb:cc:bb:cc',

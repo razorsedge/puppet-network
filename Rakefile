@@ -1,5 +1,6 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
+require 'metadata-json-lint/rake_task'
 
 PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('relative')
@@ -11,8 +12,3 @@ PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vender/
 
 PuppetSyntax.exclude_paths = ["spec/**/*", "pkg/**/*", "vender/**/*"]
 PuppetSyntax.hieradata_paths = ["**/data/**/*.yaml", "hieradata/**/*.yaml", "hiera*.yaml"]
-
-desc "Check puppet metadata.json with metadata-json-lint."
-task :metadata do
-  sh "metadata-json-lint metadata.json"
-end

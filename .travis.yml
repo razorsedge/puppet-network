@@ -3,7 +3,7 @@ language: ruby
 cache:
   directories:
   - vendor/bundle
-  - spec/fixtures/modules
+#  - spec/fixtures/modules
 sudo: false
 branches:
   only:

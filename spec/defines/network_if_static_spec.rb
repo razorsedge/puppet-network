@@ -54,7 +54,7 @@ describe 'network::if::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
         'HWADDR=fe:fe:fe:aa:aa:aa',
@@ -107,7 +107,7 @@ describe 'network::if::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
         'HWADDR=ef:ef:ef:ef:ef:ef',
@@ -158,7 +158,7 @@ describe 'network::if::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth6.203] with required contents' do
-      verify_contents(subject, 'ifcfg-eth6.203', [
+      verify_contents(catalogue, 'ifcfg-eth6.203', [
         'DEVICE=eth6.203',
         'BOOTPROTO=none',
         'HWADDR=bb:cc:bb:cc:bb:cc',

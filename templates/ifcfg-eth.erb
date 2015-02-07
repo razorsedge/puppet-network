@@ -18,6 +18,8 @@ TYPE=Ethernet
 <% end -%>
 <% if @bonding_opts %>BONDING_OPTS="<%= @bonding_opts %>"
 <% end -%>
+<% if @dhcp_hostname %>DHCP_HOSTNAME="<%= @dhcp_hostname %>"
+<% end -%>
 <% if !@ethtool_opts.empty? %>ETHTOOL_OPTS="<%= @ethtool_opts %>"
 <% end -%>
 <% if !@peerdns %>PEERDNS=no
