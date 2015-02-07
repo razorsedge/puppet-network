@@ -77,6 +77,8 @@ class network::global (
     validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
   }
 
+  validate_bool($ipv6networking)
+
   include 'network'
 
   file { 'network.sysconfig':
