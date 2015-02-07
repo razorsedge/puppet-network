@@ -35,7 +35,7 @@ describe 'network::bond::dynamic', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2] with required contents' do
-      verify_contents(subject, 'ifcfg-bond2', [
+      verify_contents(catalogue, 'ifcfg-bond2', [
         'DEVICE=bond2',
         'BOOTPROTO=dhcp',
         'ONBOOT=yes',
@@ -114,7 +114,7 @@ describe 'network::bond::dynamic', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2] with required contents' do
-      verify_contents(subject, 'ifcfg-bond2', [
+      verify_contents(catalogue, 'ifcfg-bond2', [
         'DEVICE=bond2',
         'BOOTPROTO=dhcp',
         'ONBOOT=no',

@@ -9,7 +9,7 @@ Introduction
 
 This module manages Red Hat/Fedora traditional network configuration.
 
-It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges and VLANs.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
+It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges and VLANs.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, DHCP_HOSTNAME, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
 
 It can configure the following files:
 
@@ -68,10 +68,11 @@ Normal interface - dhcp (minimal):
 Normal interface - dhcp:
 
     network::if::dynamic { 'eth3':
-      ensure       => 'up',
-      macaddress   => 'fe:fe:fe:ae:ae:ae',
-      mtu          => '1500',
-      ethtool_opts => 'autoneg off speed 100 duplex full',
+      ensure        => 'up',
+      macaddress    => 'fe:fe:fe:ae:ae:ae',
+      mtu           => '1500',
+      dhcp_hostname => $::hostname,
+      ethtool_opts  => 'autoneg off speed 100 duplex full',
     }
 
 Normal interface - bootp (minimal):
@@ -191,6 +192,18 @@ Static interface routes:
       ipaddress => [ '192.168.2.0', '10.0.0.0', ],
       netmask   => [ '255.255.255.0', '255.0.0.0', ],
       gateway   => [ '192.168.1.1', '10.0.0.1', ],
+    }
+
+Normal interface - VLAN - static (minimal):
+
+    class { 'network::global':
+      vlan => 'yes',
+    }
+
+    network::if::static { 'eth0.330':
+      ensure    => 'up',
+      ipaddress => '10.2.3.248',
+      netmask   => '255.255.255.0',
     }
 
 Normal interface - VLAN - static (minimal):

@@ -37,7 +37,7 @@ describe 'network::bond::slave', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'HWADDR=fe:fe:fe:aa:aa:a1',
         'MASTER=bond0',
@@ -71,7 +71,7 @@ describe 'network::bond::slave', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth3] with required contents' do
-      verify_contents(subject, 'ifcfg-eth3', [
+      verify_contents(catalogue, 'ifcfg-eth3', [
         'DEVICE=eth3',
         'HWADDR=ef:ef:ef:ef:ef:ef',
         'MASTER=bond0',

@@ -52,7 +52,7 @@ describe 'network::bond::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond0] with required contents' do
-      verify_contents(subject, 'ifcfg-bond0', [
+      verify_contents(catalogue, 'ifcfg-bond0', [
         'DEVICE=bond0',
         'BOOTPROTO=none',
         'ONBOOT=yes',
@@ -137,7 +137,7 @@ describe 'network::bond::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond0] with required contents' do
-      verify_contents(subject, 'ifcfg-bond0', [
+      verify_contents(catalogue, 'ifcfg-bond0', [
         'DEVICE=bond0',
         'BOOTPROTO=none',
         'ONBOOT=no',

@@ -93,7 +93,7 @@ describe 'network::bridge::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-br1] with required contents' do
-      verify_contents(subject, 'ifcfg-br1', [
+      verify_contents(catalogue, 'ifcfg-br1', [
         'DEVICE=br1',
         'BOOTPROTO=static',
         'ONBOOT=yes',
@@ -141,7 +141,7 @@ describe 'network::bridge::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-br1] with required contents' do
-      verify_contents(subject, 'ifcfg-br1', [
+      verify_contents(catalogue, 'ifcfg-br1', [
         'DEVICE=br1',
         'BOOTPROTO=static',
         'ONBOOT=no',

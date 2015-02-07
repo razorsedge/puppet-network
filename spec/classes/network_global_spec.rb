@@ -33,7 +33,7 @@ describe 'network::global', :type => 'class' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[network.sysconfig] with correct contents' do
-      verify_contents(subject, 'network.sysconfig', [
+      verify_contents(catalogue, 'network.sysconfig', [
         'NETWORKING=yes',
         'NETWORKING_IPV6=no',
         'HOSTNAME=localhost.localdomain',
@@ -57,7 +57,7 @@ describe 'network::global', :type => 'class' do
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
-      verify_contents(subject, 'network.sysconfig', [
+      verify_contents(catalogue, 'network.sysconfig', [
         'NETWORKING=yes',
         'NETWORKING_IPV6=no',
         'HOSTNAME=myHostname',

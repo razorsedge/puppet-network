@@ -54,7 +54,7 @@ describe 'network::if::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
         'HWADDR=fe:fe:fe:aa:aa:aa',
@@ -107,7 +107,7 @@ describe 'network::if::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
-      verify_contents(subject, 'ifcfg-eth1', [
+      verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
         'HWADDR=ef:ef:ef:ef:ef:ef',
@@ -158,6 +158,43 @@ describe 'network::if::static', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth6.203] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth6.203', [
+        'DEVICE=eth6.203',
+        'BOOTPROTO=none',
+        'HWADDR=bb:cc:bb:cc:bb:cc',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'IPADDR=1.2.3.4',
+        'NETMASK=255.255.255.0',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+  end
+
+  context 'optional parameters - vlan' do
+    let(:title) { 'eth6.203' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.4',
+      :netmask   => '255.255.255.0',
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :macaddress_eth6 => 'bb:cc:bb:cc:bb:cc',
+    }
+    end
+    it { should contain_file('ifcfg-eth6.203').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth6.203',
+      :notify => 'Service[network]'
+    )}
+    it 'should contain File[ifcfg-eth6.203] with required contents' do
       verify_contents(subject, 'ifcfg-eth6.203', [
         'DEVICE=eth6.203',
         'BOOTPROTO=none',
@@ -168,7 +205,43 @@ describe 'network::if::static', :type => 'define' do
         'IPADDR=1.2.3.4',
         'NETMASK=255.255.255.0',
         'NM_CONTROLLED=no',
-        'LINKDELAY=5',
+      ])
+    end
+    it { should contain_service('network') }
+  end
+
+  context 'optional parameters - vlan' do
+    let(:title) { 'eth6.203' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.4',
+      :netmask   => '255.255.255.0',
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :macaddress_eth6 => 'bb:cc:bb:cc:bb:cc',
+    }
+    end
+    it { should contain_file('ifcfg-eth6.203').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth6.203',
+      :notify => 'Service[network]'
+    )}
+    it 'should contain File[ifcfg-eth6.203] with required contents' do
+      verify_contents(subject, 'ifcfg-eth6.203', [
+        'DEVICE=eth6.203',
+        'BOOTPROTO=none',
+        'HWADDR=bb:cc:bb:cc:bb:cc',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'IPADDR=1.2.3.4',
+        'NETMASK=255.255.255.0',
+        'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }
