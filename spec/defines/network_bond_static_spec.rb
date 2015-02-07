@@ -170,11 +170,11 @@ describe 'network::bond::static', :type => 'define' do
         'PEERDNS=yes',
         'DNS1=3.4.5.6',
         'DNS2=5.6.7.8',
+        'DOMAIN="somedomain.com"',
         'IPV6INIT=yes',
         'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'IPV6_PEERDNS=yes',
-        'DOMAIN="somedomain.com"',
         'NM_CONTROLLED=no',
       ])
     end
