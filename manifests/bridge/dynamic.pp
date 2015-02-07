@@ -55,6 +55,8 @@ define network::bridge::dynamic (
   $ipaddress = ''
   $netmask = ''
   $gateway = ''
+  $ipv6address = ''
+  $ipv6gateway = ''
 
   $onboot = $ensure ? {
     'up'    => 'yes',
