@@ -49,22 +49,23 @@ class network {
 #
 # === Parameters:
 #
-#   $ensure       - required - up|down
-#   $ipaddress    - required
-#   $netmask      - required
-#   $macaddress   - required
-#   $gateway      - optional
-#   $bootproto    - optional
-#   $userctl      - optional - defaults to false
-#   $mtu          - optional
-#   $ethtool_opts - optional
-#   $bonding_opts - optional
-#   $isalias      - optional
-#   $peerdns      - optional
-#   $dns1         - optional
-#   $dns2         - optional
-#   $domain       - optional
-#   $bridge       - optional
+#   $ensure        - required - up|down
+#   $ipaddress     - required
+#   $netmask       - required
+#   $macaddress    - required
+#   $gateway       - optional
+#   $bootproto     - optional
+#   $userctl       - optional - defaults to false
+#   $mtu           - optional
+#   $dhcp_hostname - optional
+#   $ethtool_opts  - optional
+#   $bonding_opts  - optional
+#   $isalias       - optional
+#   $peerdns       - optional
+#   $dns1          - optional
+#   $dns2          - optional
+#   $domain        - optional
+#   $bridge        - optional
 #
 # === Actions:
 #
@@ -100,6 +101,7 @@ define network_if_base (
   $bootproto = 'none',
   $userctl = false,
   $mtu = '',
+  $dhcp_hostname = '',
   $ethtool_opts = '',
   $bonding_opts = undef,
   $isalias = false,
