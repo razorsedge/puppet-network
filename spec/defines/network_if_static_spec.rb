@@ -168,7 +168,6 @@ describe 'network::if::static', :type => 'define' do
         'IPADDR=1.2.3.4',
         'NETMASK=255.255.255.0',
         'NM_CONTROLLED=no',
-        'LINKDELAY=5',
       ])
     end
     it { should contain_service('network') }
