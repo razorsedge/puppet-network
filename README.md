@@ -30,6 +30,13 @@ Global network settings:
       gateway => '1.2.3.1',
     }
 
+Global network setting (IPv6 enabled):
+
+    class { 'network::global':
+      ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+      ipv6networking => true,
+    }
+
 Normal interface - static (minimal):
 
     network::if::static { 'eth0':
@@ -46,6 +53,9 @@ Normal interface - static:
       netmask      => '255.255.255.0',
       gateway      => '1.2.3.1',
       macaddress   => 'fe:fe:fe:aa:aa:aa',
+      ipv6init     => true,
+      ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+      ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       mtu          => '9000',
       ethtool_opts => 'autoneg off speed 1000 duplex full',
     }
@@ -115,6 +125,9 @@ Bonded master interface - static:
       ipaddress    => '1.2.3.5',
       netmask      => '255.255.255.0',
       gateway      => '1.2.3.1',
+      ipv6init     => true,
+      ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef',
+      ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       mtu          => '9000',
       bonding_opts => 'mode=active-backup miimon=100',
     }
@@ -168,6 +181,9 @@ Bridge interface - static:
       netmask       => '255.255.0.0',
       stp           => true,
       delay         => '0',
+      ipv6init      => true,
+      ipv6address   => '123:4567:89ab:cdef:123:4567:89ab:cdef',
+      ipv6gateway   => '123:4567:89ab:cdef:123:4567:89ab:1',
       bridging_opts => 'priority=65535',
     }
 
@@ -213,6 +229,7 @@ Notes
 * There is currently no IPv6 support in this module.
 * network::route requires the referenced device to also be defined via network::if or network::bond.
 * For VLANs to work, `Class['network::global']` must have parameter `vlan` set to `yes`.
+* To enable ipv6 you have to set both `ipv6networking` in `Class['network::global']` to `true` and `ipv6init` in `network::if::static` to `true`.
 
 Issues
 ------
@@ -226,7 +243,7 @@ TODO
 ----
 
 * Support /etc/sysconfig/network-scripts/rule-\<interface-name\>
-* Support IPv6.
+* Support for IPv6.
 * Support for more than Ethernet links.
 * Testing of VLAN support (it should Just Work(TM)).
 

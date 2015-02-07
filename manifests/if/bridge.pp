@@ -45,6 +45,8 @@ define network::if::bridge (
     gateway      => '',
     macaddress   => '',
     bootproto    => 'none',
+    ipv6address  => '',
+    ipv6gateway  => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bridge       => $bridge,

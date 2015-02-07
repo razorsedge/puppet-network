@@ -17,6 +17,21 @@ describe 'network::if::static', :type => 'define' do
     end
   end
 
+  context 'incorrect value: ipv6address' do
+    let(:title) { 'eth77' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.4',
+      :netmask   => '255.255.255.0',
+      :ipv6address => 'notAnIP',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /notAnIP is not an IPv6 address./)
+    end
+  end
+
+
   context 'required parameters' do
     let(:title) { 'eth1' }
     let :params do {
@@ -70,6 +85,11 @@ describe 'network::if::static', :type => 'define' do
       :dns1         => '3.4.5.6',
       :dns2         => '5.6.7.8',
       :domain       => 'somedomain.com',
+      :ipv6init     => true,
+      :ipv6autoconf => true,
+      :ipv6peerdns  => true,
+      :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+      :ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       :linkdelay    => '5',
     }
     end
@@ -104,6 +124,11 @@ describe 'network::if::static', :type => 'define' do
         'DNS2=5.6.7.8',
         'DOMAIN="somedomain.com"',
         'USERCTL=yes',
+        'IPV6INIT=yes',
+        'IPV6_AUTOCONF=yes',
+        'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+        'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
+        'IPV6_PEERDNS=yes',
         'LINKDELAY=5',
         'NM_CONTROLLED=no',
       ])
