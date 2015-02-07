@@ -9,7 +9,7 @@ network::if::static { 'eth1':
   macaddress   => 'fe:fe:fe:aa:aa:aa',
   ipv6init     => true,
   ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
-  ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1'
+  ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
   mtu          => '9000',
   ethtool_opts => 'speed 1000 duplex full autoneg off',
 }
