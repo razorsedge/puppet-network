@@ -83,6 +83,16 @@ describe 'network::global', :type => 'class' do
       end
     end
 
+    context 'ipv6gateway = foo' do
+      let(:params) {{ :ipv6gateway => 'foo' }}
+
+      it 'should fail' do
+        expect {
+          should raise_error(Puppet::Error, /$ipv6gateway is not an IPv6 address./)
+        }
+      end
+    end
+
     context 'vlan = foo' do
       let(:params) {{ :vlan => 'foo' }}
 
@@ -114,6 +124,7 @@ describe 'network::global', :type => 'class' do
       :vlan           => 'yes',
       :nozeroconf     => 'yes',
       :ipv6networking => true,
+      :ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
     }
     end
     let :facts do {
@@ -125,6 +136,7 @@ describe 'network::global', :type => 'class' do
       verify_contents(subject, 'network.sysconfig', [
         'NETWORKING=yes',
         'NETWORKING_IPV6=yes',
+        'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'HOSTNAME=myHostname',
         'GATEWAY=1.2.3.4',
         'GATEWAYDEV=eth2',
