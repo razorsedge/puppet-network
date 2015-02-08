@@ -9,7 +9,7 @@ Introduction
 
 This module manages Red Hat/Fedora traditional network configuration.
 
-It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
+It allows for static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges and VLANs.  There is support for aliases on interfaces as well as alias ranges.  It can configure static routes.  It can configure MTU, DHCP_HOSTNAME, ETHTOOL_OPTS, and BONDING_OPTS on a per-interface basis.
 
 It can configure the following files:
 
@@ -30,6 +30,13 @@ Global network settings:
       gateway => '1.2.3.1',
     }
 
+Global network setting (IPv6 enabled):
+
+    class { 'network::global':
+      ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+      ipv6networking => true,
+    }
+
 Normal interface - static (minimal):
 
     network::if::static { 'eth0':
@@ -46,6 +53,9 @@ Normal interface - static:
       netmask      => '255.255.255.0',
       gateway      => '1.2.3.1',
       macaddress   => 'fe:fe:fe:aa:aa:aa',
+      ipv6init     => true,
+      ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+      ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       mtu          => '9000',
       ethtool_opts => 'autoneg off speed 1000 duplex full',
     }
@@ -59,10 +69,11 @@ Normal interface - dhcp (minimal):
 Normal interface - dhcp:
 
     network::if::dynamic { 'eth3':
-      ensure       => 'up',
-      macaddress   => 'fe:fe:fe:ae:ae:ae',
-      mtu          => '1500',
-      ethtool_opts => 'autoneg off speed 100 duplex full',
+      ensure        => 'up',
+      macaddress    => 'fe:fe:fe:ae:ae:ae',
+      mtu           => '1500',
+      dhcp_hostname => $::hostname,
+      ethtool_opts  => 'autoneg off speed 100 duplex full',
     }
 
 Normal interface - bootp (minimal):
@@ -114,6 +125,9 @@ Bonded master interface - static:
       ipaddress    => '1.2.3.5',
       netmask      => '255.255.255.0',
       gateway      => '1.2.3.1',
+      ipv6init     => true,
+      ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef',
+      ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       mtu          => '9000',
       bonding_opts => 'mode=active-backup miimon=100',
     }
@@ -142,6 +156,15 @@ Bonded slave interface:
       master       => 'bond0',
     }
 
+Bridge interface - no IP:
+
+    network::bridge { 'br0':
+      ensure        => 'up',
+      stp           => true,
+      delay         => '0',
+      bridging_opts => 'priority=65535',
+    }
+
 Bridge interface - static (minimal):
 
     network::bridge::static { 'br1':
@@ -158,6 +181,9 @@ Bridge interface - static:
       netmask       => '255.255.0.0',
       stp           => true,
       delay         => '0',
+      ipv6init      => true,
+      ipv6address   => '123:4567:89ab:cdef:123:4567:89ab:cdef',
+      ipv6gateway   => '123:4567:89ab:cdef:123:4567:89ab:1',
       bridging_opts => 'priority=65535',
     }
 
@@ -170,9 +196,21 @@ Bridge interface - dhcp (minimal):
 Static interface routes:
 
     network::route { 'eth0':
-      address => [ '192.168.2.0', '10.0.0.0', ],
-      netmask => [ '255.255.255.0', '255.0.0.0', ],
-      gateway => [ '192.168.1.1', '10.0.0.1', ],
+      ipaddress => [ '192.168.2.0', '10.0.0.0', ],
+      netmask   => [ '255.255.255.0', '255.0.0.0', ],
+      gateway   => [ '192.168.1.1', '10.0.0.1', ],
+    }
+
+Normal interface - VLAN - static (minimal):
+
+    class { 'network::global':
+      vlan => 'yes',
+    }
+
+    network::if::static { 'eth0.330':
+      ensure    => 'up',
+      ipaddress => '10.2.3.248',
+      netmask   => '255.255.255.0',
     }
 
 Notes
@@ -190,6 +228,8 @@ Notes
 * It is assumed that if you create an alias that you also create the parent interface.
 * There is currently no IPv6 support in this module.
 * network::route requires the referenced device to also be defined via network::if or network::bond.
+* For VLANs to work, `Class['network::global']` must have parameter `vlan` set to `yes`.
+* To enable ipv6 you have to set both `ipv6networking` in `Class['network::global']` to `true` and `ipv6init` in `network::if::static` to `true`.
 
 Issues
 ------
@@ -203,7 +243,7 @@ TODO
 ----
 
 * Support /etc/sysconfig/network-scripts/rule-\<interface-name\>
-* Support IPv6.
+* Support for IPv6.
 * Support for more than Ethernet links.
 * Testing of VLAN support (it should Just Work(TM)).
 

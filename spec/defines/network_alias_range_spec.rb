@@ -66,7 +66,7 @@ describe 'network::alias::range', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth99-range3] with required contents' do
-      verify_contents(subject, 'ifcfg-eth99-range3', [
+      verify_contents(catalogue, 'ifcfg-eth99-range3', [
         'IPADDR_START=1.2.3.99',
         'IPADDR_END=1.2.3.200',
         'CLONENUM_START=3',
@@ -98,7 +98,7 @@ describe 'network::alias::range', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond7-range9] with required contents' do
-      verify_contents(subject, 'ifcfg-bond7-range9', [
+      verify_contents(catalogue, 'ifcfg-bond7-range9', [
         'IPADDR_START=1.2.3.3',
         'IPADDR_END=1.2.3.4',
         'CLONENUM_START=9',
@@ -148,7 +148,7 @@ describe 'network::alias::range', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-eth8-range9] with required contents' do
-      verify_contents(subject, 'ifcfg-eth8-range9', [
+      verify_contents(catalogue, 'ifcfg-eth8-range9', [
         'IPADDR_START=1.2.3.3',
         'IPADDR_END=1.2.3.4',
         'CLONENUM_START=9',

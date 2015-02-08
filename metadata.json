@@ -1,0 +1,45 @@
+{
+  "name": "razorsedge-network",
+  "version": "3.3.0",
+  "author": "razorsedge",
+  "summary": "Manage RedHat/Fedora traditional network configuration.",
+  "license": "Apache-2.0",
+  "project_page": "https://github.com/razorsedge/puppet-network",
+  "issues_url": "https://github.com/razorsedge/puppet-network/issues",
+  "source": "https://github.com/razorsedge/puppet-network.git",
+  "tags": [ "RHEL", "rhel", "CentOS", "OEL", "fedora" ],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=2.3.0 <5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "5", "6" ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "5", "6" ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [ "5", "6" ]
+    },
+    {
+      "operatingsystem": "Fedora",
+      "operatingsystemrelease": [ "16", "17", "18", "19", "20" ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">=2.7.20 <4.0.0"
+    }
+  ]
+}

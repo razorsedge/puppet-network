@@ -18,6 +18,9 @@ network::bond::static { 'bond0':
   ipaddress    => '1.2.3.5',
   netmask      => '255.255.255.0',
   gateway      => '1.2.3.1',
+  ipv6init     => true,
+  ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+  ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
   mtu          => '9000',
   bonding_opts => 'mode=active-backup miimon=100',
 }

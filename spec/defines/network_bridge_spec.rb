@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'network::bridge::dynamic', :type => 'define' do
+describe 'network::bridge', :type => 'define' do
 
   context 'incorrect value: ensure' do
     let(:title) { 'br77' }
@@ -48,7 +48,7 @@ describe 'network::bridge::dynamic', :type => 'define' do
     it 'should contain File[ifcfg-br1] with required contents' do
       verify_contents(catalogue, 'ifcfg-br1', [
         'DEVICE=br1',
-        'BOOTPROTO=dhcp',
+        'BOOTPROTO=none',
         'ONBOOT=yes',
         'TYPE=Bridge',
         'PEERDNS=no',
@@ -64,7 +64,6 @@ describe 'network::bridge::dynamic', :type => 'define' do
     let(:title) { 'br1' }
     let :params do {
       :ensure        => 'down',
-      :bootproto     => 'bootp',
       :userctl       => true,
       :stp           => true,
       :delay         => '1000',
@@ -86,7 +85,7 @@ describe 'network::bridge::dynamic', :type => 'define' do
     it 'should contain File[ifcfg-br1] with required contents' do
       verify_contents(catalogue, 'ifcfg-br1', [
         'DEVICE=br1',
-        'BOOTPROTO=bootp',
+        'BOOTPROTO=none',
         'ONBOOT=no',
         'TYPE=Bridge',
         'DELAY=1000',

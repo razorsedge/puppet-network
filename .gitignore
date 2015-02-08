@@ -1,3 +1,9 @@
-metadata.json
 pkg/
+Gemfile.lock
+vendor/
+spec/fixtures/
+.vagrant/
+.bundle/
+coverage/
 *.swp
+.vendor/

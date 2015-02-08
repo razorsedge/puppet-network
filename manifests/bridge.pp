@@ -1,11 +1,10 @@
-# == Definition: network::bridge::dynamic
+# == Definition: network::bridge
 #
-# Creates a bridge interface with dynamic IP information.
+# Creates a bridge interface with no IP information.
 #
 # === Parameters:
 #
 #   $ensure        - required - up|down
-#   $bootproto     - optional - defaults to "dhcp"
 #   $userctl       - optional - defaults to false
 #   $stp           - optional - defaults to false
 #   $delay         - optional - defaults to 30
@@ -17,30 +16,28 @@
 #
 # === Sample Usage:
 #
-#   network::bridge::dynamic { 'br1':
+#   network::bridge { 'br3':
 #     ensure        => 'up',
 #     stp           => true,
 #     delay         => '0',
-#     bridging_opts => 'priority=65535',
+#     bridging_opts => 'hello_time=200',
 #   }
 #
 # === Authors:
 #
-# David Cote
 # Mike Arnold <mike@razorsedge.org>
 #
 # === Copyright:
 #
-# Copyright (C) 2013 David Cote, unless otherwise noted.
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
-define network::bridge::dynamic (
+define network::bridge (
   $ensure,
-  $bootproto = 'dhcp',
   $userctl = false,
   $stp = false,
   $delay = '30',
-  $bridging_opts = ''
+  $bridging_opts = '',
+  $ipv6init = false,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -48,10 +45,12 @@ define network::bridge::dynamic (
   # Validate booleans
   validate_bool($userctl)
   validate_bool($stp)
+  validate_bool($ipv6init)
 
   include 'network'
 
   $interface = $name
+  $bootproto = 'none'
   $ipaddress = ''
   $netmask = ''
   $gateway = ''
@@ -73,4 +72,4 @@ define network::bridge::dynamic (
     content => template('network/ifcfg-br.erb'),
     notify  => Service['network'],
   }
-} # define network::bridge::dynamic
+} # define network::bridge

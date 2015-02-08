@@ -48,7 +48,7 @@ describe 'network::alias', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond2:1] with required contents' do
-      verify_contents(subject, 'ifcfg-bond2:1', [
+      verify_contents(catalogue, 'ifcfg-bond2:1', [
         'DEVICE=bond2:1',
         'BOOTPROTO=none',
         'ONPARENT=yes',
@@ -81,7 +81,7 @@ describe 'network::alias', :type => 'define' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[ifcfg-bond3:2] with required contents' do
-      verify_contents(subject, 'ifcfg-bond3:2', [
+      verify_contents(catalogue, 'ifcfg-bond3:2', [
         'DEVICE=bond3:2',
         'BOOTPROTO=none',
         'ONPARENT=no',

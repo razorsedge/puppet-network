@@ -33,7 +33,7 @@ describe 'network::global', :type => 'class' do
       :notify => 'Service[network]'
     )}
     it 'should contain File[network.sysconfig] with correct contents' do
-      verify_contents(subject, 'network.sysconfig', [
+      verify_contents(catalogue, 'network.sysconfig', [
         'NETWORKING=yes',
         'NETWORKING_IPV6=no',
         'HOSTNAME=localhost.localdomain',
@@ -57,7 +57,7 @@ describe 'network::global', :type => 'class' do
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
-      verify_contents(subject, 'network.sysconfig', [
+      verify_contents(catalogue, 'network.sysconfig', [
         'NETWORKING=yes',
         'NETWORKING_IPV6=no',
         'HOSTNAME=myHostname',
@@ -83,6 +83,16 @@ describe 'network::global', :type => 'class' do
       end
     end
 
+    context 'ipv6gateway = foo' do
+      let(:params) {{ :ipv6gateway => 'foo' }}
+
+      it 'should fail' do
+        expect {
+          should raise_error(Puppet::Error, /$ipv6gateway is not an IPv6 address./)
+        }
+      end
+    end
+
     context 'vlan = foo' do
       let(:params) {{ :vlan => 'foo' }}
 
@@ -92,6 +102,48 @@ describe 'network::global', :type => 'class' do
         }
       end
     end
+
+    context 'ipv6networking = foo' do
+      let(:params) {{ :ipv6networking => 'foo' }}
+
+      it 'should fail' do
+        expect { 
+          should raise_error(Puppet::Error, /$ipv6networking is not a boolean.  It looks to be a String./)
+        }
+      end
+    end
+
   end
 
+  context 'on a supported operatingsystem, custom parameters' do
+    let :params do {
+      :hostname       => 'myHostname',
+      :gateway        => '1.2.3.4',
+      :gatewaydev     => 'eth2',
+      :nisdomain      => 'myNisDomain',
+      :vlan           => 'yes',
+      :nozeroconf     => 'yes',
+      :ipv6networking => true,
+      :ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+      :fqdn     => 'localhost.localdomain',
+    }
+    end
+    it 'should contain File[network.sysconfig] with correct contents' do
+      verify_contents(catalogue, 'network.sysconfig', [
+        'NETWORKING=yes',
+        'NETWORKING_IPV6=yes',
+        'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
+        'HOSTNAME=myHostname',
+        'GATEWAY=1.2.3.4',
+        'GATEWAYDEV=eth2',
+        'NISDOMAIN=myNisDomain',
+        'VLAN=yes',
+        'NOZEROCONF=yes',
+      ])
+    end
+  end
 end
