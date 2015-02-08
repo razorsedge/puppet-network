@@ -44,6 +44,10 @@ define network::bond::static (
   $ethtool_opts = '',
   $bonding_opts = 'miimon=100',
   $peerdns = false,
+  $ipv6init = false,
+  $ipv6address = '',
+  $ipv6gateway = '',
+  $ipv6peerdns = false,
   $dns1 = '',
   $dns2 = '',
   $domain = ''
@@ -53,6 +57,13 @@ define network::bond::static (
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipv6address != '' {
+    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
+  }
+  # Validate booleans
+  validate_bool($ipv6init)
+  validate_bool($ipv6peerdns)
+
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -65,6 +76,10 @@ define network::bond::static (
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
     peerdns      => $peerdns,
+    ipv6init     => $ipv6init,
+    ipv6address  => $ipv6address,
+    ipv6peerdns  => $ipv6peerdns,
+    ipv6gateway  => $ipv6gateway,
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,

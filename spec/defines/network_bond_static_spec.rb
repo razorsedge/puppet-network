@@ -30,6 +30,20 @@ describe 'network::bond::static', :type => 'define' do
     end
   end
 
+  context 'incorrect value: ipv6address' do
+    let(:title) { 'bond1' }
+    let :params do {
+      :ensure      => 'up',
+      :ipaddress   => '1.2.3.4',
+      :netmask     => '255.255.255.0',
+      :ipv6address => 'notAnIP',
+    }
+    end
+    it 'should fail' do
+      expect {should contain_file('ifcfg-bond1')}.to raise_error(Puppet::Error, /notAnIP is not an IPv6 address./)
+    end
+  end
+
   context 'required parameters' do
     let(:title) { 'bond0' }
     let :params do {
@@ -124,6 +138,10 @@ describe 'network::bond::static', :type => 'define' do
       :peerdns      => true,
       :dns1         => '3.4.5.6',
       :dns2         => '5.6.7.8',
+      :ipv6init     => true,
+      :ipv6peerdns  => true,
+      :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+      :ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       :domain       => 'somedomain.com',
     }
     end
@@ -153,6 +171,10 @@ describe 'network::bond::static', :type => 'define' do
         'DNS1=3.4.5.6',
         'DNS2=5.6.7.8',
         'DOMAIN="somedomain.com"',
+        'IPV6INIT=yes',
+        'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+        'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
+        'IPV6_PEERDNS=yes',
         'NM_CONTROLLED=no',
       ])
     end

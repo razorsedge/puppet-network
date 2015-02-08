@@ -47,6 +47,8 @@ define network::bond::dynamic (
     gateway      => '',
     macaddress   => '',
     bootproto    => 'dhcp',
+    ipv6address  => '',
+    ipv6gateway  => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
