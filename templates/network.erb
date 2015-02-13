@@ -6,6 +6,8 @@ NETWORKING=yes
 <% else %>NETWORKING_IPV6=yes
 <% if !@ipv6gateway.empty? %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
 <% end -%>
+<% if !@ipv6defaultdev.empty? %>IPV6_DEFAULTDEV=<%= @ipv6defaultdev %>
+<% end -%>
 <% end -%>
 <% if !@hostname.empty? %>HOSTNAME=<%= @hostname %>
 <% else %>HOSTNAME=<%= scope.lookupvar('::fqdn') %>

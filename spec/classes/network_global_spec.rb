@@ -125,6 +125,7 @@ describe 'network::global', :type => 'class' do
       :nozeroconf     => 'yes',
       :ipv6networking => true,
       :ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+      :ipv6defaultdev => 'eth3',
     }
     end
     let :facts do {
@@ -137,6 +138,7 @@ describe 'network::global', :type => 'class' do
         'NETWORKING=yes',
         'NETWORKING_IPV6=yes',
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
+        'IPV6_DEFAULTDEV=eth3',
         'HOSTNAME=myHostname',
         'GATEWAY=1.2.3.4',
         'GATEWAYDEV=eth2',
