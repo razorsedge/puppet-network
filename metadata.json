@@ -2,7 +2,7 @@
   "name": "razorsedge-network",
   "version": "3.3.0",
   "author": "razorsedge",
-  "summary": "Manage RedHat/Fedora traditional network configuration via static, dhcp, and bootp configuration of normal and bonded interfaces as well as bridges and VLANs.  It can configure static routes and aliases on interfaces as well as alias ranges.",
+  "summary": "Manage RedHat traditional network configuration via static and dhcp configuration of normal and bonded interfaces as well as bridges and VLANs.",
   "license": "Apache-2.0",
   "project_page": "https://github.com/razorsedge/puppet-network",
   "issues_url": "https://github.com/razorsedge/puppet-network/issues",
