@@ -37,6 +37,15 @@ Global network setting (IPv6 enabled):
       ipv6networking => true,
     }
 
+Global network setting with IPv6 enabled with optional default device for IPv6 traffic:
+
+    class { 'network::global':
+      ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+      ipv6networking => true,
+      ipv6defaultdev => 'eth1',
+    }
+
+
 Normal interface - static (minimal):
 
     network::if::static { 'eth0':

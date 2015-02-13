@@ -17,6 +17,8 @@
 #                                Overrides $gateway in network::global.  Must have
 #                                $gateway defined in network::if or network::bond.
 #   $ipv6gateway    - optional - Sets the default gateway for the IPv6 address - IPv6 must be enabled
+#   $ipv6defaultdev - optional - Determines the device to use as the default gateway
+#                                for IPV6 traffic.
 #   $nisdomain      - optional - Configures the NIS domainname.
 #   $vlan           - optional - yes|no to enable VLAN kernel module
 #   $ipv6networking - optional - enables / disables IPv6 globally
@@ -37,6 +39,7 @@
 #     gateway        => '1.2.3.1',
 #     gatewaydev     => 'eth0',
 #     ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+#     ipv6defaultdev => 'eth0',
 #     nisdomain      => 'domain.tld',
 #     vlan           => 'yes',
 #     ipv6networking => true,
@@ -60,6 +63,7 @@ class network::global (
   $gateway        = '',
   $gatewaydev     = '',
   $ipv6gateway    = '',
+  $ipv6defaultdev = '',
   $nisdomain      = '',
   $vlan           = '',
   $ipv6networking = false,
