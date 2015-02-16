@@ -116,6 +116,7 @@ define network_if_base (
   $domain = '',
   $bridge = '',
   $linkdelay = '',
+  $vlan = '',
 ) {
   # Validate our booleans
   validate_bool($userctl)
