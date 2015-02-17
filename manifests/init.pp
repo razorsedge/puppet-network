@@ -94,8 +94,8 @@ class network {
 #
 define network_if_base (
   $ensure,
-  $ipaddress,
-  $netmask,
+  $ipaddress = '',
+  $netmask = '',
   $macaddress,
   $gateway = '',
   $ipv6address = '',
@@ -116,6 +116,7 @@ define network_if_base (
   $domain = '',
   $bridge = '',
   $linkdelay = '',
+  $vlan = false,
 ) {
   # Validate our booleans
   validate_bool($userctl)
