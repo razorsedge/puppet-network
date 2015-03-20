@@ -36,7 +36,7 @@
 #     domain      => 'is.domain.com domain.com',
 #     ipv6init    => true,
 #     ipv6address => '123:4567:89ab:cdef:123:4567:89ab:cdef'
-#     ipv6gateway => '123:4567:89ab:cdef:123:4567:89ab:1' 
+#     ipv6gateway => '123:4567:89ab:cdef:123:4567:89ab:1'
 #   }
 #
 # === Authors:
@@ -49,8 +49,8 @@
 #
 define network::if::static (
   $ensure,
-  $ipaddress,
-  $netmask,
+  $ipaddress = '',
+  $netmask = '',
   $gateway = '',
   $ipv6address = '',
   $ipv6init = false,
@@ -65,10 +65,11 @@ define network::if::static (
   $dns1 = '',
   $dns2 = '',
   $domain = '',
-  $linkdelay = ''
+  $linkdelay = '',
+  $vlan = false,
 ) {
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if !empty($ipaddress) and ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
   if $ipv6address != '' {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
   }
@@ -107,5 +108,6 @@ define network::if::static (
     dns2         => $dns2,
     domain       => $domain,
     linkdelay    => $linkdelay,
+    vlan         => $vlan,
   }
 } # define network::if::static
