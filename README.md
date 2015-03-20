@@ -37,6 +37,15 @@ Global network setting (IPv6 enabled):
       ipv6networking => true,
     }
 
+Global network setting with IPv6 enabled with optional default device for IPv6 traffic:
+
+    class { 'network::global':
+      ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
+      ipv6networking => true,
+      ipv6defaultdev => 'eth1',
+    }
+
+
 Normal interface - static (minimal):
 
     network::if::static { 'eth0':
@@ -216,7 +225,7 @@ Normal interface - VLAN - static (minimal):
 Notes
 -----
 
-* Runs under Puppet 2.6 and later.
+* Runs under Puppet 2.7 and later.
 * Only works with RedHat-ish systems.
 * Read /usr/share/doc/initscripts-*/sysconfig.txt for underlying details.
 * Read /usr/share/doc/kernel-doc-*/Documentation/networking/bonding.txt for underlying details.
@@ -229,7 +238,7 @@ Notes
 * There is currently no IPv6 support in this module.
 * network::route requires the referenced device to also be defined via network::if or network::bond.
 * For VLANs to work, `Class['network::global']` must have parameter `vlan` set to `yes`.
-* To enable ipv6 you have to set both `ipv6networking` in `Class['network::global']` to `true` and `ipv6init` in `network::if::static` to `true`.
+* To enable IPv6 you have to set both `ipv6networking` in `Class['network::global']` to `true` and `ipv6init` in `network::if::static` to `true`.
 
 Issues
 ------
@@ -243,7 +252,7 @@ TODO
 ----
 
 * Support /etc/sysconfig/network-scripts/rule-\<interface-name\>
-* Support for IPv6.
+* Expand support for IPv6.
 * Support for more than Ethernet links.
 * Testing of VLAN support (it should Just Work(TM)).
 

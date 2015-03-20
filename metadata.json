@@ -1,13 +1,13 @@
 {
   "name": "razorsedge-network",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "author": "razorsedge",
-  "summary": "Manage RedHat/Fedora traditional network configuration.",
+  "summary": "Manage RedHat traditional network configuration via static and dhcp configuration of normal and bonded interfaces as well as bridges and VLANs.",
   "license": "Apache-2.0",
   "project_page": "https://github.com/razorsedge/puppet-network",
   "issues_url": "https://github.com/razorsedge/puppet-network/issues",
   "source": "https://github.com/razorsedge/puppet-network.git",
-  "tags": [ "RHEL", "rhel", "CentOS", "OEL", "fedora" ],
+  "tags": [ "network", "networking" ],
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
