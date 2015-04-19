@@ -29,14 +29,14 @@ matrix:
   - rvm: 2.1.0
     env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
   - rvm: 2.1.5
-    env: PUPPET_GEM_VERSION="4.0.0.rc1"
+    env: PUPPET_GEM_VERSION="~> 4.0"
   allow_failures:
   - rvm: 2.0.0
     env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
   - rvm: 2.1.0
     env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
   - rvm: 2.1.5
-    env: PUPPET_GEM_VERSION="4.0.0.rc1"
+    env: PUPPET_GEM_VERSION="~> 4.0"
 notifications:
   email:
     - github@razorsedge.org
