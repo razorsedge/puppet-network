@@ -10,6 +10,7 @@
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
+#   $dhcp_hostname- optional
 #
 # === Actions:
 #
@@ -34,7 +35,8 @@ define network::bond::dynamic (
   $ensure,
   $mtu = '',
   $ethtool_opts = '',
-  $bonding_opts = 'miimon=100'
+  $bonding_opts = 'miimon=100',
+  $dhcp_hostname = ''
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -47,6 +49,7 @@ define network::bond::dynamic (
     gateway      => '',
     macaddress   => '',
     bootproto    => 'dhcp',
+    dhcp_hostname=> $dhcp_hostname,
     ipv6address  => '',
     ipv6gateway  => '',
     mtu          => $mtu,
