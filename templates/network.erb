@@ -3,6 +3,7 @@
 ###
 NETWORKING=yes
 <% if !@ipv6networking %>NETWORKING_IPV6=no
+IPV6INIT=no
 <% else %>NETWORKING_IPV6=yes
 <% if !@ipv6gateway.empty? %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
 <% end -%>
