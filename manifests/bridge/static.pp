@@ -71,7 +71,7 @@ define network::bridge::static (
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  if $ipv6address != '' {
+  if $ipv6address {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
   }
   # Validate booleans
@@ -85,8 +85,8 @@ define network::bridge::static (
   $interface = $name
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
-  if $dns2 != '' {
-    if $dns1 == '' {
+  if $dns2 {
+    if !$dns1 {
       $dns1_real = $dns2
       $dns2_real = undef
     } else {

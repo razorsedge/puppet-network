@@ -70,17 +70,17 @@ class network::global (
   $nozeroconf     = undef
 ) {
   # Validate our data
-  if $gateway != '' {
+  if $gateway {
     if ! is_ip_address($gateway) { fail("${gateway} is not an IP address.") }
   }
-  if $ipv6gateway != '' {
+  if $ipv6gateway {
     if ! is_ip_address($ipv6gateway) { fail("${ipv6gateway} is not an IPv6 address.") }
   }
 
   validate_bool($ipv6networking)
 
   # Validate our regular expressions
-  if $vlan != '' {
+  if $vlan {
     $states = [ '^yes$', '^no$' ]
     validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
   }

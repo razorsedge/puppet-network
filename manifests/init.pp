@@ -133,8 +133,8 @@ define network_if_base (
   $interface = $name
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
-  if $dns2 != '' {
-    if $dns1 == '' {
+  if $dns2 {
+    if !$dns1 {
       $dns1_real = $dns2
       $dns2_real = undef
     } else {
