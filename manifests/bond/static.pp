@@ -39,18 +39,18 @@ define network::bond::static (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = '',
-  $mtu = '',
-  $ethtool_opts = '',
+  $gateway = undef,
+  $mtu = undef,
+  $ethtool_opts = undef,
   $bonding_opts = 'miimon=100',
   $peerdns = false,
   $ipv6init = false,
-  $ipv6address = '',
-  $ipv6gateway = '',
+  $ipv6address = undef,
+  $ipv6gateway = undef,
   $ipv6peerdns = false,
-  $dns1 = '',
-  $dns2 = '',
-  $domain = ''
+  $dns1 = undef,
+  $dns2 = undef,
+  $domain = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

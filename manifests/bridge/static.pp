@@ -51,20 +51,20 @@ define network::bridge::static (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = '',
-  $ipv6address = '',
-  $ipv6gateway = '',
+  $gateway = undef,
+  $ipv6address = undef,
+  $ipv6gateway = undef,
   $bootproto = 'static',
   $userctl = false,
   $peerdns = false,
   $ipv6init = false,
   $ipv6peerdns = false,
-  $dns1 = '',
-  $dns2 = '',
-  $domain = '',
+  $dns1 = undef,
+  $dns2 = undef,
+  $domain = undef,
   $stp = false,
   $delay = '30',
-  $bridging_opts = ''
+  $bridging_opts = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -88,7 +88,7 @@ define network::bridge::static (
   if $dns2 != '' {
     if $dns1 == '' {
       $dns1_real = $dns2
-      $dns2_real = ''
+      $dns2_real = undef
     } else {
       $dns1_real = $dns1
       $dns2_real = $dns2

@@ -36,8 +36,8 @@ define network::bridge (
   $userctl = false,
   $stp = false,
   $delay = '30',
-  $bridging_opts = '',
-  $ipv6init = false,
+  $bridging_opts = undef,
+  $ipv6init = false
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -51,11 +51,11 @@ define network::bridge (
 
   $interface = $name
   $bootproto = 'none'
-  $ipaddress = ''
-  $netmask = ''
-  $gateway = ''
-  $ipv6address = ''
-  $ipv6gateway = ''
+  $ipaddress = undef
+  $netmask = undef
+  $gateway = undef
+  $ipv6address = undef
+  $ipv6gateway = undef
 
   $onboot = $ensure ? {
     'up'    => 'yes',

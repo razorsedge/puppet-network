@@ -5,27 +5,27 @@ DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
 ONBOOT=<%= @onboot %>
 TYPE=Bridge
-<% if !@ipaddress.empty? %>IPADDR=<%= @ipaddress %>
+<% if @ipaddress %>IPADDR=<%= @ipaddress %>
 <% end -%>
-<% if !@netmask.empty? %>NETMASK=<%= @netmask %>
+<% if @netmask %>NETMASK=<%= @netmask %>
 <% end -%>
-<% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
+<% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
 <% if @ipv6init %>IPV6INIT=yes
-<% if !@ipv6address.empty? %>IPV6ADDR=<%= @ipv6address %>
+<% if @ipv6address %>IPV6ADDR=<%= @ipv6address %>
 <% end -%>
-<% if !@ipv6gateway.empty? %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
+<% if @ipv6gateway %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
 <% end -%>
 <% if @ipv6peerdns %>IPV6_PEERDNS=yes
 <% end -%>
 <% end -%>
 <% if !@peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
-<% if !@dns1_real.empty? %>DNS1=<%= @dns1_real %>
+<% if @dns1_real %>DNS1=<%= @dns1_real %>
 <% end -%>
-<% if !@dns2_real.empty? %>DNS2=<%= @dns2_real %>
+<% if @dns2_real %>DNS2=<%= @dns2_real %>
 <% end -%>
-<% if !@domain.empty? %>DOMAIN="<%= @domain %>"
+<% if @domain %>DOMAIN="<%= @domain %>"
 <% end -%>
 <% end -%>
 <% if @userctl %>USERCTL=yes

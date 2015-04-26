@@ -35,8 +35,8 @@
 define network::bond::bridge (
   $ensure,
   $bridge,
-  $mtu = '',
-  $ethtool_opts = '',
+  $mtu = undef,
+  $ethtool_opts = undef,
   $bonding_opts = 'miimon=100'
 ) {
   # Validate our regular expressions

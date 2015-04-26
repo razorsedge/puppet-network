@@ -5,11 +5,11 @@ DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
 ONPARENT=<%= @onparent %>
 TYPE=Ethernet
-<% if !@ipaddress.empty? %>IPADDR=<%= @ipaddress %>
+<% if @ipaddress %>IPADDR=<%= @ipaddress %>
 <% end -%>
-<% if !@netmask.empty? %>NETMASK=<%= @netmask %>
+<% if @netmask %>NETMASK=<%= @netmask %>
 <% end -%>
-<% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
+<% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>

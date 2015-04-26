@@ -51,21 +51,21 @@ define network::if::static (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = '',
-  $ipv6address = '',
+  $gateway = undef,
+  $ipv6address = undef,
   $ipv6init = false,
-  $ipv6gateway = '',
-  $macaddress = '',
+  $ipv6gateway = undef,
+  $macaddress = undef,
   $ipv6autoconf = false,
   $userctl = false,
-  $mtu = '',
-  $ethtool_opts = '',
+  $mtu = undef,
+  $ethtool_opts = undef,
   $peerdns = false,
   $ipv6peerdns = false,
-  $dns1 = '',
-  $dns2 = '',
-  $domain = '',
-  $linkdelay = ''
+  $dns1 = undef,
+  $dns2 = undef,
+  $domain = undef,
+  $linkdelay = undef
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
