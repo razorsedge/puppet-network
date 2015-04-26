@@ -235,7 +235,6 @@ Notes
 * bootp support is unknown for bonded interfaces. Thus no bootp bond support in this module.
 * It is assumed that if you create a bond that you also create the slave interface(s).
 * It is assumed that if you create an alias that you also create the parent interface.
-* There is currently no IPv6 support in this module.
 * network::route requires the referenced device to also be defined via network::if or network::bond.
 * For VLANs to work, `Class['network::global']` must have parameter `vlan` set to `yes`.
 * To enable IPv6 you have to set both `ipv6networking` in `Class['network::global']` to `true` and `ipv6init` in `network::if::static` to `true`.
