@@ -12,7 +12,7 @@
 #
 # === Sample Usage:
 #
-#   include 'network'
+#   include '::network'
 #
 # === Authors:
 #
@@ -128,7 +128,7 @@ define network_if_base (
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
-  include 'network'
+  include '::network'
 
   $interface = $name
 

@@ -41,7 +41,7 @@ define network::bond::slave (
     fail("${macaddress} is not a MAC address.")
   }
 
-  include 'network'
+  include '::network'
 
   $interface = $name
 

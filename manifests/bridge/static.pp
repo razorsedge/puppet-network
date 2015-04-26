@@ -80,7 +80,7 @@ define network::bridge::static (
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
 
-  include 'network'
+  include '::network'
 
   $interface = $name
 

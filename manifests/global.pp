@@ -87,7 +87,7 @@ class network::global (
 
   validate_bool($ipv6networking)
 
-  include 'network'
+  include '::network'
 
   file { 'network.sysconfig':
     ensure  => 'present',

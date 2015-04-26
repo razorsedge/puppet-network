@@ -49,7 +49,7 @@ define network::alias::range (
   $states = [ '^up$', '^down$', '^absent$' ]
   validate_re($ensure, $states, '$ensure must be either "up", "down", or "absent".')
 
-  include 'network'
+  include '::network'
 
   $interface = $name
   $onparent = $ensure ? {

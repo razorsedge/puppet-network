@@ -47,7 +47,7 @@ define network::bridge (
   validate_bool($stp)
   validate_bool($ipv6init)
 
-  include 'network'
+  include '::network'
 
   $interface = $name
   $bootproto = 'none'
