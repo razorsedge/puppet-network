@@ -24,12 +24,12 @@ TYPE=Ethernet
 <% end -%>
 <% if !@peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
+<% end -%>
 <% if !@dns1_real.empty? %>DNS1=<%= @dns1_real %>
 <% end -%>
 <% if !@dns2_real.empty? %>DNS2=<%= @dns2_real %>
 <% end -%>
 <% if !@domain.empty? %>DOMAIN="<%= @domain %>"
-<% end -%>
 <% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>
