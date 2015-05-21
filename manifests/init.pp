@@ -98,6 +98,7 @@ define network_if_base (
   $netmask,
   $macaddress,
   $gateway = '',
+  $if_type = 'Ethernet',
   $ipv6address = '',
   $ipv6gateway = '',
   $ipv6init = false,
