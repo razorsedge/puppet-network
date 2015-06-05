@@ -102,6 +102,7 @@ define network_if_base (
   $ipv6gateway = undef,
   $ipv6init = false,
   $ipv6autoconf = false,
+  $ipv6secondaries = undef,
   $bootproto = 'none',
   $userctl = false,
   $mtu = undef,
