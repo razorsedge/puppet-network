@@ -39,13 +39,13 @@
 #
 define network::if::dynamic (
   $ensure,
-  $macaddress = '',
+  $macaddress = undef,
   $bootproto = 'dhcp',
   $userctl = false,
-  $mtu = '',
-  $dhcp_hostname = '',
-  $ethtool_opts = '',
-  $linkdelay = ''
+  $mtu = undef,
+  $dhcp_hostname = undef,
+  $ethtool_opts = undef,
+  $linkdelay = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

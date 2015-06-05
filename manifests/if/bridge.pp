@@ -31,8 +31,8 @@
 define network::if::bridge (
   $ensure,
   $bridge,
-  $mtu = '',
-  $ethtool_opts = ''
+  $mtu = undef,
+  $ethtool_opts = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

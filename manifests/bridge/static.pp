@@ -51,27 +51,27 @@ define network::bridge::static (
   $ensure,
   $ipaddress,
   $netmask,
-  $gateway = '',
-  $ipv6address = '',
-  $ipv6gateway = '',
+  $gateway = undef,
+  $ipv6address = undef,
+  $ipv6gateway = undef,
   $bootproto = 'static',
   $userctl = false,
   $peerdns = false,
   $ipv6init = false,
   $ipv6peerdns = false,
-  $dns1 = '',
-  $dns2 = '',
-  $domain = '',
+  $dns1 = undef,
+  $dns2 = undef,
+  $domain = undef,
   $stp = false,
   $delay = '30',
-  $bridging_opts = ''
+  $bridging_opts = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  if $ipv6address != '' {
+  if $ipv6address {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
   }
   # Validate booleans
@@ -80,15 +80,15 @@ define network::bridge::static (
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
 
-  include 'network'
+  include '::network'
 
   $interface = $name
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
-  if $dns2 != '' {
-    if $dns1 == '' {
+  if $dns2 {
+    if !$dns1 {
       $dns1_real = $dns2
-      $dns2_real = ''
+      $dns2_real = undef
     } else {
       $dns1_real = $dns1
       $dns2_real = $dns2

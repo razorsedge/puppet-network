@@ -59,35 +59,35 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network::global (
-  $hostname       = '',
-  $gateway        = '',
-  $gatewaydev     = '',
-  $ipv6gateway    = '',
-  $ipv6defaultdev = '',
-  $nisdomain      = '',
-  $vlan           = '',
+  $hostname       = undef,
+  $gateway        = undef,
+  $gatewaydev     = undef,
+  $ipv6gateway    = undef,
+  $ipv6defaultdev = undef,
+  $nisdomain      = undef,
+  $vlan           = undef,
   $ipv6networking = false,
-  $nozeroconf     = ''
+  $nozeroconf     = undef
 ) {
   # Validate our data
-  if $gateway != '' {
+  if $gateway {
     if ! is_ip_address($gateway) { fail("${gateway} is not an IP address.") }
   }
-  if $ipv6gateway != '' {
+  if $ipv6gateway {
     if ! is_ip_address($ipv6gateway) { fail("${ipv6gateway} is not an IPv6 address.") }
   }
 
   validate_bool($ipv6networking)
 
   # Validate our regular expressions
-  if $vlan != '' {
+  if $vlan {
     $states = [ '^yes$', '^no$' ]
     validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
   }
 
   validate_bool($ipv6networking)
 
-  include 'network'
+  include '::network'
 
   file { 'network.sysconfig':
     ensure  => 'present',

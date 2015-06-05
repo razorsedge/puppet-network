@@ -12,7 +12,7 @@
 #
 # === Sample Usage:
 #
-#   include 'network'
+#   include '::network'
 #
 # === Authors:
 #
@@ -97,25 +97,25 @@ define network_if_base (
   $ipaddress,
   $netmask,
   $macaddress,
-  $gateway = '',
-  $ipv6address = '',
-  $ipv6gateway = '',
+  $gateway = undef,
+  $ipv6address = undef,
+  $ipv6gateway = undef,
   $ipv6init = false,
   $ipv6autoconf = false,
   $bootproto = 'none',
   $userctl = false,
-  $mtu = '',
-  $dhcp_hostname = '',
-  $ethtool_opts = '',
+  $mtu = undef,
+  $dhcp_hostname = undef,
+  $ethtool_opts = undef,
   $bonding_opts = undef,
   $isalias = false,
   $peerdns = false,
   $ipv6peerdns = false,
-  $dns1 = '',
-  $dns2 = '',
-  $domain = '',
-  $bridge = '',
-  $linkdelay = '',
+  $dns1 = undef,
+  $dns2 = undef,
+  $domain = undef,
+  $bridge = undef,
+  $linkdelay = undef
 ) {
   # Validate our booleans
   validate_bool($userctl)
@@ -128,15 +128,15 @@ define network_if_base (
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
-  include 'network'
+  include '::network'
 
   $interface = $name
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
-  if $dns2 != '' {
-    if $dns1 == '' {
+  if $dns2 {
+    if !$dns1 {
       $dns1_real = $dns2
-      $dns2_real = ''
+      $dns2_real = undef
     } else {
       $dns1_real = $dns1
       $dns2_real = $dns2

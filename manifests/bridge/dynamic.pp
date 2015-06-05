@@ -40,7 +40,7 @@ define network::bridge::dynamic (
   $userctl = false,
   $stp = false,
   $delay = '30',
-  $bridging_opts = ''
+  $bridging_opts = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -49,14 +49,14 @@ define network::bridge::dynamic (
   validate_bool($userctl)
   validate_bool($stp)
 
-  include 'network'
+  include '::network'
 
   $interface = $name
-  $ipaddress = ''
-  $netmask = ''
-  $gateway = ''
-  $ipv6address = ''
-  $ipv6gateway = ''
+  $ipaddress = undef
+  $netmask = undef
+  $gateway = undef
+  $ipv6address = undef
+  $ipv6gateway = undef
 
   $onboot = $ensure ? {
     'up'    => 'yes',

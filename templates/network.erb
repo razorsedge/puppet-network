@@ -4,21 +4,21 @@
 NETWORKING=yes
 <% if !@ipv6networking %>NETWORKING_IPV6=no
 <% else %>NETWORKING_IPV6=yes
-<% if !@ipv6gateway.empty? %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
+<% if @ipv6gateway %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
 <% end -%>
-<% if !@ipv6defaultdev.empty? %>IPV6_DEFAULTDEV=<%= @ipv6defaultdev %>
+<% if @ipv6defaultdev %>IPV6_DEFAULTDEV=<%= @ipv6defaultdev %>
 <% end -%>
 <% end -%>
-<% if !@hostname.empty? %>HOSTNAME=<%= @hostname %>
+<% if @hostname %>HOSTNAME=<%= @hostname %>
 <% else %>HOSTNAME=<%= scope.lookupvar('::fqdn') %>
 <% end -%>
-<% if !@gateway.empty? %>GATEWAY=<%= @gateway %>
+<% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
-<% if !@gatewaydev.empty? %>GATEWAYDEV=<%= @gatewaydev %>
+<% if @gatewaydev %>GATEWAYDEV=<%= @gatewaydev %>
 <% end -%>
-<% if !@nisdomain.empty? %>NISDOMAIN=<%= @nisdomain %>
+<% if @nisdomain %>NISDOMAIN=<%= @nisdomain %>
 <% end -%>
-<% if !@vlan.empty? %>VLAN=<%= @vlan %>
+<% if @vlan %>VLAN=<%= @vlan %>
 <% end -%>
-<% if !@nozeroconf.empty? %>NOZEROCONF=<%= @nozeroconf %>
+<% if @nozeroconf %>NOZEROCONF=<%= @nozeroconf %>
 <% end -%>
