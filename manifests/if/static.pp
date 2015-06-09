@@ -36,7 +36,7 @@
 #     domain      => 'is.domain.com domain.com',
 #     ipv6init    => true,
 #     ipv6address => '123:4567:89ab:cdef:123:4567:89ab:cdef'
-#     ipv6gateway => '123:4567:89ab:cdef:123:4567:89ab:1' 
+#     ipv6gateway => '123:4567:89ab:cdef:123:4567:89ab:1'
 #   }
 #
 # === Authors:
@@ -69,8 +69,16 @@ define network::if::static (
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  if $ipv6address {
-    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
+  if is_array($ipv6address) {
+    if size($ipv6address) > 0 {
+      validate_ip_address { $ipv6address: }
+    }
+    $primary_ipv6address = $ipv6address[0]
+    $secondary_ipv6addresses = delete_at($ipv6address, 0)
+  } elsif $ipv6address {
+    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IP(v6) address.") }
+    $primary_ipv6address = $ipv6address
+    $secondary_ipv6addresses = undef
   }
 
   if ! is_mac_address($macaddress) {
@@ -88,24 +96,25 @@ define network::if::static (
   validate_bool($ipv6peerdns)
 
   network_if_base { $title:
-    ensure       => $ensure,
-    ipv6init     => $ipv6init,
-    ipaddress    => $ipaddress,
-    ipv6address  => $ipv6address,
-    netmask      => $netmask,
-    gateway      => $gateway,
-    ipv6gateway  => $ipv6gateway,
-    ipv6autoconf => $ipv6autoconf,
-    macaddress   => $macaddy,
-    bootproto    => 'none',
-    userctl      => $userctl,
-    mtu          => $mtu,
-    ethtool_opts => $ethtool_opts,
-    peerdns      => $peerdns,
-    ipv6peerdns  => $ipv6peerdns,
-    dns1         => $dns1,
-    dns2         => $dns2,
-    domain       => $domain,
-    linkdelay    => $linkdelay,
+    ensure          => $ensure,
+    ipv6init        => $ipv6init,
+    ipaddress       => $ipaddress,
+    ipv6address     => $primary_ipv6address,
+    netmask         => $netmask,
+    gateway         => $gateway,
+    ipv6gateway     => $ipv6gateway,
+    ipv6autoconf    => $ipv6autoconf,
+    ipv6secondaries => $secondary_ipv6addresses,
+    macaddress      => $macaddy,
+    bootproto       => 'none',
+    userctl         => $userctl,
+    mtu             => $mtu,
+    ethtool_opts    => $ethtool_opts,
+    peerdns         => $peerdns,
+    ipv6peerdns     => $ipv6peerdns,
+    dns1            => $dns1,
+    dns2            => $dns2,
+    domain          => $domain,
+    linkdelay       => $linkdelay,
   }
 } # define network::if::static
