@@ -72,9 +72,9 @@ define network::if::static (
   if is_array($ipv6address) {
     if size($ipv6address) > 0 {
       validate_ip_address { $ipv6address: }
+      $primary_ipv6address = $ipv6address[0]
+      $secondary_ipv6addresses = delete_at($ipv6address, 0)
     }
-    $primary_ipv6address = $ipv6address[0]
-    $secondary_ipv6addresses = delete_at($ipv6address, 0)
   } elsif $ipv6address {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IP(v6) address.") }
     $primary_ipv6address = $ipv6address
