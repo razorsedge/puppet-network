@@ -29,5 +29,4 @@ matrix:
   - rvm: 2.1.0
     env: PUPPET_GEM_VERSION="~> 4.0"
 notifications:
-  email:
-    - rwf14f@gmail.com
+  email: false
