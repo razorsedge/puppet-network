@@ -30,4 +30,4 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 4.0"
 notifications:
   email:
-    - github@razorsedge.org
+    - rwf14f@gmail.com
