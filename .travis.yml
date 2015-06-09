@@ -29,4 +29,5 @@ matrix:
   - rvm: 2.1.0
     env: PUPPET_GEM_VERSION="~> 4.0"
 notifications:
-  email: false
+  email:
+    - github@razorsedge.org
