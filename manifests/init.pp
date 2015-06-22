@@ -66,6 +66,7 @@ class network {
 #   $dns2          - optional
 #   $domain        - optional
 #   $bridge        - optional
+#   $flush         - optional
 #
 # === Actions:
 #
@@ -115,7 +116,8 @@ define network_if_base (
   $dns2 = undef,
   $domain = undef,
   $bridge = undef,
-  $linkdelay = undef
+  $linkdelay = undef,
+  $flush = false
 ) {
   # Validate our booleans
   validate_bool($userctl)
@@ -124,6 +126,7 @@ define network_if_base (
   validate_bool($ipv6init)
   validate_bool($ipv6autoconf)
   validate_bool($ipv6peerdns)
+  validate_bool($flush)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
@@ -160,6 +163,16 @@ define network_if_base (
       default => undef,
     }
     $iftemplate = template('network/ifcfg-eth.erb')
+  }
+
+  if $flush {
+    exec { 'network-flush':
+      user        => 'root',
+      command     => "/usr/sbin/ip addr flush dev ${interface}",
+      refreshonly => true,
+      subscribe   => File["ifcfg-${interface}"],
+      before      => Service['network']
+    }
   }
 
   file { "ifcfg-${interface}":

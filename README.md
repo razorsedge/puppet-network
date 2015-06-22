@@ -222,6 +222,19 @@ Normal interface - VLAN - static (minimal):
       netmask   => '255.255.255.0',
     }
 
+Flush IP addresses:
+
+Network scripts on RHEL7 do not flush IP addresses, so you eventually end up
+with multiple of them, passing `$flush => true` will run `ip addr flush` on
+given interface before notifying network service.
+
+    network::if::static { 'eth0':
+      ensure    => 'up',
+      ipaddress => '1.2.3.4',
+      netmask   => '255.255.255.0',
+      flush     => true
+    }
+
 Notes
 -----
 
