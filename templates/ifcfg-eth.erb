@@ -8,11 +8,11 @@ BOOTPROTO=<%= @bootproto %>
 ONBOOT=<%= @onboot %>
 HOTPLUG=<%= @onboot %>
 TYPE=Ethernet
-<% if @ipaddress %>IPADDR=<%= @ipaddress %>
+<% if @ipaddress and @ipaddress != '' %>IPADDR=<%= @ipaddress %>
 <% end -%>
-<% if @netmask %>NETMASK=<%= @netmask %>
+<% if @netmask and @netmask != '' %>NETMASK=<%= @netmask %>
 <% end -%>
-<% if @gateway %>GATEWAY=<%= @gateway %>
+<% if @gateway and @gateway != '' %>GATEWAY=<%= @gateway %>
 <% end -%>
 <% if @mtu %>MTU=<%= @mtu %>
 <% end -%>
@@ -49,5 +49,10 @@ IPV6INIT=yes
 <% if @bridge %>BRIDGE=<%= @bridge %>
 <% end -%>
 <% if @linkdelay %>LINKDELAY=<%= @linkdelay %>
+<% end -%>
+<% if @check_link_down %>
+check_link_down() {
+ return 1;
+}
 <% end -%>
 NM_CONTROLLED=no

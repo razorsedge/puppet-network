@@ -49,23 +49,26 @@ class network {
 #
 # === Parameters:
 #
-#   $ensure        - required - up|down
-#   $ipaddress     - required
-#   $netmask       - required
-#   $macaddress    - required
-#   $gateway       - optional
-#   $bootproto     - optional
-#   $userctl       - optional - defaults to false
-#   $mtu           - optional
-#   $dhcp_hostname - optional
-#   $ethtool_opts  - optional
-#   $bonding_opts  - optional
-#   $isalias       - optional
-#   $peerdns       - optional
-#   $dns1          - optional
-#   $dns2          - optional
-#   $domain        - optional
-#   $bridge        - optional
+#   $ensure          - required - up|down
+#   $ipaddress       - required
+#   $netmask         - required
+#   $macaddress      - required
+#   $gateway         - optional
+#   $bootproto       - optional
+#   $userctl         - optional - defaults to false
+#   $mtu             - optional
+#   $dhcp_hostname   - optional
+#   $ethtool_opts    - optional
+#   $bonding_opts    - optional
+#   $isalias         - optional
+#   $peerdns         - optional
+#   $dns1            - optional
+#   $dns2            - optional
+#   $domain          - optional
+#   $bridge          - optional
+#   $linkdelay       - optional
+#   $check_link_down - optional
+
 #
 # === Actions:
 #
@@ -97,25 +100,26 @@ define network_if_base (
   $ipaddress,
   $netmask,
   $macaddress,
-  $gateway = undef,
-  $ipv6address = undef,
-  $ipv6gateway = undef,
-  $ipv6init = false,
-  $ipv6autoconf = false,
-  $bootproto = 'none',
-  $userctl = false,
-  $mtu = undef,
-  $dhcp_hostname = undef,
-  $ethtool_opts = undef,
-  $bonding_opts = undef,
-  $isalias = false,
-  $peerdns = false,
-  $ipv6peerdns = false,
-  $dns1 = undef,
-  $dns2 = undef,
-  $domain = undef,
-  $bridge = undef,
-  $linkdelay = undef
+  $gateway         = undef,
+  $ipv6address     = undef,
+  $ipv6gateway     = undef,
+  $ipv6init        = false,
+  $ipv6autoconf    = false,
+  $bootproto       = 'none',
+  $userctl         = false,
+  $mtu             = undef,
+  $dhcp_hostname   = undef,
+  $ethtool_opts    = undef,
+  $bonding_opts    = undef,
+  $isalias         = false,
+  $peerdns         = false,
+  $ipv6peerdns     = false,
+  $dns1            = undef,
+  $dns2            = undef,
+  $domain          = undef,
+  $bridge          = undef,
+  $linkdelay       = undef,
+  $check_link_down = false
 ) {
   # Validate our booleans
   validate_bool($userctl)
@@ -124,6 +128,7 @@ define network_if_base (
   validate_bool($ipv6init)
   validate_bool($ipv6autoconf)
   validate_bool($ipv6peerdns)
+  validate_bool($check_link_down)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
