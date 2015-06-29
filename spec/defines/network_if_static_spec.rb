@@ -173,4 +173,22 @@ describe 'network::if::static', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'flush => true - ip addr flush' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.4',
+      :netmask   => '255.255.255.0',
+      :flush     => true
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_exec('network-flush').with_command('/usr/sbin/ip addr flush dev eth1').that_comes_before('Service[network]') }
+  end
+
+
 end
