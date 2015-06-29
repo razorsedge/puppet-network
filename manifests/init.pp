@@ -168,7 +168,7 @@ define network_if_base (
   if $flush {
     exec { 'network-flush':
       user        => 'root',
-      command     => "ip addr flush dev ${interface}",
+      command     => "/usr/sbin/ip addr flush dev ${interface}",
       refreshonly => true,
       subscribe   => File["ifcfg-${interface}"],
       before      => Service['network']
