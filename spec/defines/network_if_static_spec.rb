@@ -187,7 +187,7 @@ describe 'network::if::static', :type => 'define' do
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
-    it { should contain_exec('network-flush').with_command('ip addr flush dev eth1').that_comes_before('Service[network]') }
+    it { should contain_exec('network-flush').with_command('/usr/sbin/ip addr flush dev eth1').that_comes_before('Service[network]') }
   end
 
 
