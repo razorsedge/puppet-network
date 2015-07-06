@@ -41,7 +41,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /\{"notAn"=>"IP"\} is not an IPv6 address\./)
+      # there are major differences in the way that different ruby versions translate a hash into a string
+      # which makes it hard to match the whole string
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /.*notAn.*IP.* is not an IPv6 address\./)
     end
   end
 
