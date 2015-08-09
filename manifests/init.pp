@@ -66,6 +66,7 @@ class network {
 #   $dns2          - optional
 #   $domain        - optional
 #   $bridge        - optional
+#   $scope         - optional
 #
 # === Actions:
 #
@@ -76,7 +77,6 @@ class network {
 #   METRIC=
 #   HOTPLUG=yes|no
 #   WINDOW=
-#   SCOPE=
 #   SRCADDR=
 #   NOZEROCONF=yes
 #   PERSISTENT_DHCLIENT=yes|no|1|0
