@@ -8,6 +8,7 @@
 #   $bridge       - required - bridge interface name
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $macaddress   - optional
 #
 # === Actions:
 #
@@ -32,7 +33,8 @@ define network::if::bridge (
   $ensure,
   $bridge,
   $mtu = undef,
-  $ethtool_opts = undef
+  $ethtool_opts = undef,
+  $macaddress = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -43,7 +45,7 @@ define network::if::bridge (
     ipaddress    => '',
     netmask      => '',
     gateway      => '',
-    macaddress   => '',
+    macaddress   => $macaddress,
     bootproto    => 'none',
     ipv6address  => '',
     ipv6gateway  => '',
