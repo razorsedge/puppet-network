@@ -41,7 +41,7 @@ define network::if::bridge (
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   if $macaddress == undef {
-    $macaddy = ''
+    $macaddy = '' # lint:ignore:empty_string_assignment
   }
   else {
     $macaddy = $macaddress
