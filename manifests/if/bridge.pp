@@ -40,12 +40,19 @@ define network::if::bridge (
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
+  if $macaddress == undef {
+    $macaddy = ''
+  }
+  else {
+    $macaddy = $macaddress
+  }
+
   network_if_base { $title:
     ensure       => $ensure,
     ipaddress    => '',
     netmask      => '',
     gateway      => '',
-    macaddress   => $macaddress,
+    macaddress   => $macaddy,
     bootproto    => 'none',
     ipv6address  => '',
     ipv6gateway  => '',
