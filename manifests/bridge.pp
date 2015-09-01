@@ -47,6 +47,8 @@ define network::bridge (
   validate_bool($stp)
   validate_bool($ipv6init)
 
+  ensure_packages('bridge-utils')
+
   include '::network'
 
   $interface = $name
@@ -70,6 +72,7 @@ define network::bridge (
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => template('network/ifcfg-br.erb'),
+    require => Package['bridge-utils'],
     notify  => Service['network'],
   }
 } # define network::bridge
