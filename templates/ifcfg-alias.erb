@@ -11,6 +11,8 @@ TYPE=Ethernet
 <% end -%>
 <% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
+<% if @ipv6address %>IPV6ADDR=<%= @ipv6address %>
+<% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>
 NM_CONTROLLED=no
