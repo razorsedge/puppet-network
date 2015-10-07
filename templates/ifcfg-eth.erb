@@ -3,7 +3,7 @@
 ###
 DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
-<% if @macaddress %>HWADDR=<%= @macaddress %>
+<% if @macaddress and @macaddress != '' %>HWADDR=<%= @macaddress %>
 <% end -%>
 ONBOOT=<%= @onboot %>
 HOTPLUG=<%= @onboot %>
