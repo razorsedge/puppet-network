@@ -37,7 +37,5 @@ and remove the interface.
           ensure       => "up",
         }
 
-3. Make sure bridge-utils package is installed when using bridging configs.
-
-4. Test out the netcf package.
+3. Test out the netcf package.
 

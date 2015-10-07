@@ -105,6 +105,7 @@ describe 'network::bridge::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { should contain_package('bridge-utils') }
   end
 
   context 'optional parameters' do
@@ -164,6 +165,7 @@ describe 'network::bridge::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { should contain_package('bridge-utils') }
   end
 
 end
