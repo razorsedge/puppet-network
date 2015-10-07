@@ -50,4 +50,6 @@ IPV6INIT=yes
 <% end -%>
 <% if @linkdelay %>LINKDELAY=<%= @linkdelay %>
 <% end -%>
+<% if @scope %>SCOPE="<%= @scope %>"
+<% end -%>
 NM_CONTROLLED=no

@@ -66,6 +66,7 @@ class network {
 #   $dns2          - optional
 #   $domain        - optional
 #   $bridge        - optional
+#   $scope         - optional
 #
 # === Actions:
 #
@@ -76,7 +77,6 @@ class network {
 #   METRIC=
 #   HOTPLUG=yes|no
 #   WINDOW=
-#   SCOPE=
 #   SRCADDR=
 #   NOZEROCONF=yes
 #   PERSISTENT_DHCLIENT=yes|no|1|0
@@ -115,7 +115,8 @@ define network_if_base (
   $dns2 = undef,
   $domain = undef,
   $bridge = undef,
-  $linkdelay = undef
+  $linkdelay = undef,
+  $scope = undef
 ) {
   # Validate our booleans
   validate_bool($userctl)
