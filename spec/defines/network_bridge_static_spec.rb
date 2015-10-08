@@ -105,6 +105,7 @@ describe 'network::bridge::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { should contain_package('bridge-utils') }
   end
 
   context 'optional parameters' do
@@ -126,6 +127,7 @@ describe 'network::bridge::static', :type => 'define' do
       :stp           => true,
       :delay         => '1000',
       :bridging_opts => 'hello_time=200 priority=65535',
+      :scope         => 'peer 1.2.3.1',
     }
     end
     let :facts do {
@@ -160,10 +162,12 @@ describe 'network::bridge::static', :type => 'define' do
         'DELAY=1000',
         'STP=yes',
         'BRIDGING_OPTS="hello_time=200 priority=65535"',
+        'SCOPE="peer 1.2.3.1"',
         'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }
+    it { should contain_package('bridge-utils') }
   end
 
 end

@@ -20,6 +20,7 @@
 #   $stp           - optional - defaults to false
 #   $delay         - optional - defaults to 30
 #   $bridging_opts - optional
+#   $scope         - optional
 #
 # === Actions:
 #
@@ -64,7 +65,8 @@ define network::bridge::static (
   $domain = undef,
   $stp = false,
   $delay = '30',
-  $bridging_opts = undef
+  $bridging_opts = undef,
+  $scope = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -79,6 +81,8 @@ define network::bridge::static (
   validate_bool($stp)
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
+
+  ensure_packages('bridge-utils')
 
   include '::network'
 
@@ -111,6 +115,7 @@ define network::bridge::static (
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => template('network/ifcfg-br.erb'),
+    require => Package['bridge-utils'],
     notify  => Service['network'],
   }
 } # define network::bridge::static
