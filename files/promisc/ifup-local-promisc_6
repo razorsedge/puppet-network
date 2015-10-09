@@ -1,0 +1,11 @@
+C=0
+
+PROM=$(egrep -i 'promisc' /etc/sysconfig/network-scripts/ifcfg-$1 | awk -F"=" '{ print $2 }' | sed 's/\"//g' )
+
+if [ "$PROM" = "yes" ];
+then
+/sbin/ip link set $1 promisc on
+echo RC=$?
+fi
+
+exit $RC

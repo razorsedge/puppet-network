@@ -66,4 +66,6 @@ check_link_down() {
 <% end -%>
 <% if @metric %>METRIC=<%= @metric %>
 <% end -%>
+<% if @promisc %>PROMISC=yes
+<% end -%>
 NM_CONTROLLED=no
