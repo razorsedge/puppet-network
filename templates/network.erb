@@ -15,6 +15,7 @@ NETWORKING=yes
 <% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
 <% if @gatewaydev %>GATEWAYDEV=<%= @gatewaydev %>
+<% elsif @gatewaydev_from_mac %>GATEWAYDEV=<%= @gatewaydev_from_mac %>
 <% end -%>
 <% if @nisdomain %>NISDOMAIN=<%= @nisdomain %>
 <% end -%>
