@@ -10,7 +10,7 @@ NETWORKING=yes
 <% end -%>
 <% end -%>
 <% if @hostname %>HOSTNAME=<%= @hostname %>
-<% else %>HOSTNAME=<%= scope.lookupvar('::fqdn') %>
+<% else %>HOSTNAME=<%= scope.lookupvar('::hostname') %>
 <% end -%>
 <% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
