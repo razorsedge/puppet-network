@@ -59,15 +59,16 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network::global (
-  $hostname       = undef,
-  $gateway        = undef,
-  $gatewaydev     = undef,
-  $ipv6gateway    = undef,
-  $ipv6defaultdev = undef,
-  $nisdomain      = undef,
-  $vlan           = undef,
-  $ipv6networking = false,
-  $nozeroconf     = undef
+  $hostname              = undef,
+  $gateway               = undef,
+  $gatewaydev            = undef,
+  $gatewaydev_macaddress = undef,
+  $ipv6gateway           = undef,
+  $ipv6defaultdev        = undef,
+  $nisdomain             = undef,
+  $vlan                  = undef,
+  $ipv6networking        = false,
+  $nozeroconf            = undef
 ) {
   # Validate our data
   if $gateway {
@@ -76,6 +77,9 @@ class network::global (
   if $ipv6gateway {
     if ! is_ip_address($ipv6gateway) { fail("${ipv6gateway} is not an IPv6 address.") }
   }
+  if $gatewaydev_macaddress {
+    if ! is_mac_address($gatewaydev_macaddress) { fail("${gatewaydev_macaddress} is not a valid mac address.") }
+  }
 
   validate_bool($ipv6networking)
 
@@ -83,6 +87,14 @@ class network::global (
   if $vlan {
     $states = [ '^yes$', '^no$' ]
     validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
+  }
+
+  # Set the gateway device if its mac address is given instead
+  if is_mac_address($gatewaydev_macaddress){
+    $gatewaydev_from_mac = inline_template('<% interfaces.split(",").each do |ifn| %><% if gatewaydev_macaddress == scope.lookupvar("macaddress_#{ifn}") || gatewaydev_macaddress.downcase == scope.lookupvar("macaddress_#{ifn}") %><%= ifn %><% end %><% end %>')
+    if !$gatewaydev_from_mac {
+      fail('Could not find the gateway device name for the given macaddress...')
+    }
   }
 
   validate_bool($ipv6networking)

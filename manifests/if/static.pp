@@ -50,8 +50,8 @@
 #
 define network::if::static (
   $ensure,
-  $ipaddress,
-  $netmask,
+  $ipaddress = undef,
+  $netmask = undef,
   $gateway = undef,
   $ipv6address = undef,
   $ipv6init = false,
@@ -70,7 +70,9 @@ define network::if::static (
   $scope = undef
 ) {
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipaddress {
+    if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  }
   if $ipv6address {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
   }
@@ -89,26 +91,30 @@ define network::if::static (
   validate_bool($peerdns)
   validate_bool($ipv6peerdns)
 
-  network_if_base { $title:
-    ensure       => $ensure,
-    ipv6init     => $ipv6init,
-    ipaddress    => $ipaddress,
-    ipv6address  => $ipv6address,
-    netmask      => $netmask,
-    gateway      => $gateway,
-    ipv6gateway  => $ipv6gateway,
-    ipv6autoconf => $ipv6autoconf,
-    macaddress   => $macaddy,
-    bootproto    => 'none',
-    userctl      => $userctl,
-    mtu          => $mtu,
-    ethtool_opts => $ethtool_opts,
-    peerdns      => $peerdns,
-    ipv6peerdns  => $ipv6peerdns,
-    dns1         => $dns1,
-    dns2         => $dns2,
-    domain       => $domain,
-    linkdelay    => $linkdelay,
-    scope        => $scope,
+  $numConfiguredInterfaces = inline_template('<% count = 0 %><% interfaces.split(",").each do |ifn| %><% if name == scope.lookupvar("macaddress_#{ifn}") || name.downcase == scope.lookupvar("macaddress_#{ifn}") %><% count += 1 %><% end %><% end %><%= count %>')
+
+  if $numConfiguredInterfaces < 1 {
+    network_if_base { $title:
+      ensure       => $ensure,
+      ipv6init     => $ipv6init,
+      ipaddress    => $ipaddress,
+      ipv6address  => $ipv6address,
+      netmask      => $netmask,
+      gateway      => $gateway,
+      ipv6gateway  => $ipv6gateway,
+      ipv6autoconf => $ipv6autoconf,
+      macaddress   => $macaddy,
+      bootproto    => 'none',
+      userctl      => $userctl,
+      mtu          => $mtu,
+      ethtool_opts => $ethtool_opts,
+      peerdns      => $peerdns,
+      ipv6peerdns  => $ipv6peerdns,
+      dns1         => $dns1,
+      dns2         => $dns2,
+      domain       => $domain,
+      linkdelay    => $linkdelay,
+      scope        => $scope,
+    }
   }
 } # define network::if::static

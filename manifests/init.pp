@@ -23,11 +23,11 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network {
-  # Only run on RedHat derived systems.
+# Only run on RedHat derived systems.
   case $::osfamily {
     'RedHat': { }
     default: {
-      fail('This network module only supports RedHat-based systems.')
+    fail('This network module only supports RedHat-based systems.')
     }
   }
 
@@ -35,8 +35,9 @@ class network {
     ensure     => 'running',
     enable     => true,
     hasrestart => true,
-    hasstatus  => true,
+    hasstatus  => true
   }
+
 } # class network
 
 # == Definition: network_if_base
@@ -96,9 +97,10 @@ class network {
 #
 define network_if_base (
   $ensure,
-  $ipaddress,
-  $netmask,
-  $macaddress,
+  $ipaddress       = undef,
+  $netmask         = undef,
+  $macaddress      = undef,
+  $vlanId          = undef,
   $gateway         = undef,
   $ipv6address     = undef,
   $ipv6gateway     = undef,
@@ -111,6 +113,7 @@ define network_if_base (
   $ethtool_opts    = undef,
   $bonding_opts    = undef,
   $isalias         = false,
+  $isethernet      = true,
   $peerdns         = false,
   $ipv6peerdns     = false,
   $dns1            = undef,
@@ -120,9 +123,9 @@ define network_if_base (
   $linkdelay       = undef,
   $scope           = undef,
   $linkdelay       = undef,
-  $check_link_down = false
+  $check_link_down = false,
 ) {
-  # Validate our booleans
+# Validate our booleans
   validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
@@ -130,15 +133,22 @@ define network_if_base (
   validate_bool($ipv6autoconf)
   validate_bool($ipv6peerdns)
   validate_bool($check_link_down)
-  # Validate our regular expressions
+# Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   include '::network'
 
-  $interface = $name
+  if is_mac_address($name){
+    $interface = inline_template('<% interfaces.split(",").each do |ifn| %><% if name.downcase == scope.lookupvar("macaddress_#{ifn}") || name == scope.lookupvar("macaddress_#{ifn}") %><%= ifn %><% end %><% end %>')
+    if !$interface {
+      fail('Could not find the interface name for the given macaddress...')
+    }
+  } else {
+    $interface = $name
+  }
 
-  # Deal with the case where $dns2 is non-empty and $dns1 is empty.
+# Deal with the case where $dns2 is non-empty and $dns1 is empty.
   if $dns2 {
     if !$dns1 {
       $dns1_real = $dns2
@@ -168,13 +178,25 @@ define network_if_base (
     $iftemplate = template('network/ifcfg-eth.erb')
   }
 
-  file { "ifcfg-${interface}":
-    ensure  => 'present',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => $iftemplate,
-    notify  => Service['network'],
+  if $vlanId {
+    file { "ifcfg-${interface}.${vlanId}":
+      ensure  => 'present',
+      mode    => '0644',
+      owner   => 'root',
+      group   => 'root',
+      path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
+      content => $iftemplate,
+      notify => Service['network'],
+    }
+  } else {
+    file { "ifcfg-${interface}":
+      ensure  => 'present',
+      mode    => '0644',
+      owner   => 'root',
+      group   => 'root',
+      path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
+      content => $iftemplate,
+      notify => Service['network'],
+    }
   }
 } # define network_if_base

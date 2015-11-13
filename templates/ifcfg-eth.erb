@@ -1,13 +1,17 @@
 ###
 ### File managed by Puppet
 ###
-DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
 <% if @macaddress and @macaddress != '' %>HWADDR=<%= @macaddress %>
 <% end -%>
 ONBOOT=<%= @onboot %>
 HOTPLUG=<%= @onboot %>
-TYPE=Ethernet
+<% if @isethernet %>TYPE=Ethernet<% end -%>
+<% if @vlanId and @vlanId != '' %>VLAN=yes
+DEVICE=<%= @interface %>.<%= @vlanId %>
+<% else %>
+DEVICE=<%= @interface %>
+<% end -%>
 <% if @ipaddress and @ipaddress != '' %>IPADDR=<%= @ipaddress %>
 <% end -%>
 <% if @netmask and @netmask != '' %>NETMASK=<%= @netmask %>

@@ -222,6 +222,15 @@ Normal interface - VLAN - static (minimal):
       netmask   => '255.255.255.0',
     }
 
+Using mac address instead of interface name - find interface by its macaddress and modify its configuration (supported for network::if::static and network::bond::slave resources only at the moment):
+
+    network::if::static { 'fe:fe:fe:aa:aa:aa':
+      ensure       => 'up',
+      ipaddress    => '1.2.3.6',
+      netmask      => '255.255.255.0',
+      gateway      => '1.2.3.1',
+    }
+
 Notes
 -----
 

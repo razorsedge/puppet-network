@@ -43,16 +43,29 @@ define network::bond::slave (
 
   include '::network'
 
-  $interface = $name
-
-  file { "ifcfg-${interface}":
-    ensure  => 'present',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-bond.erb'),
-    before  => File["ifcfg-${master}"],
-    notify  => Service['network'],
+  if is_mac_address($name){
+    $interface = inline_template('<% interfaces.split(",").each do |ifn| %><% if name == scope.lookupvar("macaddress_#{ifn}") %><%= ifn %><% end %><% end %>')
+    if !$interface {
+      fail('Could not find the interface name for the given macaddress...')
+    }
+  } else {
+    $interface = $name
   }
+
+  $alreadyConfigured = $master in split($::interfaces, ',')
+
+  if !$alreadyConfigured {
+
+    file { "ifcfg-${interface}":
+      ensure  => 'present',
+      mode    => '0644',
+      owner   => 'root',
+      group   => 'root',
+      path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
+      content => template('network/ifcfg-bond.erb'),
+      before  => File["ifcfg-${master}"],
+      notify  => Service['network'],
+    }
+  }
+
 } # define network::bond::slave
