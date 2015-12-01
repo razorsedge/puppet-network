@@ -1,6 +1,6 @@
 {
   "name": "razorsedge-network",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "author": "razorsedge",
   "summary": "Manage RedHat traditional network configuration via static and dhcp configuration of normal and bonded interfaces as well as bridges and VLANs.",
   "license": "Apache-2.0",

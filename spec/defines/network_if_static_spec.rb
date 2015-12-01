@@ -91,6 +91,7 @@ describe 'network::if::static', :type => 'define' do
       :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
       :ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       :linkdelay    => '5',
+      :scope        => 'peer 1.2.3.1',
     }
     end
     let :facts do {
@@ -130,6 +131,7 @@ describe 'network::if::static', :type => 'define' do
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'IPV6_PEERDNS=yes',
         'LINKDELAY=5',
+        'SCOPE="peer 1.2.3.1"',
         'NM_CONTROLLED=no',
       ])
     end
