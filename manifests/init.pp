@@ -117,7 +117,6 @@ define network_if_base (
   $dns2            = undef,
   $domain          = undef,
   $bridge          = undef,
-  $linkdelay       = undef,
   $scope           = undef,
   $linkdelay       = undef,
   $check_link_down = false
