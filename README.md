@@ -218,6 +218,7 @@ Normal interface - VLAN - static (minimal):
 
     network::if::static { 'eth0.330':
       ensure    => 'up',
+      vlan      => true,
       ipaddress => '10.2.3.248',
       netmask   => '255.255.255.0',
     }

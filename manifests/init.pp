@@ -100,6 +100,7 @@ define network_if_base (
   $netmask,
   $macaddress,
   $gateway         = undef,
+  $vlan            = false,
   $ipv6address     = undef,
   $ipv6gateway     = undef,
   $ipv6init        = false,
@@ -123,6 +124,7 @@ define network_if_base (
   $check_link_down = false
 ) {
   # Validate our booleans
+  validate_bool($vlan)
   validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
@@ -163,6 +165,10 @@ define network_if_base (
     $onboot = $ensure ? {
       'up'    => 'yes',
       'down'  => 'no',
+      default => undef,
+    }
+    $vlanyes = $vlan ? {
+      true    => 'yes',
       default => undef,
     }
     $iftemplate = template('network/ifcfg-eth.erb')
