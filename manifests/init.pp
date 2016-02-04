@@ -69,6 +69,9 @@ class network {
 #   $scope           - optional
 #   $linkdelay       - optional
 #   $check_link_down - optional
+#   $linkdelay       - optional
+#   $ipv6sec         - optional
+#   $aliases         - optional
 #
 # === Actions:
 #
@@ -120,7 +123,9 @@ define network_if_base (
   $linkdelay       = undef,
   $scope           = undef,
   $linkdelay       = undef,
-  $check_link_down = false
+  $check_link_down = false,
+  $ipv6sec         = undef,
+  $aliases         = [],
 ) {
   # Validate our booleans
   validate_bool($userctl)

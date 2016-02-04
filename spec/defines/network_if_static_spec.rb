@@ -90,8 +90,11 @@ describe 'network::if::static', :type => 'define' do
       :ipv6peerdns  => true,
       :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
       :ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
+      :ipv6sec      => '123:4567:89ab:cdef:123:4567:89ab:cdf0/64 123:4567:89ab:cdef:123:4567:89ab:cdf1/64',
       :linkdelay    => '5',
       :scope        => 'peer 1.2.3.1',
+      :aliases      => [ { 'ipaddr' => '1.2.3.5', 'netmask' => '255.255.255.0' },
+                         { 'ipaddr' => '1.2.3.6', 'prefix' => '24' } ],
     }
     end
     let :facts do {
@@ -130,9 +133,14 @@ describe 'network::if::static', :type => 'define' do
         'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'IPV6_PEERDNS=yes',
+        'IPV6ADDR_SECONDARIES=123:4567:89ab:cdef:123:4567:89ab:cdf0/64 123:4567:89ab:cdef:123:4567:89ab:cdf1/64',
         'LINKDELAY=5',
         'SCOPE="peer 1.2.3.1"',
         'NM_CONTROLLED=no',
+        'IPADDR1=1.2.3.5',
+        'NETMASK1=255.255.255.0',
+        'IPADDR2=1.2.3.6',
+        'PREFIX2=24',
       ])
     end
     it { should contain_service('network') }
