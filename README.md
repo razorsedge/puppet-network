@@ -45,13 +45,22 @@ Global network setting with IPv6 enabled with optional default device for IPv6 t
       ipv6defaultdev => 'eth1',
     }
 
-
 Normal interface - static (minimal):
 
     network::if::static { 'eth0':
       ensure    => 'up',
       ipaddress => '1.2.3.248',
       netmask   => '255.255.255.128',
+    }
+
+Normal interface - static (using un-docmented alias addresses):
+
+    network::if::static { 'eth0':
+      ensure    => 'up',
+      ipaddress => '1.2.3.248',
+      netmask   => '255.255.255.128',
+      aliases   => [ { ipaddr => '1.2.3.249', netmask => '255.255.255.128' },
+                     { ipaddr => '1.2.3.250', prefix  => '25' } ],
     }
 
 Normal interface - static:
@@ -67,6 +76,22 @@ Normal interface - static:
       ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       mtu          => '9000',
       ethtool_opts => 'autoneg off speed 1000 duplex full',
+    }
+
+Normal interface - static - with IPv6 Secondaries:
+
+    network::if::static { 'eth1':
+      ensure       => 'up',
+      ipaddress    => '1.2.3.4',
+      netmask      => '255.255.255.0',
+      gateway      => '1.2.3.1',
+      macaddress   => 'fe:fe:fe:aa:aa:aa',
+      ipv6init     => true,
+      ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+      ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
+      mtu          => '9000',
+      ethtool_opts => 'autoneg off speed 1000 duplex full',
+      ipv6sec      => '123:4567:89ab:cdef:123:4567:89ab:cdf0/64 123:4567:89ab:cdef::1:1/64
     }
 
 Normal interface - dhcp (minimal):
