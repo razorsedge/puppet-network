@@ -61,6 +61,9 @@ describe 'network::if::dynamic', :type => 'define' do
       :peerdns         => true,
       :linkdelay       => '5',
       :check_link_down => true,
+      :defroute     => 'yes',
+      :metric       => '10',
+      :zone         => 'trusted',
     }
     end
     let :facts do {
@@ -90,6 +93,9 @@ describe 'network::if::dynamic', :type => 'define' do
         'USERCTL=yes',
         'LINKDELAY=5',
         'NM_CONTROLLED=no',
+        'DEFROUTE=yes',
+        'ZONE=trusted',
+        'METRIC=10',
       ])
     end
     it { should contain_service('network') }

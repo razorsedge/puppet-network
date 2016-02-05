@@ -69,6 +69,9 @@ describe 'network::alias', :type => 'define' do
       :netmask   => '255.255.0.0',
       :gateway   => '33.2.3.1',
       :userctl   => true,
+      :metric       => '10',
+      :zone         => 'trusted',
+      
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -91,6 +94,8 @@ describe 'network::alias', :type => 'define' do
         'GATEWAY=33.2.3.1',
         'USERCTL=yes',
         'NM_CONTROLLED=no',
+        'ZONE=trusted',
+        'METRIC=10',
       ])
     end
     it { should contain_service('network') }

@@ -10,6 +10,9 @@
 #   $netmask   - required
 #   $gateway   - optional
 #   $userctl   - optional - defaults to false
+#   $nmcontrol - optional - defaults to false
+#   $zone      - optional
+#   $metric    - optional
 #
 # === Actions:
 #
@@ -38,7 +41,10 @@ define network::alias (
   $gateway = undef,
   $ipv6address = undef,
   $ipv6gateway = undef,
-  $userctl = false
+  $userctl = false,
+  $nmcontrol = false,
+  $zone = undef,
+  $metric = undef
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -57,6 +63,9 @@ define network::alias (
     userctl      => $userctl,
     mtu          => '',
     ethtool_opts => '',
-    isalias      => true
+    isalias      => true,
+    nmcontrol    => $nmcontrol,
+    zone         => $zone,
+    metric       => $metric,
   }
 } # define network::alias

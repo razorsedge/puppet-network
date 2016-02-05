@@ -98,6 +98,9 @@ describe 'network::bond::dynamic', :type => 'define' do
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
       :bonding_opts => 'mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254',
+      :defroute     => 'yes',
+      :metric       => '10',
+      :zone         => 'trusted',
     }
     end
     let :facts do {
@@ -124,6 +127,9 @@ describe 'network::bond::dynamic', :type => 'define' do
         'BONDING_OPTS="mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254"',
         'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
         'NM_CONTROLLED=no',
+        'DEFROUTE=yes',
+        'ZONE=trusted',
+        'METRIC=10',
       ])
     end
     it { should contain_service('network') }
