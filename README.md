@@ -1,8 +1,17 @@
 Puppet Network Module
 =====================
 
+Parent Repo Status
+------------------
+
 master branch [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-network.png?branch=master)](http://travis-ci.org/razorsedge/puppet-network)
 develop branch [![Build Status](https://secure.travis-ci.org/razorsedge/puppet-network.png?branch=develop)](http://travis-ci.org/razorsedge/puppet-network)
+
+Current Repo Status
+-------------------
+
+master branch [![Build Status](https://secure.travis-ci.org/gorbyo/puppet-network.png?branch=master)](http://travis-ci.org/gorbyo/puppet-network)
+develop branch [![Build Status](https://secure.travis-ci.org/gorbyo/puppet-network.png?branch=develop)](http://travis-ci.org/gorbyo/puppet-network)
 
 Introduction
 ------------
