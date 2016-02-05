@@ -22,6 +22,10 @@
 #   $dns2         - optional
 #   $domain       - optional
 #   $scope        - optional
+#   $nmcontrol    - optional - defaults to false
+#   $zone         - optional
+#   $metric       - optional
+#   $defroute     - optional
 #
 # === Actions:
 #
@@ -67,7 +71,11 @@ define network::if::static (
   $dns2 = undef,
   $domain = undef,
   $linkdelay = undef,
-  $scope = undef
+  $scope = undef,
+  $nmcontrol = false,
+  $zone = undef,
+  $defroute = undef,
+  $metric = undef
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -110,5 +118,9 @@ define network::if::static (
     domain       => $domain,
     linkdelay    => $linkdelay,
     scope        => $scope,
+    nmcontrol    => $nmcontrol,
+    zone         => $zone,
+    defroute     => $defroute,
+    metric       => $metric,
   }
 } # define network::if::static
