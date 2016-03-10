@@ -175,4 +175,41 @@ describe 'network::if::static', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'optional parameters - manage_hwaddr' do
+    let(:title) { 'eth0' }
+    let :params do {
+      :ensure         => 'up',
+      :ipaddress      => '1.2.3.4',
+      :netmask        => '255.255.255.0',
+      :manage_hwaddr  => false,
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :macaddress_eth0 => 'bb:cc:bb:cc:bb:cc',
+    }
+    end
+    it { should contain_file('ifcfg-eth0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
+      :notify => 'Service[network]'
+    )}
+    it 'should contain File[ifcfg-eth0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth0', [
+        'DEVICE=eth0',
+        'BOOTPROTO=none',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'IPADDR=1.2.3.4',
+        'NETMASK=255.255.255.0',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+  end
+
 end

@@ -54,6 +54,15 @@ Normal interface - static (minimal):
       netmask   => '255.255.255.128',
     }
 
+Normal interface - static (minimal without HWADDR in ifcfg-file):
+
+    network::if::static { 'eth0':
+      ensure        => 'up',
+      ipaddress     => '1.2.3.248',
+      netmask       => '255.255.255.128',
+      manage_hwaddr => false,
+    }
+
 Normal interface - static:
 
     network::if::static { 'eth1':
@@ -73,6 +82,13 @@ Normal interface - dhcp (minimal):
 
     network::if::dynamic { 'eth2':
       ensure => 'up',
+    }
+
+Normal interface - dhcp (minimal without HWADDR in ifcfg-file):
+
+    network::if::dynamic { 'eth2':
+      ensure        => 'up',
+      manage_hwaddr => false,
     }
 
 Normal interface - dhcp:
