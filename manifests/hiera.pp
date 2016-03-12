@@ -20,11 +20,11 @@
 #
 # === Authors:
 #
-# Mike Arnold <mike@razorsedge.org>
+# Elyse Salberg <elyse_salberg@putnam.com>
 #
 # === Copyright:
 #
-# Copyright (C) 2011 Mike Arnold, unless otherwise noted.
+# Copyright (C) 2015 Elyse Salberg, unless otherwise noted.
 #
 class network::hiera {
   # Merge hashes from multiple hiera layers
