@@ -20,7 +20,7 @@ describe 'network::global', :type => 'class' do
     let(:params) {{}}
     let :facts do {
       :osfamily => 'RedHat',
-      :fqdn     => 'localhost.localdomain',
+      :hostname => 'localhost',
     }
     end
     it { should contain_class('network') }
@@ -36,7 +36,7 @@ describe 'network::global', :type => 'class' do
       verify_contents(catalogue, 'network.sysconfig', [
         'NETWORKING=yes',
         'NETWORKING_IPV6=no',
-        'HOSTNAME=localhost.localdomain',
+        'HOSTNAME=localhost',
       ])
     end
   end
