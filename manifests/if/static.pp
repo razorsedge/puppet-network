@@ -22,7 +22,6 @@
 #   $dns2         - optional
 #   $domain       - optional
 #   $scope        - optional
-#   $nmcontrol    - optional - defaults to false
 #   $zone         - optional
 #   $metric       - optional
 #   $defroute     - optional
@@ -72,7 +71,6 @@ define network::if::static (
   $domain = undef,
   $linkdelay = undef,
   $scope = undef,
-  $nmcontrol = false,
   $zone = undef,
   $defroute = undef,
   $metric = undef
@@ -118,7 +116,6 @@ define network::if::static (
     domain       => $domain,
     linkdelay    => $linkdelay,
     scope        => $scope,
-    nmcontrol    => $nmcontrol,
     zone         => $zone,
     defroute     => $defroute,
     metric       => $metric,

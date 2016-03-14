@@ -10,7 +10,6 @@
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
-#   $nmcontrol    - optional - defaults to false
 #   $zone         - optional
 #   $metric       - optional
 #   $defroute     - optional
@@ -40,7 +39,6 @@ define network::bond::dynamic (
   $mtu = undef,
   $ethtool_opts = undef,
   $bonding_opts = 'miimon=100',
-  $nmcontrol = false,
   $zone = undef,
   $defroute = undef,
   $metric = undef
@@ -61,7 +59,6 @@ define network::bond::dynamic (
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
-    nmcontrol    => $nmcontrol,
     zone         => $zone,
     defroute     => $defroute,
     metric       => $metric,

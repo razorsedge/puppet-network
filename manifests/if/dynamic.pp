@@ -14,7 +14,6 @@
 #   $peerdns         - optional
 #   $linkdelay       - optional
 #   $check_link_down - optional
-#   $nmcontrol       - optional - defaults to false
 #   $zone            - optional
 #   $metric          - optional
 #   $defroute        - optional
@@ -56,7 +55,6 @@ define network::if::dynamic (
   $linkdelay       = undef,
   $check_link_down = false,
   $defroute        = undef,
-  $nmcontrol       = false,
   $zone            = undef,
   $metric          = undef
 ) {
@@ -90,7 +88,6 @@ define network::if::dynamic (
     linkdelay       => $linkdelay,
     check_link_down => $check_link_down,
     defroute        => $defroute,
-    nmcontrol       => $nmcontrol,
     zone            => $zone,
     metric          => $metric,
   }
