@@ -92,10 +92,10 @@ describe 'network::if::dynamic', :type => 'define' do
         'ETHTOOL_OPTS="speed 100 duplex full autoneg off"',
         'USERCTL=yes',
         'LINKDELAY=5',
-        'NM_CONTROLLED=no',
         'DEFROUTE=yes',
         'ZONE=trusted',
         'METRIC=10',
+        'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }

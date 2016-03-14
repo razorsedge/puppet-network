@@ -93,9 +93,9 @@ describe 'network::alias', :type => 'define' do
         'NETMASK=255.255.0.0',
         'GATEWAY=33.2.3.1',
         'USERCTL=yes',
-        'NM_CONTROLLED=no',
         'ZONE=trusted',
         'METRIC=10',
+        'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }
