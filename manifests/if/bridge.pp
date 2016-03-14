@@ -8,6 +8,7 @@
 #   $bridge       - required - bridge interface name
 #   $mtu          - optional
 #   $ethtool_opts - optional
+#   $macaddress   - optional
 #
 # === Actions:
 #

@@ -71,7 +71,6 @@ describe 'network::alias', :type => 'define' do
       :userctl   => true,
       :metric       => '10',
       :zone         => 'trusted',
-      
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
