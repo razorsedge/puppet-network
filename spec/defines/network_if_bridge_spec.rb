@@ -58,6 +58,7 @@ describe 'network::if::bridge', :type => 'define' do
       :bridge       => 'br55',
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
+      :macaddress   => '00:00:00:00:00:00',
     }
     end
     let :facts do {
@@ -77,6 +78,7 @@ describe 'network::if::bridge', :type => 'define' do
       verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
+        'HWADDR=00:00:00:00:00:00',
         'ONBOOT=no',
         'HOTPLUG=no',
         'TYPE=Ethernet',

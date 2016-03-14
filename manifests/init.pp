@@ -53,6 +53,7 @@ class network {
 #   $ipaddress       - required
 #   $netmask         - required
 #   $macaddress      - required
+#   $manage_hwaddr   - optional - defaults to true
 #   $gateway         - optional
 #   $bootproto       - optional
 #   $userctl         - optional - defaults to false
@@ -102,6 +103,7 @@ define network_if_base (
   $ipaddress,
   $netmask,
   $macaddress,
+  $manage_hwaddr   = true,
   $gateway         = undef,
   $ipv6address     = undef,
   $ipv6gateway     = undef,
@@ -135,6 +137,7 @@ define network_if_base (
   validate_bool($ipv6autoconf)
   validate_bool($ipv6peerdns)
   validate_bool($check_link_down)
+  validate_bool($manage_hwaddr)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
