@@ -10,7 +10,6 @@
 #   $netmask   - required
 #   $gateway   - optional
 #   $userctl   - optional - defaults to false
-#   $nmcontrol - optional - defaults to false
 #   $zone      - optional
 #   $metric    - optional
 #
@@ -42,7 +41,6 @@ define network::alias (
   $ipv6address = undef,
   $ipv6gateway = undef,
   $userctl = false,
-  $nmcontrol = false,
   $zone = undef,
   $metric = undef
 ) {
@@ -64,7 +62,6 @@ define network::alias (
     mtu          => '',
     ethtool_opts => '',
     isalias      => true,
-    nmcontrol    => $nmcontrol,
     zone         => $zone,
     metric       => $metric,
   }

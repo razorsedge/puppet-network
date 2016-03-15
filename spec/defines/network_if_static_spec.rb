@@ -135,10 +135,10 @@ describe 'network::if::static', :type => 'define' do
         'IPV6_PEERDNS=yes',
         'LINKDELAY=5',
         'SCOPE="peer 1.2.3.1"',
-        'NM_CONTROLLED=no',
         'DEFROUTE=yes',
         'ZONE=trusted',
         'METRIC=10',
+        'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }

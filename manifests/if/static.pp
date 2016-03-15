@@ -120,8 +120,8 @@ define network::if::static (
     domain        => $domain,
     linkdelay     => $linkdelay,
     scope         => $scope,
-    zone         => $zone,
-    defroute     => $defroute,
-    metric       => $metric,
+    zone          => $zone,
+    defroute      => $defroute,
+    metric        => $metric,
   }
 } # define network::if::static

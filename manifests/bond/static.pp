@@ -12,7 +12,6 @@
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
-#   $nmcontrol    - optional
 #   $zone         - optional
 #   $metric       - optional
 #   $defroute     - optional
@@ -55,7 +54,6 @@ define network::bond::static (
   $dns1 = undef,
   $dns2 = undef,
   $domain = undef,
-  $nmcontrol = false,
   $zone = undef,
   $defroute = undef,
   $metric = undef
@@ -91,7 +89,6 @@ define network::bond::static (
     dns1         => $dns1,
     dns2         => $dns2,
     domain       => $domain,
-    nmcontrol    => $nmcontrol,
     zone         => $zone,
     defroute     => $defroute,
     metric       => $metric,

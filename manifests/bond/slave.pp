@@ -35,7 +35,6 @@ define network::bond::slave (
   $macaddress,
   $master,
   $ethtool_opts = undef,
-  $nmcontrol = false,
   $zone = undef,
   $defroute = undef,
   $metric = undef

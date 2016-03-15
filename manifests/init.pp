@@ -70,7 +70,6 @@ class network {
 #   $scope           - optional
 #   $linkdelay       - optional
 #   $check_link_down - optional
-#   $nmcontrol       - optional
 #   $zone            - optional
 #   $metric          - optional
 #   $defroute        - optional
@@ -127,7 +126,6 @@ define network_if_base (
   $scope           = undef,
   $check_link_down = false,
   $defroute        = undef,
-  $nmcontrol       = false,
   $zone            = undef,
   $metric          = undef
 ) {

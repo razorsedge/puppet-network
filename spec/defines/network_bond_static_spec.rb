@@ -178,10 +178,10 @@ describe 'network::bond::static', :type => 'define' do
         'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'IPV6_PEERDNS=yes',
-        'NM_CONTROLLED=no',
         'DEFROUTE=yes',
         'ZONE=trusted',
         'METRIC=10',
+        'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }
