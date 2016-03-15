@@ -113,6 +113,16 @@ describe 'network::global', :type => 'class' do
       end
     end
 
+    context 'manage_hwaddr = foo' do
+      let(:params) {{ :manage_hwaddr  => 'foo' }}
+
+      it 'should fail' do
+        expect {
+          should raise_error(Puppet::Error, /$manage_hwaddr is not a boolean.  It looks to be a String./)
+        }
+      end
+    end
+
   end
 
   context 'on a supported operatingsystem, custom parameters' do

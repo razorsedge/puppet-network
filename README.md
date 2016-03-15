@@ -63,6 +63,15 @@ Normal interface - static (minimal):
       netmask   => '255.255.255.128',
     }
 
+Normal interface - static (minimal without HWADDR in ifcfg-file):
+
+    network::if::static { 'eth0':
+      ensure        => 'up',
+      ipaddress     => '1.2.3.248',
+      netmask       => '255.255.255.128',
+      manage_hwaddr => false,
+    }
+
 Normal interface - static:
 
     network::if::static { 'eth1':
@@ -82,6 +91,13 @@ Normal interface - dhcp (minimal):
 
     network::if::dynamic { 'eth2':
       ensure => 'up',
+    }
+
+Normal interface - dhcp (minimal without HWADDR in ifcfg-file):
+
+    network::if::dynamic { 'eth2':
+      ensure        => 'up',
+      manage_hwaddr => false,
     }
 
 Normal interface - dhcp:
@@ -230,6 +246,32 @@ Normal interface - VLAN - static (minimal):
       ipaddress => '10.2.3.248',
       netmask   => '255.255.255.0',
     }
+
+Hiera
+-----
+
+Hiera can be enabled for all defines by including the hiera class in code:
+
+    include network::hiera
+
+With this include enabled, configuration both in Hiera and in code will be applied.
+
+For example, to configure `network::alias` via Hiera:
+
+    network::alias:
+      'eth0:1':
+        ensure: up
+        ipaddress: 1.2.3.4
+        netmask: 255.255.255.0
+
+The Hiera naming substitutes underscore for any secondary double colons, i.e. specify `network::bond::static` as `network::bond_static` in hiera:
+
+    network::bond_static:
+      bond0:
+        ensure: up
+        ipaddress: 1.2.3.4
+        netmask: 255.255.255.0
+        bonding_opts: 'mode=1 miimon=1000'
 
 Notes
 -----
