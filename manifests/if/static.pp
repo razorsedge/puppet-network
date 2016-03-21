@@ -23,6 +23,7 @@
 #   $dns2           - optional
 #   $domain         - optional
 #   $scope          - optional
+#   $flush          - optional
 #
 # === Actions:
 #
@@ -69,7 +70,8 @@ define network::if::static (
   $dns2 = undef,
   $domain = undef,
   $linkdelay = undef,
-  $scope = undef
+  $scope = undef,
+  $flush = false
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -91,6 +93,7 @@ define network::if::static (
   validate_bool($peerdns)
   validate_bool($ipv6peerdns)
   validate_bool($manage_hwaddr)
+  validate_bool($flush)
 
   network_if_base { $title:
     ensure        => $ensure,
@@ -114,5 +117,6 @@ define network::if::static (
     domain        => $domain,
     linkdelay     => $linkdelay,
     scope         => $scope,
+    flush         => $flush,
   }
 } # define network::if::static
