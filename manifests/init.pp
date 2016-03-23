@@ -72,6 +72,9 @@ class network {
 #   $linkdelay       - optional
 #   $check_link_down - optional
 #   $flush           - optional
+#   $zone            - optional
+#   $metric          - optional
+#   $defroute        - optional
 #
 # === Actions:
 #
@@ -79,9 +82,9 @@ class network {
 #
 # === TODO:
 #
-#   METRIC=
 #   HOTPLUG=yes|no
 #   WINDOW=
+#   SCOPE=
 #   SRCADDR=
 #   NOZEROCONF=yes
 #   PERSISTENT_DHCLIENT=yes|no|1|0
@@ -124,7 +127,10 @@ define network_if_base (
   $linkdelay       = undef,
   $scope           = undef,
   $check_link_down = false,
-  $flush           = false
+  $flush           = false,
+  $defroute        = undef,
+  $zone            = undef,
+  $metric          = undef
 ) {
   # Validate our booleans
   validate_bool($userctl)

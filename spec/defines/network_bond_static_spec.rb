@@ -143,6 +143,9 @@ describe 'network::bond::static', :type => 'define' do
       :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
       :ipv6gateway  => '123:4567:89ab:cdef:123:4567:89ab:1',
       :domain       => 'somedomain.com',
+      :defroute     => 'yes',
+      :metric       => '10',
+      :zone         => 'trusted',
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -175,6 +178,9 @@ describe 'network::bond::static', :type => 'define' do
         'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
         'IPV6_PEERDNS=yes',
+        'DEFROUTE=yes',
+        'ZONE=trusted',
+        'METRIC=10',
         'NM_CONTROLLED=no',
       ])
     end

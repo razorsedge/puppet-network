@@ -24,6 +24,9 @@
 #   $domain         - optional
 #   $scope          - optional
 #   $flush          - optional
+#   $zone           - optional
+#   $metric         - optional
+#   $defroute       - optional
 #
 # === Actions:
 #
@@ -71,7 +74,10 @@ define network::if::static (
   $domain = undef,
   $linkdelay = undef,
   $scope = undef,
-  $flush = false
+  $flush = false,
+  $zone = undef,
+  $defroute = undef,
+  $metric = undef
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -118,5 +124,8 @@ define network::if::static (
     linkdelay     => $linkdelay,
     scope         => $scope,
     flush         => $flush,
+    zone          => $zone,
+    defroute      => $defroute,
+    metric        => $metric,
   }
 } # define network::if::static

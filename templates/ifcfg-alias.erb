@@ -13,4 +13,8 @@ TYPE=Ethernet
 <% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>
+<% if @zone %>ZONE=<%= @zone %>
+<% end -%>
+<% if @metric %>METRIC=<%= @metric %>
+<% end -%>
 NM_CONTROLLED=no

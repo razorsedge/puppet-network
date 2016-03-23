@@ -58,4 +58,10 @@ check_link_down() {
  return 1;
 }
 <% end -%>
+<% if @defroute %>DEFROUTE=<%= @defroute %>
+<% end -%>
+<% if @zone %>ZONE=<%= @zone %>
+<% end -%>
+<% if @metric %>METRIC=<%= @metric %>
+<% end -%>
 NM_CONTROLLED=no
