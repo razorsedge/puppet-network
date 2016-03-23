@@ -69,9 +69,8 @@ describe 'network::alias', :type => 'define' do
       :netmask   => '255.255.0.0',
       :gateway   => '33.2.3.1',
       :userctl   => true,
-      :metric       => '10',
-      :zone         => 'trusted',
-      
+      :metric    => '10',
+      :zone      => 'trusted',
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
