@@ -19,8 +19,10 @@ describe 'network::global', :type => 'class' do
   context 'on a supported operatingsystem, default parameters' do
     let(:params) {{}}
     let :facts do {
-      :osfamily => 'RedHat',
-      :fqdn     => 'localhost.localdomain',
+      :osfamily               => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '7.0',
+      :fqdn                   => 'localhost.localdomain',
     }
     end
     it { should contain_class('network') }
@@ -39,9 +41,10 @@ describe 'network::global', :type => 'class' do
         'HOSTNAME=localhost.localdomain',
       ])
     end
+    it { should_not contain_exec('hostnamectl set-hostname') }
   end
 
-  context 'on a supported operatingsystem, custom parameters' do
+  context 'on a supported operatingsystem, custom parameters, systemd' do
     let :params do {
       :hostname   => 'myHostname',
       :gateway    => '1.2.3.4',
@@ -52,8 +55,10 @@ describe 'network::global', :type => 'class' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
-      :fqdn     => 'localhost.localdomain',
+      :osfamily               => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '7.0',
+      :fqdn                   => 'localhost.localdomain',
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
@@ -68,6 +73,31 @@ describe 'network::global', :type => 'class' do
         'NOZEROCONF=yes',
       ])
     end
+    it { should contain_exec('hostnamectl set-hostname').with(
+      :command => 'hostnamectl set-hostname myHostname',
+      :unless  => 'hostnamectl --static | grep ^myHostname$',
+      :path    => '/bin:/usr/bin'
+    )}
+  end
+
+  context 'on a supported operatingsystem, custom parameters, no systemd' do
+    let :params do {
+      :hostname => 'myHostname',
+    }
+    end
+    let :facts do {
+      :osfamily               => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
+      :fqdn                   => 'localhost.localdomain',
+    }
+    end
+    it 'should contain File[network.sysconfig] with correct contents' do
+      verify_contents(catalogue, 'network.sysconfig', [
+        'HOSTNAME=myHostname',
+      ])
+    end
+    it { should_not contain_exec('hostnamectl set-hostname') }
   end
 
   context 'on a supported operatingsystem, bad parameters' do
