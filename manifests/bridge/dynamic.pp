@@ -49,7 +49,7 @@ define network::bridge::dynamic (
   validate_bool($userctl)
   validate_bool($stp)
 
-  ensure_packages('bridge-utils')
+  ensure_packages(['bridge-utils'])
 
   include '::network'
 
