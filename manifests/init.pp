@@ -36,6 +36,7 @@ class network {
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
+    provider   => 'redhat',
   }
 } # class network
 
@@ -70,6 +71,10 @@ class network {
 #   $scope           - optional
 #   $linkdelay       - optional
 #   $check_link_down - optional
+#   $flush           - optional
+#   $zone            - optional
+#   $metric          - optional
+#   $defroute        - optional
 #
 # === Actions:
 #
@@ -77,9 +82,9 @@ class network {
 #
 # === TODO:
 #
-#   METRIC=
 #   HOTPLUG=yes|no
 #   WINDOW=
+#   SCOPE=
 #   SRCADDR=
 #   NOZEROCONF=yes
 #   PERSISTENT_DHCLIENT=yes|no|1|0
@@ -121,7 +126,11 @@ define network_if_base (
   $bridge          = undef,
   $linkdelay       = undef,
   $scope           = undef,
-  $check_link_down = false
+  $check_link_down = false,
+  $flush           = false,
+  $defroute        = undef,
+  $zone            = undef,
+  $metric          = undef
 ) {
   # Validate our booleans
   validate_bool($userctl)
@@ -132,6 +141,7 @@ define network_if_base (
   validate_bool($ipv6peerdns)
   validate_bool($check_link_down)
   validate_bool($manage_hwaddr)
+  validate_bool($flush)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
@@ -168,6 +178,17 @@ define network_if_base (
       default => undef,
     }
     $iftemplate = template('network/ifcfg-eth.erb')
+  }
+
+  if $flush {
+    exec { 'network-flush':
+      user        => 'root',
+      command     => "ip addr flush dev ${interface}",
+      refreshonly => true,
+      subscribe   => File["ifcfg-${interface}"],
+      before      => Service['network'],
+      path        => '/sbin:/usr/sbin',
+    }
   }
 
   file { "ifcfg-${interface}":

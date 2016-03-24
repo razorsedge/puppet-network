@@ -89,6 +89,30 @@ class network::global (
 
   include '::network'
 
+  case $::operatingsystem {
+    /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
+      case $::operatingsystemrelease {
+        /^[456]/: { $has_systemd = false }
+        default: { $has_systemd = true }
+      }
+    }
+    'Fedora': {
+      case $::operatingsystemrelease {
+        /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17)$/: { $has_systemd = false }
+        default: { $has_systemd = true }
+      }
+    }
+    default: {}
+  }
+
+  if $hostname and $has_systemd {
+    exec { 'hostnamectl set-hostname':
+      command => "hostnamectl set-hostname ${hostname}",
+      unless  => "hostnamectl --static | grep ^${hostname}$",
+      path    => '/bin:/usr/bin',
+    }
+  }
+
   file { 'network.sysconfig':
     ensure  => 'present',
     mode    => '0644',
