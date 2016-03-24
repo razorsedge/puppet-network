@@ -61,6 +61,9 @@ describe 'network::if::dynamic', :type => 'define' do
       :peerdns         => true,
       :linkdelay       => '5',
       :check_link_down => true,
+      :defroute        => 'yes',
+      :metric          => '10',
+      :zone            => 'trusted',
     }
     end
     let :facts do {
@@ -89,6 +92,9 @@ describe 'network::if::dynamic', :type => 'define' do
         'ETHTOOL_OPTS="speed 100 duplex full autoneg off"',
         'USERCTL=yes',
         'LINKDELAY=5',
+        'DEFROUTE=yes',
+        'ZONE=trusted',
+        'METRIC=10',
         'NM_CONTROLLED=no',
       ])
     end
@@ -128,12 +134,12 @@ describe 'network::if::dynamic', :type => 'define' do
   context 'optional parameters - manage_hwaddr' do
     let(:title) { 'eth0' }
     let :params do {
-      :ensure         => 'up',
-      :manage_hwaddr  => false,
+      :ensure        => 'up',
+      :manage_hwaddr => false,
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
+      :osfamily        => 'RedHat',
       :macaddress_eth0 => 'bb:cc:bb:cc:bb:cc',
     }
     end
