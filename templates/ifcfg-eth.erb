@@ -46,6 +46,8 @@ IPV6INIT=yes
 <% if !@ipv6peerdns %>IPV6_PEERDNS=no
 <% else %>IPV6_PEERDNS=yes
 <% end -%>
+<% if @ipv6secondaries and @ipv6secondaries.length > 0 %>IPV6ADDR_SECONDARIES="<%= @ipv6secondaries.join(' ') %>"
+<% end -%>
 <% end -%>
 <% if @bridge %>BRIDGE=<%= @bridge %>
 <% end -%>
