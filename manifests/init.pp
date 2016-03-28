@@ -56,6 +56,7 @@ class network {
 #   $macaddress      - required
 #   $manage_hwaddr   - optional - defaults to true
 #   $gateway         - optional
+#   $noaliasrouting  - optional - defaults to false
 #   $bootproto       - optional
 #   $userctl         - optional - defaults to false
 #   $mtu             - optional
@@ -107,6 +108,7 @@ define network_if_base (
   $macaddress,
   $manage_hwaddr   = true,
   $gateway         = undef,
+  $noaliasrouting  = false,
   $ipv6address     = undef,
   $ipv6gateway     = undef,
   $ipv6init        = false,
@@ -134,6 +136,7 @@ define network_if_base (
   $metric          = undef
 ) {
   # Validate our booleans
+  validate_bool($noaliasrouting)
   validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
