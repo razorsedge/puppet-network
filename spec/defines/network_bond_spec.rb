@@ -98,6 +98,7 @@ describe 'network::bond', :type => 'define' do
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
       :bonding_opts => 'mode=active-backup miimon=100',
+      :zone         => 'trusted',
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -119,6 +120,7 @@ describe 'network::bond', :type => 'define' do
         'MTU=9000',
         'BONDING_OPTS="mode=active-backup miimon=100"',
         'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
+        'ZONE=trusted',
         'NM_CONTROLLED=no',
       ])
     end

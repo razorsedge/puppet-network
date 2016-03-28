@@ -9,6 +9,7 @@
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
+#   $zone         - optional
 #
 # === Actions:
 #
@@ -33,7 +34,8 @@ define network::bond (
   $ensure,
   $mtu = undef,
   $ethtool_opts = undef,
-  $bonding_opts = 'miimon=100'
+  $bonding_opts = 'miimon=100',
+  $zone = undef
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -51,6 +53,7 @@ define network::bond (
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,
+    zone         => $zone,
   }
 
   # Only install "alias bondN bonding" on old OSs that support
