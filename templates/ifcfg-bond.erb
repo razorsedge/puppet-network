@@ -2,7 +2,8 @@
 ### File managed by Puppet
 ###
 DEVICE=<%= @interface %>
-HWADDR=<%= @macaddress %>
+<% if @macaddress and @macaddress != '' %>HWADDR=<%= @macaddress %>
+<% end -%>
 MASTER=<%= @master %>
 SLAVE=yes
 TYPE=Ethernet
