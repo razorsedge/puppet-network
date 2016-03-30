@@ -55,8 +55,8 @@
 #
 define network::if::static (
   $ensure,
-  $ipaddress,
-  $netmask,
+  $ipaddress = undef,
+  $netmask = undef,
   $gateway = undef,
   $ipv6address = undef,
   $ipv6init = false,
@@ -80,7 +80,9 @@ define network::if::static (
   $metric = undef
 ) {
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipaddress {
+    if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  }
   if is_array($ipv6address) {
     if size($ipv6address) > 0 {
       validate_ip_address { $ipv6address: }
