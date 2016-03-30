@@ -11,6 +11,11 @@ TYPE=Ethernet
 <% end -%>
 <% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
+<% if @ipv6address %>IPV6ADDR=<%= @ipv6address %>
+<% end -%>
+<% if !@noaliasrouting %>NO_ALIASROUTING=no
+<% else %>NO_ALIASROUTING=yes
+<% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>
 <% if @zone %>ZONE=<%= @zone %>

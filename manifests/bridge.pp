@@ -47,7 +47,7 @@ define network::bridge (
   validate_bool($stp)
   validate_bool($ipv6init)
 
-  ensure_packages('bridge-utils')
+  ensure_packages(['bridge-utils'])
 
   include '::network'
 

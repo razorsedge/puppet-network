@@ -56,6 +56,7 @@ class network {
 #   $macaddress      - required
 #   $manage_hwaddr   - optional - defaults to true
 #   $gateway         - optional
+#   $noaliasrouting  - optional - defaults to false
 #   $bootproto       - optional
 #   $userctl         - optional - defaults to false
 #   $mtu             - optional
@@ -107,10 +108,12 @@ define network_if_base (
   $macaddress,
   $manage_hwaddr   = true,
   $gateway         = undef,
+  $noaliasrouting  = false,
   $ipv6address     = undef,
   $ipv6gateway     = undef,
   $ipv6init        = false,
   $ipv6autoconf    = false,
+  $ipv6secondaries = undef,
   $bootproto       = 'none',
   $userctl         = false,
   $mtu             = undef,
@@ -133,6 +136,7 @@ define network_if_base (
   $metric          = undef
 ) {
   # Validate our booleans
+  validate_bool($noaliasrouting)
   validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
@@ -201,3 +205,24 @@ define network_if_base (
     notify  => Service['network'],
   }
 } # define network_if_base
+
+# == Definition: validate_ip_address
+#
+# This definition can be used to call is_ip_address on an array of ip addresses.
+#
+# === Parameters:
+#
+# None
+#
+# === Actions:
+#
+# Runs is_ip_address on the name of the define and fails if it is not a valid IP address.
+#
+# === Sample Usage:
+#
+# $ips = [ '10.21.30.248', '123:4567:89ab:cdef:123:4567:89ab:cdef' ]
+# validate_ip_address { $ips: }
+#
+define validate_ip_address {
+  if ! is_ip_address($name) { fail("${name} is not an IP(v6) address.") }
+} # define validate_ip_address
