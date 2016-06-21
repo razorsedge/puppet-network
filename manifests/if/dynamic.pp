@@ -18,6 +18,7 @@
 #   $zone            - optional
 #   $metric          - optional
 #   $defroute        - optional
+#   $restart         - optional - defaults to true
 #
 # === Actions:
 #
@@ -58,7 +59,8 @@ define network::if::dynamic (
   $check_link_down = false,
   $defroute        = undef,
   $zone            = undef,
-  $metric          = undef
+  $metric          = undef,
+  $restart         = true,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -94,5 +96,6 @@ define network::if::dynamic (
     defroute        => $defroute,
     zone            => $zone,
     metric          => $metric,
+    restart         => $restart,
   }
 } # define network::if::dynamic
