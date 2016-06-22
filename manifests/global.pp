@@ -23,6 +23,7 @@
 #   $vlan           - optional - yes|no to enable VLAN kernel module
 #   $ipv6networking - optional - enables / disables IPv6 globally
 #   $nozeroconf     - optional
+#   $restart        - optional - defaults to true
 #
 # === Actions:
 #
@@ -67,7 +68,8 @@ class network::global (
   $nisdomain      = undef,
   $vlan           = undef,
   $ipv6networking = false,
-  $nozeroconf     = undef
+  $nozeroconf     = undef,
+  $restart        = true,
 ) {
   # Validate our data
   if $gateway {
@@ -78,6 +80,7 @@ class network::global (
   }
 
   validate_bool($ipv6networking)
+  validate_bool($restart)
 
   # Validate our regular expressions
   if $vlan {
@@ -120,6 +123,11 @@ class network::global (
     group   => 'root',
     path    => '/etc/sysconfig/network',
     content => template('network/network.erb'),
-    notify  => Service['network'],
+  }
+
+  if $restart {
+    File['network.sysconfig'] {
+      notify  => Service['network'],
+    }
   }
 } # class global

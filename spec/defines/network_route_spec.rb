@@ -28,6 +28,35 @@ describe 'network::route', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { is_expected.to contain_file('route-eth1').that_notifies('Service[network]') }
+  end
+
+  context 'singular parameters, restart => false' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :ipaddress => [ '192.168.2.1', ],
+      :netmask   => [ '255.255.255.1', ],
+      :gateway   => [ '192.168.1.2', ],
+      :restart   => false,
+    }
+    end
+    let(:facts) {{ :osfamily => 'RedHat' }}
+    it { should contain_file('route-eth1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/route-eth1'
+    )}
+    it 'should contain File[route-eth1] with contents "ADDRESS0=192.168.2.1\nNETMASK0=255.255.255.1\nGATEWAY0=192.168.1.2"' do
+      verify_contents(catalogue, 'route-eth1', [
+        'ADDRESS0=192.168.2.1',
+        'NETMASK0=255.255.255.1',
+        'GATEWAY0=192.168.1.2',
+      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to_not contain_file('route-eth1').that_notifies('Service[network]') }
   end
 
   context 'array parameters' do
