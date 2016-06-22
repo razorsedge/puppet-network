@@ -123,7 +123,7 @@ describe 'network::if::static', :type => 'define' do
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
