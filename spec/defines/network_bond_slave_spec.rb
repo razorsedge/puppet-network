@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'network::bond::slave', :type => 'define' do
 
-  context 'incorrect value: ipaddress' do
+  context 'incorrect value: macaddress' do
     let(:title) { 'eth6' }
     let :params do {
       :macaddress => '123456',
@@ -19,7 +19,6 @@ describe 'network::bond::slave', :type => 'define' do
   context 'required parameters' do
     let(:title) { 'eth1' }
     let :params do {
-      :macaddress => 'fe:fe:fe:aa:aa:a1',
       :master     => 'bond0',
     }
     end
@@ -41,7 +40,6 @@ describe 'network::bond::slave', :type => 'define' do
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
-        'HWADDR=fe:fe:fe:aa:aa:a1',
         'MASTER=bond0',
         'SLAVE=yes',
         'TYPE=Ethernet',
@@ -57,6 +55,10 @@ describe 'network::bond::slave', :type => 'define' do
       :macaddress   => 'ef:ef:ef:ef:ef:ef',
       :master       => 'bond0',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
+      :userctl      => true,
+      :bootproto    => 'dhcp',
+      :onboot       => 'yes',
+
     }
     end
     let :facts do {
@@ -82,6 +84,9 @@ describe 'network::bond::slave', :type => 'define' do
         'SLAVE=yes',
         'TYPE=Ethernet',
         'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
+        'BOOTPROTO=dhcp',
+        'ONBOOT=yes',
+        'USERCTL=yes',
         'NM_CONTROLLED=no',
       ])
     end

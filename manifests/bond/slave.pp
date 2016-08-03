@@ -4,9 +4,15 @@
 #
 # === Parameters:
 #
-#   $macaddress   - required
 #   $master       - required
+#   $macaddress   - optional
 #   $ethtool_opts - optional
+#   $zone         - optional
+#   $defroute     - optional
+#   $metric       - optional
+#   $userctl      - optional - defaults to false
+#   $bootproto    - optional
+#   $onboot       - optional
 #
 # === Actions:
 #
@@ -32,17 +38,21 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::slave (
-  $macaddress,
   $master,
+  $macaddress = undef,
   $ethtool_opts = undef,
   $zone = undef,
   $defroute = undef,
-  $metric = undef
+  $metric = undef,
+  $userctl = false,
+  $bootproto = undef,
+  $onboot = undef,
 ) {
   # Validate our data
-  if ! is_mac_address($macaddress) {
+  if $macaddress and ! is_mac_address($macaddress) {
     fail("${macaddress} is not a MAC address.")
   }
+  validate_bool($userctl)
 
   include '::network'
 
