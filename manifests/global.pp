@@ -23,6 +23,7 @@
 #   $vlan           - optional - yes|no to enable VLAN kernel module
 #   $ipv6networking - optional - enables / disables IPv6 globally
 #   $nozeroconf     - optional
+#   $requestreopen  - optional - defaults to true
 #
 # === Actions:
 #
@@ -44,6 +45,7 @@
 #     vlan           => 'yes',
 #     ipv6networking => true,
 #     nozeroconf     => 'yes',
+#     requestreopen  => false,
 #   }
 #
 # === TODO:
@@ -67,7 +69,8 @@ class network::global (
   $nisdomain      = undef,
   $vlan           = undef,
   $ipv6networking = false,
-  $nozeroconf     = undef
+  $nozeroconf     = undef,
+  $requestreopen  = true
 ) {
   # Validate our data
   if $gateway {
@@ -78,14 +81,13 @@ class network::global (
   }
 
   validate_bool($ipv6networking)
+  validate_bool($requestreopen)
 
   # Validate our regular expressions
   if $vlan {
     $states = [ '^yes$', '^no$' ]
     validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
   }
-
-  validate_bool($ipv6networking)
 
   include '::network'
 
