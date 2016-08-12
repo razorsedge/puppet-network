@@ -22,4 +22,5 @@ NETWORKING=yes
 <% end -%>
 <% if @nozeroconf %>NOZEROCONF=<%= @nozeroconf %>
 <% end -%>
-RES_OPTIONS="single-request-reopen"
+<% if @requestreopen %>RES_OPTIONS="single-request-reopen"
+<% end -%>
