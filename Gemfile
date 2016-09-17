@@ -8,7 +8,8 @@ group :development, :unit_tests do
   gem 'puppet-lint', '>= 1.1.0',              :require => false
   gem 'simplecov',                            :require => false
   gem 'puppet_facts',                         :require => false
-  gem 'json',                                 :require => false
+  gem 'json', ENV['JSON_VERSION'],            :require => false
+  gem 'json_pure', ENV['JSON_VERSION'],       :require => false
   gem 'metadata-json-lint', '>= 0.0.4',       :require => false
   gem 'puppet-lint-unquoted_string-check',    :require => false
   gem 'puppet-lint-empty_string-check',       :require => false

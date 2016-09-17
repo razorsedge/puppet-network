@@ -60,7 +60,8 @@ define network::bond::bridge (
 
   # Only install "alias bondN bonding" on old OSs that support
   # /etc/modprobe.conf.
-  case $::operatingsystem {
+  $os = getvar('::operatingsystem')
+  case $os {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
       case $::operatingsystemrelease {
         /^[45]/: {
@@ -95,4 +96,5 @@ define network::bond::bridge (
     }
     default: {}
   }
+
 } # define network::bond::bridge

@@ -91,6 +91,9 @@ define network::if::static (
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
     $primary_ipv6address = $ipv6address
     $secondary_ipv6addresses = undef
+  } else {
+    $primary_ipv6address = undef
+    $secondary_ipv6addresses = undef
   }
 
   if ! is_mac_address($macaddress) {
