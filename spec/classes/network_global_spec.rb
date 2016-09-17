@@ -45,7 +45,7 @@ describe 'network::global', :type => 'class' do
   end
 
   context 'on a supported operatingsystem, custom parameters, systemd' do
-    let :params do {
+    let(:params) do {
       :hostname   => 'myHostname',
       :gateway    => '1.2.3.4',
       :gatewaydev => 'eth2',

@@ -89,7 +89,8 @@ class network::global (
 
   include '::network'
 
-  case $::operatingsystem {
+  $os = getvar('::operatingsystem')
+  case $os {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
       case $::operatingsystemrelease {
         /^[456]/: { $has_systemd = false }
@@ -102,16 +103,16 @@ class network::global (
         default: { $has_systemd = true }
       }
     }
-    default: {}
+    default: {$has_systemd = false}
   }
 
-  if $hostname and $has_systemd {
-    exec { 'hostnamectl set-hostname':
-      command => "hostnamectl set-hostname ${hostname}",
-      unless  => "hostnamectl --static | grep ^${hostname}$",
-      path    => '/bin:/usr/bin',
+    if $hostname and $has_systemd {
+      exec { 'hostnamectl set-hostname':
+        command => "hostnamectl set-hostname ${hostname}",
+        unless  => "hostnamectl --static | grep ^${hostname}$",
+        path    => '/bin:/usr/bin',
+      }
     }
-  }
 
   file { 'network.sysconfig':
     ensure  => 'present',
