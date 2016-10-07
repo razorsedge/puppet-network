@@ -40,27 +40,58 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::route (
-  $ipaddress,
-  $netmask,
-  $gateway
+  $ipaddress   = [],
+  $netmask     = [],
+  $gateway     = [],
+  $ipv4_routes = [],
+  $ipv6_routes = [],
 ) {
   # Validate our arrays
   validate_array($ipaddress)
   validate_array($netmask)
   validate_array($gateway)
+  validate_array($ipv4_routes)
+  validate_array($ipv6_routes)
 
   include '::network'
 
   $interface = $name
 
-  file { "route-${interface}":
-    ensure  => 'present',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/route-${interface}",
-    content => template('network/route-eth.erb'),
-    before  => File["ifcfg-${interface}"],
-    notify  => Service['network'],
+  if empty($ipaddress) and (!empty($ipv4_routes) or !empty($ipv6_routes)) {
+    if ! empty($ipv4_routes) {
+      file { "route-${interface}":
+        ensure  => 'present',
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        path    => "/etc/sysconfig/network-scripts/route-${interface}",
+        content => template('network/route-eth-v4.erb'),
+        before  => File["ifcfg-${interface}"],
+        notify  => Service['network'],
+      }
+    }
+    if ! empty($ipv6_routes) {
+      file { "route6-${interface}":
+        ensure  => 'present',
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        path    => "/etc/sysconfig/network-scripts/route6-${interface}",
+        content => template('network/route-eth-v6.erb'),
+        before  => File["ifcfg-${interface}"],
+        notify  => Service['network'],
+      }
+    }
+  } else {
+    file { "route-${interface}":
+      ensure  => 'present',
+      mode    => '0644',
+      owner   => 'root',
+      group   => 'root',
+      path    => "/etc/sysconfig/network-scripts/route-${interface}",
+      content => template('network/route-eth.erb'),
+      before  => File["ifcfg-${interface}"],
+      notify  => Service['network'],
+    }
   }
 } # define network::route

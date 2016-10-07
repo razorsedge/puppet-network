@@ -1,0 +1,16 @@
+###
+### File managed by Puppet
+###
+<% if !@ipv6_routes.empty? -%>
+<% [@ipv6_routes].flatten.each do |v6| -%>
+<%= "#{v6["dest"]}" -%>
+<% if v6["gateway"] != nil -%>
+<%= " via #{v6["gateway"]}"  -%>
+<% end -%>
+<%= " dev #{@interface}" -%>
+<% if v6["table"] != nil -%>
+<%= " table #{v6["table"]}" -%>
+<% end -%>
+
+<% end -%>
+<% end -%>
