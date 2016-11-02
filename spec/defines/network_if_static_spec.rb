@@ -128,6 +128,7 @@ describe 'network::if::static', :type => 'define' do
       :defroute     => 'yes',
       :metric       => '10',
       :zone         => 'trusted',
+      :arpcheck     => false,
     }
     end
     let :facts do {
@@ -171,6 +172,7 @@ describe 'network::if::static', :type => 'define' do
         'DEFROUTE=yes',
         'ZONE=trusted',
         'METRIC=10',
+	'ARPCHECK=no',
         'NM_CONTROLLED=no',
       ])
     end
