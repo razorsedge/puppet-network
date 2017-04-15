@@ -7,3 +7,4 @@ spec/fixtures/
 coverage/
 *.swp
 .vendor/
+.vendor
