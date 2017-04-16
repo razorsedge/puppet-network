@@ -3,26 +3,45 @@ Contributing
 
 normal
 
-  1. [Fork](http://help.github.com/forking/) puppet-TEMPLATE
-  2. Create a topic branch against the develop branch `git checkout develop; git checkout -b my_branch`
-  3. Push to your branch `git push origin my_branch`
-  4. Create a [Pull Request](http://help.github.com/pull-requests/) from your branch against the develop branch
+  1. [Fork](http://help.github.com/forking/) puppet-network.
+  2. Create a topic branch against the develop branch. `git checkout develop; git checkout -b my_branch`
+  3. Make your change.
+  4. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, please add a test.
+  5. Run the tests. We only take pull requests with passing tests. `bundle exec rake spec SPEC_OPTS='--format documentation'`
+  6. Add or update documentation.
+  7. Squash your commits down into logical components. Make sure to rebase against the current `develop` branch. `git pull --rebase upstream develop`
+  8. Push to your branch. `git push origin my_branch`
+  9. Create a [Pull Request](http://help.github.com/pull-requests/) from your branch against the develop branch.
 
 [git-flow](https://github.com/nvie/gitflow)
 
-  1. [Fork](http://help.github.com/forking/) puppet-TEMPLATE
-  2. Create a feature `git flow feature start my-feature`
-  3. Publish your featue `git flow feature publish my-feature`
-  4. Create a [Pull Request](http://help.github.com/pull-requests/) from your branch against the develop branch
+  1. [Fork](http://help.github.com/forking/) puppet-network.
+  2. Create a feature. `git flow feature start my-feature`
+  3. Make your change.
+  4. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, please add a test.
+  5. Run the tests. We only take pull requests with passing tests. `bundle exec rake spec SPEC_OPTS='--format documentation'`
+  6. Add or update documentation.
+  7. Squash your commits down into logical components. Make sure to rebase against the current `develop` branch. `git pull --rebase upstream develop`
+  8. Publish your featue. `git flow feature publish my-feature`
+  9. Create a [Pull Request](http://help.github.com/pull-requests/) from your branch against the develop branch.
 
 Testing
 -------
 
-Tests are written with [rspec-puppet](http://rspec-puppet.com/). CI is covered by [Travis CI](http://about.travis-ci.org/) and the current status is visible [here](http://travis-ci.org/razorsedge/puppet-TEMPLATE).
+Tests are written with [rspec-puppet](http://rspec-puppet.com/). CI is covered by [Travis CI](http://about.travis-ci.org/) and the current status is visible [here](http://travis-ci.org/razorsedge/puppet-network).
+
+To install the test system, pick one of the following:
+
+    PUPPET_GEM_VERSION="~> 2.7.0" FACTER_GEM_VERSION="~> 1.7.0" bundle install --path=.vendor --without system_tests
+    PUPPET_GEM_VERSION="~> 3.0" bundle install --path=.vendor --without system_tests
+    PUPPET_GEM_VERSION="~> 4.0" bundle install --path=.vendor --without system_tests
 
 To run all tests:
 
-    rake spec
+    bundle exec rake validate && \
+    bundle exec rake lint && \
+    bundle exec rake metadata_lint && \
+    bundle exec rake spec SPEC_OPTS='--format documentation' FUTURE_PARSER="yes" STRICT_VARIABLES="no"
 
 Branching
 ---------
