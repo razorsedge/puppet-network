@@ -7,5 +7,9 @@ CLONENUM_START=<%= @clonenum_start %>
 <% if !@noaliasrouting %>NO_ALIASROUTING=no
 <% else %>NO_ALIASROUTING=yes
 <% end -%>
+<% if @netmask %>NETMASK=<%= @netmask %>
+<% end -%>
+<% if @broadcast %>BROADCAST=<%= @broadcast %>
+<% end -%>
 ONPARENT=<%= @onparent %>
 NM_CONTROLLED=no
