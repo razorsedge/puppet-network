@@ -11,7 +11,8 @@ group :development, :unit_tests do
   gem 'json_pure', '~> 1.8',               :require => false if RUBY_VERSION =~ /^1\.8/
   gem 'json_pure', '<= 2.0.1',             :require => false if RUBY_VERSION =~ /^1\.9/
   gem 'json_pure',                         :require => false if RUBY_VERSION =~ /^2\./
-  gem 'metadata-json-lint', '>= 0.0.4',    :require => false
+  gem 'metadata-json-lint', '< 1.2.0',     :require => false if RUBY_VERSION =~ /^1\./
+  gem 'metadata-json-lint',                :require => false if RUBY_VERSION =~ /^2\./
   gem 'semantic_puppet', '0.1.3',          :require => false if RUBY_VERSION =~ /^1\./
   gem 'semantic_puppet',                   :require => false if RUBY_VERSION =~ /^2\./
   gem 'puppet-lint-unquoted_string-check', :require => false
