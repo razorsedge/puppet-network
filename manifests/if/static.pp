@@ -42,7 +42,7 @@
 #     domain      => 'is.domain.com domain.com',
 #     ipv6init    => true,
 #     ipv6address => '123:4567:89ab:cdef:123:4567:89ab:cdef'
-#     ipv6gateway => '123:4567:89ab:cdef:123:4567:89ab:1' 
+#     ipv6gateway => '123:4567:89ab:cdef:123:4567:89ab:1'
 #   }
 #
 # === Authors:
@@ -60,6 +60,7 @@ define network::if::static (
   $gateway = undef,
   $ipv6address = undef,
   $ipv6init = false,
+  $dhcpv6c = false,
   $ipv6gateway = undef,
   $macaddress = undef,
   $manage_hwaddr = true,
@@ -97,6 +98,7 @@ define network::if::static (
   validate_bool($ipv6init)
   validate_bool($ipv6autoconf)
   validate_bool($peerdns)
+  validate_bool($dhcpv6c)
   validate_bool($ipv6peerdns)
   validate_bool($manage_hwaddr)
   validate_bool($flush)
@@ -104,6 +106,7 @@ define network::if::static (
   network_if_base { $title:
     ensure        => $ensure,
     ipv6init      => $ipv6init,
+    dhcpv6c       => $dhcpv6c,
     ipaddress     => $ipaddress,
     ipv6address   => $ipv6address,
     netmask       => $netmask,

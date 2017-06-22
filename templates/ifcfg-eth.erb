@@ -46,6 +46,9 @@ IPV6INIT=yes
 <% if !@ipv6peerdns %>IPV6_PEERDNS=no
 <% else %>IPV6_PEERDNS=yes
 <% end -%>
+<% if @dhcpv6c %>
+DHCPV6C=yes
+<% end -%>
 <% end -%>
 <% if @bridge %>BRIDGE=<%= @bridge %>
 <% end -%>

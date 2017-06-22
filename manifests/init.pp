@@ -111,6 +111,7 @@ define network_if_base (
   $ipv6gateway     = undef,
   $ipv6init        = false,
   $ipv6autoconf    = false,
+  $dhcpv6c         = false,
   $bootproto       = 'none',
   $userctl         = false,
   $mtu             = undef,
@@ -136,6 +137,7 @@ define network_if_base (
   validate_bool($userctl)
   validate_bool($isalias)
   validate_bool($peerdns)
+  validate_bool($dhcpv6c)
   validate_bool($ipv6init)
   validate_bool($ipv6autoconf)
   validate_bool($ipv6peerdns)

@@ -86,6 +86,7 @@ describe 'network::if::static', :type => 'define' do
       :dns2         => '5.6.7.8',
       :domain       => 'somedomain.com',
       :ipv6init     => true,
+      :dhcpv6c      => true,
       :ipv6autoconf => true,
       :ipv6peerdns  => true,
       :ipv6address  => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
