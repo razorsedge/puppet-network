@@ -25,6 +25,8 @@ describe 'network::bond::bridge', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
       :macaddress_bond0 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -105,7 +107,12 @@ describe 'network::bond::bridge', :type => 'define' do
       :bonding_opts => 'mode=active-backup miimon=100',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let :facts do {
+      :osfamily               => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0'
+    }
+    end
     it { should contain_file('ifcfg-bond0').with(
       :ensure => 'present',
       :mode   => '0644',
