@@ -170,6 +170,8 @@ describe 'network::global', :type => 'class' do
     end
     let :facts do {
       :osfamily => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
       :fqdn     => 'localhost.localdomain',
     }
     end

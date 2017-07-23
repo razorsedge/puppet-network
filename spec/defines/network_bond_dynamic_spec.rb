@@ -23,6 +23,8 @@ describe 'network::bond::dynamic', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
       :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -105,6 +107,8 @@ describe 'network::bond::dynamic', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
       :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
     }
     end

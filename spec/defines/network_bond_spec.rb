@@ -2,13 +2,12 @@
 
 require 'spec_helper'
 
-describe 'network::bond::bridge', :type => 'define' do
+describe 'network::bond', :type => 'define' do
 
   context 'incorrect value: ensure' do
     let(:title) { 'bond1' }
     let :params do {
       :ensure => 'blah',
-      :bridge => 'br0',
     }
     end
     it 'should fail' do
@@ -20,7 +19,6 @@ describe 'network::bond::bridge', :type => 'define' do
     let(:title) { 'bond0' }
     let :params do {
       :ensure => 'up',
-      :bridge => 'br0',
     }
     end
     let :facts do {
@@ -46,8 +44,6 @@ describe 'network::bond::bridge', :type => 'define' do
         'HOTPLUG=yes',
         'TYPE=Ethernet',
         'BONDING_OPTS="miimon=100"',
-        'PEERDNS=no',
-        'BRIDGE=br0',
         'NM_CONTROLLED=no',
       ])
     end
@@ -101,10 +97,10 @@ describe 'network::bond::bridge', :type => 'define' do
     let(:title) { 'bond0' }
     let :params do {
       :ensure       => 'down',
-      :bridge       => 'br6',
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
       :bonding_opts => 'mode=active-backup miimon=100',
+      :zone         => 'trusted',
     }
     end
     let :facts do {
@@ -131,7 +127,7 @@ describe 'network::bond::bridge', :type => 'define' do
         'MTU=9000',
         'BONDING_OPTS="mode=active-backup miimon=100"',
         'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
-        'BRIDGE=br6',
+        'ZONE=trusted',
         'NM_CONTROLLED=no',
       ])
     end

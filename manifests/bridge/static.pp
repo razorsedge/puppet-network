@@ -82,7 +82,7 @@ define network::bridge::static (
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
 
-  ensure_packages('bridge-utils')
+  ensure_packages(['bridge-utils'])
 
   include '::network'
 

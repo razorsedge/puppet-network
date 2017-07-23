@@ -25,6 +25,8 @@ describe 'network::bond::slave', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -59,6 +61,8 @@ describe 'network::bond::slave', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
       :macaddress_eth3 => 'fe:fe:fe:aa:aa:aa',
     }
     end

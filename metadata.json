@@ -1,6 +1,6 @@
 {
   "name": "razorsedge-network",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "author": "razorsedge",
   "summary": "Manage RedHat traditional network configuration via static and dhcp configuration of normal and bonded interfaces as well as bridges and VLANs.",
   "license": "Apache-2.0",
@@ -33,10 +33,6 @@
     }
   ],
   "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": "3.x"
-    },
     {
       "name": "puppet",
       "version_requirement": ">=2.7.20 <5.0.0"
