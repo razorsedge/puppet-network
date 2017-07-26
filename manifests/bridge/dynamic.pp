@@ -10,6 +10,7 @@
 #   $stp           - optional - defaults to false
 #   $delay         - optional - defaults to 30
 #   $bridging_opts - optional
+#   $peerdns       - optional - defaults to false
 #
 # === Actions:
 #
@@ -40,7 +41,8 @@ define network::bridge::dynamic (
   $userctl = false,
   $stp = false,
   $delay = '30',
-  $bridging_opts = undef
+  $bridging_opts = undef,
+  $peerdns = false
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -48,6 +50,7 @@ define network::bridge::dynamic (
   # Validate booleans
   validate_bool($userctl)
   validate_bool($stp)
+  validate_bool($peerdns)
 
   ensure_packages(['bridge-utils'])
 
