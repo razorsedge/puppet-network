@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'network::bond::slave', :type => 'define' do
 
-  context 'incorrect value: ipaddress' do
+  context 'incorrect value: macaddress' do
     let(:title) { 'eth6' }
     let :params do {
       :macaddress => '123456',
@@ -14,6 +14,20 @@ describe 'network::bond::slave', :type => 'define' do
     it 'should fail' do
       expect {should contain_file('ifcfg-eth6')}.to raise_error(Puppet::Error, /123456 is not a MAC address./)
     end
+  end
+
+  context 'optional value: macaddress' do
+    let(:title) { 'eth6' }
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    let :params do {
+      :master     => 'bond0',
+    }
+    end
+    it { should contain_file('ifcfg-eth6').without_content('HWADDR=') }
   end
 
   context 'required parameters' do
