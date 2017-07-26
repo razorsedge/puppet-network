@@ -4,7 +4,7 @@
 #
 # === Parameters:
 #
-#   $macaddress   - required
+#   $macaddress   - optional 
 #   $master       - required
 #   $ethtool_opts - optional
 #
@@ -19,7 +19,6 @@
 # === Sample Usage:
 #
 #   network::bond::slave { 'eth1':
-#     macaddress => $::macaddress_eth1,
 #     master     => 'bond0',
 #   }
 #
@@ -32,7 +31,7 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::slave (
-  $macaddress,
+  $macaddress ='',
   $master,
   $ethtool_opts = undef,
   $zone = undef,
@@ -41,7 +40,9 @@ define network::bond::slave (
 ) {
   # Validate our data
   if ! is_mac_address($macaddress) {
-    fail("${macaddress} is not a MAC address.")
+    $macaddy = getvar("::macaddress_${title}")
+  } else {
+    $macaddy = $macaddress
   }
 
   include '::network'
