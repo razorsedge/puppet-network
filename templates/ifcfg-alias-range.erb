@@ -7,5 +7,7 @@ CLONENUM_START=<%= @clonenum_start %>
 <% if !@noaliasrouting %>NO_ALIASROUTING=no
 <% else %>NO_ALIASROUTING=yes
 <% end -%>
+<% if !@arpcheck %>ARPCHECK=no
+<% end -%>
 ONPARENT=<%= @onparent %>
 NM_CONTROLLED=no

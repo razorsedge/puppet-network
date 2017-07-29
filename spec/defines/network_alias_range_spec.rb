@@ -136,6 +136,7 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_end   => '1.2.3.4',
       :clonenum_start  => '9',
       :noaliasrouting  => true,
+      :arpcheck        => false,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -153,6 +154,7 @@ describe 'network::alias::range', :type => 'define' do
         'IPADDR_END=1.2.3.4',
         'CLONENUM_START=9',
         'NO_ALIASROUTING=yes',
+        'ARPCHECK=no',
         'ONPARENT=yes',
         'NM_CONTROLLED=no',
       ])
