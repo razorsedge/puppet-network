@@ -39,7 +39,7 @@ describe 'network::global', :type => 'class' do
         'NETWORKING=yes',
         'NETWORKING_IPV6=no',
         'HOSTNAME=localhost.localdomain',
-        'RES_OPTIONS=\"single-request-reopen\"',
+        'RES_OPTIONS="single-request-reopen"',
       ])
     end
     it { should_not contain_exec('hostnamectl set-hostname') }
@@ -72,7 +72,7 @@ describe 'network::global', :type => 'class' do
         'NISDOMAIN=myNisDomain',
         'VLAN=yes',
         'NOZEROCONF=yes',
-        'RES_OPTIONS=\"single-request-reopen\"',
+        'RES_OPTIONS="single-request-reopen"',
       ])
     end
     it { should contain_exec('hostnamectl set-hostname').with(
