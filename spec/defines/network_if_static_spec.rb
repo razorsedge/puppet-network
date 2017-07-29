@@ -69,8 +69,8 @@ describe 'network::if::static', :type => 'define' do
     let(:title) { 'eth1' }
     let :params do {
       :ensure    => 'up',
-      :ipaddress => '1.2.3.4',
-      :netmask   => '255.255.255.0',
+#      :ipaddress => '1.2.3.4',
+#      :netmask   => '255.255.255.0',
     }
     end
     let :facts do {
@@ -94,8 +94,8 @@ describe 'network::if::static', :type => 'define' do
         'ONBOOT=yes',
         'HOTPLUG=yes',
         'TYPE=Ethernet',
-        'IPADDR=1.2.3.4',
-        'NETMASK=255.255.255.0',
+#        'IPADDR=1.2.3.4',
+#        'NETMASK=255.255.255.0',
         'PEERDNS=no',
         'NM_CONTROLLED=no',
       ])

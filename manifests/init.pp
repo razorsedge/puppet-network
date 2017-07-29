@@ -51,8 +51,8 @@ class network {
 # === Parameters:
 #
 #   $ensure          - required - up|down
-#   $ipaddress       - required
-#   $netmask         - required
+#   $ipaddress       - optional
+#   $netmask         - optional
 #   $macaddress      - required
 #   $manage_hwaddr   - optional - defaults to true
 #   $gateway         - optional

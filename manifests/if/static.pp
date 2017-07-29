@@ -5,8 +5,8 @@
 # === Parameters:
 #
 #   $ensure         - required - up|down
-#   $ipaddress      - required
-#   $netmask        - required
+#   $ipaddress      - optional
+#   $netmask        - optional
 #   $gateway        - optional
 #   $ipv6address    - optional
 #   $ipv6init       - optional - defaults to false
