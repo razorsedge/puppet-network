@@ -12,6 +12,9 @@ describe 'network::if::promisc', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystem           => 'RedHat',
+      :operatingsystemrelease    => '6.0',
+      :operatingsystemmajrelease => '6',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -37,6 +40,24 @@ describe 'network::if::promisc', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { should contain_file('/sbin/ifup-local') }
+    it { should contain_file('/sbin/ifdown-local') }
+    it { should contain_file('ifup-local-promisc').with(
+      :ensure => 'file',
+      :mode   => '0755',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/sbin/ifup-local-promisc',
+      :source => 'puppet:///modules/network/promisc/ifup-local-promisc_6'
+    )}
+    it { should contain_file('ifdown-local-promisc').with(
+      :ensure => 'file',
+      :mode   => '0755',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/sbin/ifdown-local-promisc',
+      :source => 'puppet:///modules/network/promisc/ifdown-local-promisc_6'
+    )}
   end
 
   context 'optional parameters' do
@@ -48,6 +69,9 @@ describe 'network::if::promisc', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystem           => 'RedHat',
+      :operatingsystemrelease    => '6.0',
+      :operatingsystemmajrelease => '6',
       :macaddress_eth3 => 'fe:fe:fe:aa:aa:aa',
     }
     end

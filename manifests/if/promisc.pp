@@ -85,8 +85,8 @@ define network::if::promisc (
   }
 
   if $promisc {
-    case $::osfamily {
-      'RedHat': {
+    case $::operatingsystem {
+      /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
         case $::operatingsystemmajrelease {
           '5': {
             $ifup_source   = "puppet:///modules/${module_name}/promisc/ifup-local-promisc_5"
@@ -97,6 +97,7 @@ define network::if::promisc (
             $ifdown_source = "puppet:///modules/${module_name}/promisc/ifdown-local-promisc_6"
           }
           default: {
+            fail('Promiscuous network setup is currently only available for EL 5, 6, and 7.')
           }
         }
 
