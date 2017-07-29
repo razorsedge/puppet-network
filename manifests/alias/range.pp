@@ -10,6 +10,8 @@
 #   $ipaddress_start - required
 #   $clonenum_start  - required
 #   $noaliasrouting  - optional - false|true
+#   $netmask         - optional - an IP address (CIDR not supported)
+#   $broadcast       - optional - an IP address
 #
 # === Actions:
 #
@@ -38,11 +40,15 @@ define network::alias::range (
   $ipaddress_start,
   $ipaddress_end,
   $clonenum_start,
-  $noaliasrouting = false
+  $noaliasrouting = false,
+  $netmask = false,
+  $broadcast = false,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress_start) { fail("${ipaddress_start} is not an IP address.") }
   if ! is_ip_address($ipaddress_end) { fail("${ipaddress_end} is not an IP address.") }
+  if $netmask and !is_ip_address($netmask) { fail("${netmask} is not an IP address.") }
+  if $broadcast and !is_ip_address($broadcast) { fail("${broadcast} is not an IP address.") }
   # Validate our booleans
   validate_bool($noaliasrouting)
   # Validate our regular expressions
