@@ -134,7 +134,7 @@ define network_if_base (
   $flush           = false,
   $defroute        = undef,
   $zone            = undef,
-  $metric          = undef
+  $metric          = undef,
   $arpcheck        = true,
 ) {
   # Validate our booleans

@@ -78,7 +78,7 @@ define network::if::static (
   $flush = false,
   $zone = undef,
   $defroute = undef,
-  $metric = undef
+  $metric = undef,
   $arpcheck = true,
 ) {
   # Validate our data
