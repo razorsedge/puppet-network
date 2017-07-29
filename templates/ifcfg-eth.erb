@@ -66,4 +66,6 @@ check_link_down() {
 <% end -%>
 <% if @metric %>METRIC=<%= @metric %>
 <% end -%>
+<% if !@arpcheck %>ARPCHECK=no
+<% end -%>
 NM_CONTROLLED=no

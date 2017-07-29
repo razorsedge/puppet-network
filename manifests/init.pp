@@ -76,6 +76,7 @@ class network {
 #   $zone            - optional
 #   $metric          - optional
 #   $defroute        - optional
+#   $arpcheck        - optional - defaults to true
 #
 # === Actions:
 #
@@ -134,6 +135,7 @@ define network_if_base (
   $defroute        = undef,
   $zone            = undef,
   $metric          = undef
+  $arpcheck        = true,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -146,6 +148,7 @@ define network_if_base (
   validate_bool($check_link_down)
   validate_bool($manage_hwaddr)
   validate_bool($flush)
+  validate_bool($arpcheck)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
