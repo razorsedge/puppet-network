@@ -249,6 +249,17 @@ Network scripts on RHEL7 do not flush IP addresses, so you eventually end up wit
       flush     => true,
     }
 
+Restart network:
+
+By default, all changes notify the network service, thus triggering a restart of the whole networking configuration. This might be not desired in some setups and can be disabled by passing the `restart` parameter as `false`:
+
+    network::if::static { 'eth0':
+      ensure    => 'up',
+      ipaddress => '1.2.3.4',
+      netmask   => '255.255.255.0',
+      restart   => false,
+    }
+
 Hiera
 -----
 
@@ -296,7 +307,7 @@ Issues
 ------
 
 * Setting ETHTOOL_OPTS, MTU, or BONDING_OPTS and then unsetting will not revert the running config to defaults.
-* Changes to any configuration will result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect.
+* Changes to any configuration will by default result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect. See the examples how to disable this behaviour.
 * Modifying or creating a slave interface after the master has been created will not change the running config.
 * There is presently no support for removing an interface.
 

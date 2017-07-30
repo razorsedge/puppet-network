@@ -58,6 +58,42 @@ describe 'network::bridge::dynamic', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { is_expected.to contain_file('ifcfg-br1').that_notifies('Service[network]') }
+    it { should contain_package('bridge-utils') }
+  end
+
+  context 'required parameters, restart => false' do
+    let(:title) { 'br1' }
+    let :params do {
+      :ensure  => 'up',
+      :restart => false,
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+    }
+    end
+    it { should contain_file('ifcfg-br1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-br1'
+    )}
+    it 'should contain File[ifcfg-br1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-br1', [
+        'DEVICE=br1',
+        'BOOTPROTO=dhcp',
+        'ONBOOT=yes',
+        'TYPE=Bridge',
+        'PEERDNS=no',
+        'DELAY=30',
+        'STP=no',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to_not contain_file('ifcfg-br1').that_notifies('Service[network]') }
     it { should contain_package('bridge-utils') }
   end
 
