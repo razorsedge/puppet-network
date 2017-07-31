@@ -9,6 +9,7 @@
 #   $stp           - optional - defaults to false
 #   $delay         - optional - defaults to 30
 #   $bridging_opts - optional
+#   $restart       - optional - defaults to true
 #
 # === Actions:
 #
@@ -37,7 +38,8 @@ define network::bridge (
   $stp = false,
   $delay = '30',
   $bridging_opts = undef,
-  $ipv6init = false
+  $ipv6init = false,
+  $restart = true,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -46,6 +48,7 @@ define network::bridge (
   validate_bool($userctl)
   validate_bool($stp)
   validate_bool($ipv6init)
+  validate_bool($restart)
 
   ensure_packages(['bridge-utils'])
 
@@ -73,6 +76,11 @@ define network::bridge (
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => template('network/ifcfg-br.erb'),
     require => Package['bridge-utils'],
-    notify  => Service['network'],
+  }
+
+  if $restart {
+    File["ifcfg-${interface}"] {
+      notify  => Service['network'],
+    }
   }
 } # define network::bridge

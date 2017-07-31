@@ -7,6 +7,7 @@
 #   $ipaddress - required
 #   $netmask   - required
 #   $gateway   - required
+#   $restart   - optional - defaults to true
 #
 # === Actions:
 #
@@ -42,12 +43,15 @@
 define network::route (
   $ipaddress,
   $netmask,
-  $gateway
+  $gateway,
+  $restart = true,
 ) {
   # Validate our arrays
   validate_array($ipaddress)
   validate_array($netmask)
   validate_array($gateway)
+  # Validate our booleans
+  validate_bool($restart)
 
   include '::network'
 
@@ -61,6 +65,11 @@ define network::route (
     path    => "/etc/sysconfig/network-scripts/route-${interface}",
     content => template('network/route-eth.erb'),
     before  => File["ifcfg-${interface}"],
-    notify  => Service['network'],
+  }
+
+  if $restart {
+    File["route-${interface}"] {
+      notify  => Service['network'],
+    }
   }
 } # define network::route

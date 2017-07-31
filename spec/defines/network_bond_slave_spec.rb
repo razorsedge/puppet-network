@@ -49,6 +49,41 @@ describe 'network::bond::slave', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { is_expected.to contain_file('ifcfg-eth1').that_notifies('Service[network]') }
+  end
+
+  context 'required parameters, restart => false' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :macaddress => 'fe:fe:fe:aa:aa:a1',
+      :master     => 'bond0',
+      :restart    => false,
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-eth1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1'
+    )}
+    it 'should contain File[ifcfg-eth1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth1', [
+        'DEVICE=eth1',
+        'HWADDR=fe:fe:fe:aa:aa:a1',
+        'MASTER=bond0',
+        'SLAVE=yes',
+        'TYPE=Ethernet',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to_not contain_file('ifcfg-eth1').that_notifies('Service[network]') }
   end
 
   context 'optional parameters' do

@@ -15,6 +15,7 @@
 #   $zone         - optional
 #   $metric       - optional
 #   $defroute     - optional
+#   $restart      - optional - defaults to true
 #
 # === Actions:
 #
@@ -56,7 +57,8 @@ define network::bond::static (
   $domain = undef,
   $zone = undef,
   $defroute = undef,
-  $metric = undef
+  $metric = undef,
+  $restart = true,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -94,6 +96,7 @@ define network::bond::static (
     zone         => $zone,
     defroute     => $defroute,
     metric       => $metric,
+    restart      => $restart,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

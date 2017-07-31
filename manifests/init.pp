@@ -77,10 +77,11 @@ class network {
 #   $metric          - optional
 #   $defroute        - optional
 #   $promisc         - optional - defaults to false
+#   $restart         - optional - defaults to true
 #
 # === Actions:
 #
-# Performs 'service network restart' after any changes to the ifcfg file.
+# Performs 'service network restart' after any changes to the ifcfg file and $restart parameter is 'true'.
 #
 # === TODO:
 #
@@ -135,7 +136,8 @@ define network_if_base (
   $defroute        = undef,
   $zone            = undef,
   $metric          = undef,
-  $promisc         = false
+  $promisc         = false,
+  $restart         = true,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -149,6 +151,7 @@ define network_if_base (
   validate_bool($manage_hwaddr)
   validate_bool($flush)
   validate_bool($promisc)
+  validate_bool($restart)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
@@ -205,7 +208,12 @@ define network_if_base (
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => $iftemplate,
-    notify  => Service['network'],
+  }
+
+  if $restart {
+    File["ifcfg-${interface}"] {
+      notify  => Service['network'],
+    }
   }
 } # define network_if_base
 
