@@ -13,6 +13,7 @@
 #   $zone         - optional
 #   $metric       - optional
 #   $defroute     - optional
+#   $restart      - optional - defaults to true
 
 #
 # === Actions:
@@ -41,7 +42,8 @@ define network::bond::dynamic (
   $bonding_opts = 'miimon=100',
   $zone = undef,
   $defroute = undef,
-  $metric = undef
+  $metric = undef,
+  $restart = true,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -62,6 +64,7 @@ define network::bond::dynamic (
     zone         => $zone,
     defroute     => $defroute,
     metric       => $metric,
+    restart      => $restart,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

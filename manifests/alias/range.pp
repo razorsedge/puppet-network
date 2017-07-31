@@ -10,6 +10,9 @@
 #   $ipaddress_start - required
 #   $clonenum_start  - required
 #   $noaliasrouting  - optional - false|true
+#   $restart         - optional - defaults to true
+#   $netmask         - optional - an IP address (CIDR not supported)
+#   $broadcast       - optional - an IP address
 #
 # === Actions:
 #
@@ -23,6 +26,7 @@
 #     ipaddress_end   => '1.2.3.20',
 #     clonenum_start  => '0',
 #     noaliasrouting  => true,
+#     arpcheck        => false,
 #   }
 #
 # === Authors:
@@ -38,13 +42,21 @@ define network::alias::range (
   $ipaddress_start,
   $ipaddress_end,
   $clonenum_start,
-  $noaliasrouting = false
+  $noaliasrouting = false,
+  $restart = true,
+  $netmask = false,
+  $broadcast = false,
+  $arpcheck = true,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress_start) { fail("${ipaddress_start} is not an IP address.") }
   if ! is_ip_address($ipaddress_end) { fail("${ipaddress_end} is not an IP address.") }
+  if $netmask and !is_ip_address($netmask) { fail("${netmask} is not an IP address.") }
+  if $broadcast and !is_ip_address($broadcast) { fail("${broadcast} is not an IP address.") }
   # Validate our booleans
   validate_bool($noaliasrouting)
+  validate_bool($restart)
+  validate_bool($arpcheck)
   # Validate our regular expressions
   $states = [ '^up$', '^down$', '^absent$' ]
   validate_re($ensure, $states, '$ensure must be either "up", "down", or "absent".')
@@ -72,6 +84,12 @@ define network::alias::range (
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}-range${clonenum_start}",
     content => template('network/ifcfg-alias-range.erb'),
     before  => File["ifcfg-${interface}"],
-    notify  => Service['network'],
   }
+
+  if $restart {
+    File["ifcfg-${interface}-range${clonenum_start}"] {
+      notify  => Service['network'],
+    }
+  }
+
 } # define network::alias::range

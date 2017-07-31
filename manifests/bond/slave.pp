@@ -4,9 +4,16 @@
 #
 # === Parameters:
 #
-#   $macaddress   - required
 #   $master       - required
+#   $macaddress   - optional
 #   $ethtool_opts - optional
+#   $restart      - optional, defaults to true
+#   $zone         - optional
+#   $defroute     - optional
+#   $metric       - optional
+#   $userctl      - optional - defaults to false
+#   $bootproto    - optional
+#   $onboot       - optional
 #
 # === Actions:
 #
@@ -32,17 +39,24 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::slave (
-  $macaddress,
   $master,
+  $macaddress = undef,
   $ethtool_opts = undef,
   $zone = undef,
   $defroute = undef,
-  $metric = undef
+  $metric = undef,
+  $restart = true,
+  $userctl = false,
+  $bootproto = undef,
+  $onboot = undef,
 ) {
   # Validate our data
-  if ! is_mac_address($macaddress) {
+  if $macaddress and ! is_mac_address($macaddress) {
     fail("${macaddress} is not a MAC address.")
   }
+  # Validate our booleans
+  validate_bool($restart)
+  validate_bool($userctl)
 
   include '::network'
 
@@ -56,6 +70,11 @@ define network::bond::slave (
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
     content => template('network/ifcfg-bond.erb'),
     before  => File["ifcfg-${master}"],
-    notify  => Service['network'],
+  }
+
+  if $restart {
+    File["ifcfg-${interface}"] {
+      notify  => Service['network'],
+    }
   }
 } # define network::bond::slave

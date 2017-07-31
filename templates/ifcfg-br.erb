@@ -21,12 +21,12 @@ TYPE=Bridge
 <% end -%>
 <% if !@peerdns %>PEERDNS=no
 <% else %>PEERDNS=yes
+<% end -%>
 <% if @dns1_real %>DNS1=<%= @dns1_real %>
 <% end -%>
 <% if @dns2_real %>DNS2=<%= @dns2_real %>
 <% end -%>
 <% if @domain %>DOMAIN="<%= @domain %>"
-<% end -%>
 <% end -%>
 <% if @userctl %>USERCTL=yes
 <% end -%>

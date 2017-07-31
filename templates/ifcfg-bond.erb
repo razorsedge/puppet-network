@@ -2,7 +2,8 @@
 ### File managed by Puppet
 ###
 DEVICE=<%= @interface %>
-HWADDR=<%= @macaddress %>
+<% if @macaddress and @macaddress != '' %>HWADDR=<%= @macaddress %>
+<% end -%>
 MASTER=<%= @master %>
 SLAVE=yes
 TYPE=Ethernet
@@ -13,5 +14,11 @@ TYPE=Ethernet
 <% if @zone %>ZONE=<%= @zone %>
 <% end -%>
 <% if @metric %>METRIC=<%= @metric %>
+<% end -%>
+<% if @bootproto %>BOOTPROTO=<%= @bootproto %>
+<% end -%>
+<% if @onboot %>ONBOOT=<%= @onboot %>
+<% end -%>
+<% if @userctl %>USERCTL=yes
 <% end -%>
 NM_CONTROLLED=no

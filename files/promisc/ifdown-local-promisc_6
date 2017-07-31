@@ -1,0 +1,8 @@
+#!/bin/bash
+
+RC=0
+
+/sbin/ip link set $1 promisc off
+RC=$?
+
+exit $RC

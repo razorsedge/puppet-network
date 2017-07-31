@@ -5,8 +5,8 @@
 # === Parameters:
 #
 #   $ensure         - required - up|down
-#   $ipaddress      - required
-#   $netmask        - required
+#   $ipaddress      - optional
+#   $netmask        - optional
 #   $gateway        - optional
 #   $ipv6address    - optional
 #   $ipv6init       - optional - defaults to false
@@ -27,6 +27,8 @@
 #   $zone           - optional
 #   $metric         - optional
 #   $defroute       - optional
+#   $restart        - optional - defaults to true
+#   $arpcheck       - optional - defaults to true
 #
 # === Actions:
 #
@@ -55,8 +57,8 @@
 #
 define network::if::static (
   $ensure,
-  $ipaddress,
-  $netmask,
+  $ipaddress = undef,
+  $netmask = undef,
   $gateway = undef,
   $ipv6address = undef,
   $ipv6init = false,
@@ -77,10 +79,14 @@ define network::if::static (
   $flush = false,
   $zone = undef,
   $defroute = undef,
-  $metric = undef
+  $metric = undef,
+  $restart = true,
+  $arpcheck = true,
 ) {
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipaddress {
+    if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  }
   if is_array($ipv6address) {
     if size($ipv6address) > 0 {
       validate_ip_address { $ipv6address: }
@@ -111,6 +117,7 @@ define network::if::static (
   validate_bool($ipv6peerdns)
   validate_bool($manage_hwaddr)
   validate_bool($flush)
+  validate_bool($arpcheck)
 
   network_if_base { $title:
     ensure          => $ensure,
@@ -139,5 +146,7 @@ define network::if::static (
     zone            => $zone,
     defroute        => $defroute,
     metric          => $metric,
+    restart         => $restart,
+    arpcheck        => $arpcheck,
   }
 } # define network::if::static

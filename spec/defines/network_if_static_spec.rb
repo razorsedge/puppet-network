@@ -69,8 +69,8 @@ describe 'network::if::static', :type => 'define' do
     let(:title) { 'eth1' }
     let :params do {
       :ensure    => 'up',
-      :ipaddress => '1.2.3.4',
-      :netmask   => '255.255.255.0',
+#      :ipaddress => '1.2.3.4',
+#      :netmask   => '255.255.255.0',
     }
     end
     let :facts do {
@@ -94,6 +94,45 @@ describe 'network::if::static', :type => 'define' do
         'ONBOOT=yes',
         'HOTPLUG=yes',
         'TYPE=Ethernet',
+#        'IPADDR=1.2.3.4',
+#        'NETMASK=255.255.255.0',
+        'PEERDNS=no',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to contain_file('ifcfg-eth1').that_notifies('Service[network]') }
+  end
+
+  context 'no restart' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.4',
+      :netmask   => '255.255.255.0',
+      :restart   => false,
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-eth1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1'
+    )}
+    it 'should contain File[ifcfg-eth1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth1', [
+        'DEVICE=eth1',
+        'BOOTPROTO=none',
+        'HWADDR=fe:fe:fe:aa:aa:aa',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
         'IPADDR=1.2.3.4',
         'NETMASK=255.255.255.0',
         'PEERDNS=no',
@@ -101,6 +140,7 @@ describe 'network::if::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { is_expected.to_not contain_file('ifcfg-eth1').that_notifies('Service[network]') }
   end
 
   context 'optional parameters' do
@@ -128,6 +168,7 @@ describe 'network::if::static', :type => 'define' do
       :defroute     => 'yes',
       :metric       => '10',
       :zone         => 'trusted',
+      :arpcheck     => false,
     }
     end
     let :facts do {
@@ -171,6 +212,7 @@ describe 'network::if::static', :type => 'define' do
         'DEFROUTE=yes',
         'ZONE=trusted',
         'METRIC=10',
+	'ARPCHECK=no',
         'NM_CONTROLLED=no',
       ])
     end

@@ -46,7 +46,13 @@ Global network setting with IPv6 enabled with optional default device for IPv6 t
     }
 
 
-Normal interface - static (minimal):
+Normal interface - static (minimal - no IP):
+
+    network::if::static { 'eth0':
+      ensure => 'up',
+    }
+
+Normal interface - static IPv4 (minimal):
 
     network::if::static { 'eth0':
       ensure    => 'up',
@@ -54,7 +60,7 @@ Normal interface - static (minimal):
       netmask   => '255.255.255.128',
     }
 
-Normal interface - static (minimal without HWADDR in ifcfg-file):
+Normal interface - static IPv4 (minimal without HWADDR in ifcfg-file):
 
     network::if::static { 'eth0':
       ensure        => 'up',
@@ -63,7 +69,7 @@ Normal interface - static (minimal without HWADDR in ifcfg-file):
       manage_hwaddr => false,
     }
 
-Normal interface - static:
+Normal interface - static IPv4:
 
     network::if::static { 'eth1':
       ensure       => 'up',
@@ -116,7 +122,13 @@ Normal interface - bridged (the corresponding network::bridge::* may also have t
       bridge => 'br0'
     }
 
-Aliased interface:
+Normal interface - promiscuous:
+
+    network::if::promisc { 'eth1':
+      ensure => 'up',
+    }
+
+Aliased interface IPv4:
 
     network::alias { 'eth0:1':
       ensure    => 'up',
@@ -124,7 +136,7 @@ Aliased interface:
       netmask   => '255.255.255.0',
     }
 
-Aliased interface (allow non-root user to manage):
+Aliased interface IPv4 (allow non-root user to manage):
 
     network::alias { 'em2:1':
       ensure    => 'up',
@@ -133,7 +145,7 @@ Aliased interface (allow non-root user to manage):
       userctl   => true,
     }
 
-Aliased interface (range):
+Aliased interface IPv4 (range):
 
     network::alias::range { 'eth1':
       ensure          => 'up',
@@ -190,12 +202,10 @@ Bridge interface - no IP:
       bridging_opts => 'priority=65535',
     }
 
-Bridge interface - static (minimal):
+Bridge interface - static (minimal - no IP):
 
     network::bridge::static { 'br1':
-      ensure    => 'up',
-      ipaddress => '10.21.30.248',
-      netmask   => '255.255.255.128',
+      ensure => 'up',
     }
 
 Bridge interface - static:
@@ -226,7 +236,25 @@ Static interface routes:
       gateway   => [ '192.168.1.1', '10.0.0.1', ],
     }
 
-Normal interface - VLAN - static (minimal):
+Static interface routes (host route):
+
+    network::route { 'eno2':
+      ipaddress => [ '192.168.45.32', ],
+      netmask   => [ '255.255.255.255', ], # this is the important part
+      gateway   => [ '192.168.100.1', ],
+    }
+
+Normal interface - VLAN - static (minimal - no IP):
+
+    class { 'network::global':
+      vlan => 'yes',
+    }
+
+    network::if::static { 'eth0.330':
+      ensure => 'up',
+    }
+
+Normal interface - VLAN - static IPv4:
 
     class { 'network::global':
       vlan => 'yes',
@@ -238,6 +266,10 @@ Normal interface - VLAN - static (minimal):
       netmask   => '255.255.255.0',
     }
 
+Promiscuous interface:
+    To set a static or dynamic interface to promiscuous mode (RedHat only), add:
+      promisc => true
+
 Flush IP addresses:
 
 Network scripts on RHEL7 do not flush IP addresses, so you eventually end up with multiple of them, passing `flush => true` will run `ip addr flush` on given interface before notifying the network service.
@@ -247,6 +279,17 @@ Network scripts on RHEL7 do not flush IP addresses, so you eventually end up wit
       ipaddress => '1.2.3.4',
       netmask   => '255.255.255.0',
       flush     => true,
+    }
+
+Restart network:
+
+By default, all changes notify the network service, thus triggering a restart of the whole networking configuration. This might be not desired in some setups and can be disabled by passing the `restart` parameter as `false`:
+
+    network::if::static { 'eth0':
+      ensure    => 'up',
+      ipaddress => '1.2.3.4',
+      netmask   => '255.255.255.0',
+      restart   => false,
     }
 
 Hiera
@@ -296,7 +339,7 @@ Issues
 ------
 
 * Setting ETHTOOL_OPTS, MTU, or BONDING_OPTS and then unsetting will not revert the running config to defaults.
-* Changes to any configuration will result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect.
+* Changes to any configuration will by default result in "service network restart".  This could cause network inaccessability for the host if the network configuration is incorrect. See the examples how to disable this behaviour.
 * Modifying or creating a slave interface after the master has been created will not change the running config.
 * There is presently no support for removing an interface.
 

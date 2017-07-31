@@ -13,6 +13,7 @@
 #   $userctl        - optional - defaults to false
 #   $zone           - optional
 #   $metric         - optional
+#   $restart        - optional - defaults to true
 #
 # === Actions:
 #
@@ -45,7 +46,8 @@ define network::alias (
   $ipv6gateway = undef,
   $userctl = false,
   $zone = undef,
-  $metric = undef
+  $metric = undef,
+  $restart = true,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
@@ -69,5 +71,6 @@ define network::alias (
     isalias        => true,
     zone           => $zone,
     metric         => $metric,
+    restart        => $restart,
   }
 } # define network::alias
