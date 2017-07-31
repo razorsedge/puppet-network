@@ -236,6 +236,14 @@ Static interface routes:
       gateway   => [ '192.168.1.1', '10.0.0.1', ],
     }
 
+Static interface routes (host route):
+
+    network::route { 'eno2':
+      ipaddress => [ '192.168.45.32', ],
+      netmask   => [ '255.255.255.255', ], # this is the important part
+      gateway   => [ '192.168.100.1', ],
+    }
+
 Normal interface - VLAN - static (minimal - no IP):
 
     class { 'network::global':
