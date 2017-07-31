@@ -68,4 +68,6 @@ check_link_down() {
 <% end -%>
 <% if @promisc %>PROMISC=yes
 <% end -%>
+<% if !@arpcheck %>ARPCHECK=no
+<% end -%>
 NM_CONTROLLED=no

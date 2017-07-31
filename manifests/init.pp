@@ -78,6 +78,7 @@ class network {
 #   $defroute        - optional
 #   $promisc         - optional - defaults to false
 #   $restart         - optional - defaults to true
+#   $arpcheck        - optional - defaults to true
 #
 # === Actions:
 #
@@ -138,6 +139,7 @@ define network_if_base (
   $metric          = undef,
   $promisc         = false,
   $restart         = true,
+  $arpcheck        = true,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -152,6 +154,7 @@ define network_if_base (
   validate_bool($flush)
   validate_bool($promisc)
   validate_bool($restart)
+  validate_bool($arpcheck)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
