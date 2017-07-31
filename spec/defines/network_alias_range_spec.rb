@@ -171,6 +171,7 @@ describe 'network::alias::range', :type => 'define' do
       :noaliasrouting  => true,
       :netmask         => '255.255.255.0',
       :broadcast       => '1.2.3.0',
+      :arpcheck        => false,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -190,6 +191,7 @@ describe 'network::alias::range', :type => 'define' do
         'NO_ALIASROUTING=yes',
         'NETMASK=255.255.255.0',
         'BROADCAST=1.2.3.0',
+        'ARPCHECK=no',
         'ONPARENT=yes',
         'NM_CONTROLLED=no',
       ])

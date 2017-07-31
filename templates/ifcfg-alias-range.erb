@@ -11,5 +11,7 @@ CLONENUM_START=<%= @clonenum_start %>
 <% end -%>
 <% if @broadcast %>BROADCAST=<%= @broadcast %>
 <% end -%>
+<% if !@arpcheck %>ARPCHECK=no
+<% end -%>
 ONPARENT=<%= @onparent %>
 NM_CONTROLLED=no

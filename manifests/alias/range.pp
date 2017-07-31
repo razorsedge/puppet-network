@@ -26,6 +26,7 @@
 #     ipaddress_end   => '1.2.3.20',
 #     clonenum_start  => '0',
 #     noaliasrouting  => true,
+#     arpcheck        => false,
 #   }
 #
 # === Authors:
@@ -45,6 +46,7 @@ define network::alias::range (
   $restart = true,
   $netmask = false,
   $broadcast = false,
+  $arpcheck = true,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress_start) { fail("${ipaddress_start} is not an IP address.") }
@@ -54,6 +56,7 @@ define network::alias::range (
   # Validate our booleans
   validate_bool($noaliasrouting)
   validate_bool($restart)
+  validate_bool($arpcheck)
   # Validate our regular expressions
   $states = [ '^up$', '^down$', '^absent$' ]
   validate_re($ensure, $states, '$ensure must be either "up", "down", or "absent".')
