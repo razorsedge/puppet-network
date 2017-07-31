@@ -148,6 +148,7 @@ describe 'network::bond::static', :type => 'define' do
       :defroute     => 'yes',
       :metric       => '10',
       :zone         => 'trusted',
+      :userctl      => true,
     }
     end
     let :facts do {
@@ -181,6 +182,7 @@ describe 'network::bond::static', :type => 'define' do
         'DNS1=3.4.5.6',
         'DNS2=5.6.7.8',
         'DOMAIN="somedomain.com"',
+        'USERCTL=yes',
         'IPV6INIT=yes',
         'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
         'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',

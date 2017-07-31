@@ -13,9 +13,10 @@
 #   $ethtool_opts - optional
 #   $bonding_opts - optional
 #   $zone         - optional
-#   $metric       - optional
 #   $defroute     - optional
 #   $restart      - optional - defaults to true
+#   $metric       - optional
+#   $userctl      - optional
 #
 # === Actions:
 #
@@ -59,6 +60,7 @@ define network::bond::static (
   $defroute = undef,
   $metric = undef,
   $restart = true,
+  $userctl = undef,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -73,7 +75,6 @@ define network::bond::static (
   # Validate booleans
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
-
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -97,6 +98,7 @@ define network::bond::static (
     defroute     => $defroute,
     metric       => $metric,
     restart      => $restart,
+    userctl      => $userctl,
   }
 
   # Only install "alias bondN bonding" on old OSs that support
