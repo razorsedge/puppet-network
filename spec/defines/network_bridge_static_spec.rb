@@ -76,8 +76,8 @@ describe 'network::bridge::static', :type => 'define' do
     let(:title) { 'br1' }
     let :params do {
       :ensure    => 'up',
-      :ipaddress => '1.2.3.4',
-      :netmask   => '255.255.255.0',
+#      :ipaddress => '1.2.3.4',
+#      :netmask   => '255.255.255.0',
     }
     end
     let :facts do {

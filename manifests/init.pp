@@ -51,8 +51,8 @@ class network {
 # === Parameters:
 #
 #   $ensure          - required - up|down
-#   $ipaddress       - required
-#   $netmask         - required
+#   $ipaddress       - optional
+#   $netmask         - optional
 #   $macaddress      - required
 #   $manage_hwaddr   - optional - defaults to true
 #   $gateway         - optional
@@ -104,9 +104,9 @@ class network {
 #
 define network_if_base (
   $ensure,
-  $ipaddress,
-  $netmask,
   $macaddress,
+  $ipaddress       = undef,
+  $netmask         = undef,
   $manage_hwaddr   = true,
   $gateway         = undef,
   $noaliasrouting  = false,

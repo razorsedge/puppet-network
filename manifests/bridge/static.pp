@@ -5,8 +5,8 @@
 # === Parameters:
 #
 #   $ensure        - required - up|down
-#   $ipaddress     - required
-#   $netmask       - required
+#   $ipaddress     - optional
+#   $netmask       - optional
 #   $gateway       - optional
 #   $ipv6address   - optional
 #   $ipv6gateway   - optional
@@ -50,8 +50,8 @@
 #
 define network::bridge::static (
   $ensure,
-  $ipaddress,
-  $netmask,
+  $ipaddress = undef,
+  $netmask = undef,
   $gateway = undef,
   $ipv6address = undef,
   $ipv6gateway = undef,
@@ -72,7 +72,9 @@ define network::bridge::static (
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
   # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  if $ipaddress {
+    if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
+  }
   if $ipv6address {
     if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
   }

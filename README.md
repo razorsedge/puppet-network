@@ -46,7 +46,13 @@ Global network setting with IPv6 enabled with optional default device for IPv6 t
     }
 
 
-Normal interface - static (minimal):
+Normal interface - static (minimal - no IP):
+
+    network::if::static { 'eth0':
+      ensure => 'up',
+    }
+
+Normal interface - static IPv4 (minimal):
 
     network::if::static { 'eth0':
       ensure    => 'up',
@@ -54,7 +60,7 @@ Normal interface - static (minimal):
       netmask   => '255.255.255.128',
     }
 
-Normal interface - static (minimal without HWADDR in ifcfg-file):
+Normal interface - static IPv4 (minimal without HWADDR in ifcfg-file):
 
     network::if::static { 'eth0':
       ensure        => 'up',
@@ -63,7 +69,7 @@ Normal interface - static (minimal without HWADDR in ifcfg-file):
       manage_hwaddr => false,
     }
 
-Normal interface - static:
+Normal interface - static IPv4:
 
     network::if::static { 'eth1':
       ensure       => 'up',
@@ -122,7 +128,7 @@ Normal interface - promiscuous:
       ensure => 'up',
     }
 
-Aliased interface:
+Aliased interface IPv4:
 
     network::alias { 'eth0:1':
       ensure    => 'up',
@@ -130,7 +136,7 @@ Aliased interface:
       netmask   => '255.255.255.0',
     }
 
-Aliased interface (allow non-root user to manage):
+Aliased interface IPv4 (allow non-root user to manage):
 
     network::alias { 'em2:1':
       ensure    => 'up',
@@ -139,7 +145,7 @@ Aliased interface (allow non-root user to manage):
       userctl   => true,
     }
 
-Aliased interface (range):
+Aliased interface IPv4 (range):
 
     network::alias::range { 'eth1':
       ensure          => 'up',
@@ -196,12 +202,10 @@ Bridge interface - no IP:
       bridging_opts => 'priority=65535',
     }
 
-Bridge interface - static (minimal):
+Bridge interface - static (minimal - no IP):
 
     network::bridge::static { 'br1':
-      ensure    => 'up',
-      ipaddress => '10.21.30.248',
-      netmask   => '255.255.255.128',
+      ensure => 'up',
     }
 
 Bridge interface - static:
@@ -232,7 +236,17 @@ Static interface routes:
       gateway   => [ '192.168.1.1', '10.0.0.1', ],
     }
 
-Normal interface - VLAN - static (minimal):
+Normal interface - VLAN - static (minimal - no IP):
+
+    class { 'network::global':
+      vlan => 'yes',
+    }
+
+    network::if::static { 'eth0.330':
+      ensure => 'up',
+    }
+
+Normal interface - VLAN - static IPv4:
 
     class { 'network::global':
       vlan => 'yes',
