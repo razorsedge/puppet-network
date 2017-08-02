@@ -46,9 +46,9 @@ Global network setting with IPv6 enabled with optional default device for IPv6 t
     }
 
 
-Normal interface - static (minimal - no IP):
+Normal interface - no IP:
 
-    network::if::static { 'eth0':
+    network::if { 'eth0':
       ensure => 'up',
     }
 
@@ -155,6 +155,13 @@ Aliased interface IPv4 (range):
       noaliasrouting  => true,
     }
 
+Bonded master interface - no IP:
+
+    network::bond { 'bond0':
+      ensure       => 'up',
+      bonding_opts => 'mode=802.3ad lacp_rate=fast miimon=100',
+    }
+
 Bonded master interface - static:
 
     network::bond::static { 'bond0':
@@ -202,12 +209,6 @@ Bridge interface - no IP:
       bridging_opts => 'priority=65535',
     }
 
-Bridge interface - static (minimal - no IP):
-
-    network::bridge::static { 'br1':
-      ensure => 'up',
-    }
-
 Bridge interface - static:
 
     network::bridge::static { 'br2':
@@ -244,13 +245,13 @@ Static interface routes (host route):
       gateway   => [ '192.168.100.1', ],
     }
 
-Normal interface - VLAN - static (minimal - no IP):
+Normal interface - VLAN - no IP:
 
     class { 'network::global':
       vlan => 'yes',
     }
 
-    network::if::static { 'eth0.330':
+    network::if { 'eth0.330':
       ensure => 'up',
     }
 

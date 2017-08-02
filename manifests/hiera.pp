@@ -30,6 +30,7 @@ class network::hiera {
   # Merge hashes from multiple hiera layers
   $network_alias = hiera_hash('network::alias', undef)
   $network_alias_range = hiera_hash('network::alias_range', undef)
+  $network_bond = hiera_hash('network::bond', undef)
   $network_bond_bridge = hiera_hash('network::bond_bridge', undef)
   $network_bond_dynamic = hiera_hash('network::bond_dynamic', undef)
   $network_bond_slave = hiera_hash('network::bond_slave', undef)
@@ -37,6 +38,7 @@ class network::hiera {
   $network_bridge = hiera_hash('network::bridge', undef)
   $network_bridge_dynamic = hiera_hash('network::bridge_dynamic', undef)
   $network_bridge_static = hiera_hash('network::bridge_static', undef)
+  $network_if = hiera_hash('network::if', undef)
   $network_if_bridge = hiera_hash('network::if_bridge', undef)
   $network_if_dynamic = hiera_hash('network::if_dynamic', undef)
   $network_if_promisc = hiera_hash('network::if_promisc', undef)
@@ -48,6 +50,9 @@ class network::hiera {
   }
   if $network_alias_range {
     create_resources('network::alias::range', $network_alias_range)
+  }
+  if $network_bond {
+    create_resources('network::bond', $network_bond)
   }
   if $network_bond_bridge {
     create_resources('network::bond::bridge', $network_bond_bridge)
@@ -69,6 +74,9 @@ class network::hiera {
   }
   if $network_bridge_static {
     create_resources('network::bridge::static', $network_bridge_static)
+  }
+  if $network_if {
+    create_resources('network::if', $network_if)
   }
   if $network_if_bridge {
     create_resources('network::if::bridge', $network_if_bridge)
