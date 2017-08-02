@@ -46,9 +46,9 @@ Global network setting with IPv6 enabled with optional default device for IPv6 t
     }
 
 
-Normal interface - static (minimal - no IP):
+Normal interface - no IP:
 
-    network::if::static { 'eth0':
+    network::if { 'eth0':
       ensure => 'up',
     }
 
@@ -244,13 +244,13 @@ Static interface routes (host route):
       gateway   => [ '192.168.100.1', ],
     }
 
-Normal interface - VLAN - static (minimal - no IP):
+Normal interface - VLAN - no IP:
 
     class { 'network::global':
       vlan => 'yes',
     }
 
-    network::if::static { 'eth0.330':
+    network::if { 'eth0.330':
       ensure => 'up',
     }
 

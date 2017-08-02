@@ -37,6 +37,7 @@ class network::hiera {
   $network_bridge = hiera_hash('network::bridge', undef)
   $network_bridge_dynamic = hiera_hash('network::bridge_dynamic', undef)
   $network_bridge_static = hiera_hash('network::bridge_static', undef)
+  $network_if = hiera_hash('network::if', undef)
   $network_if_bridge = hiera_hash('network::if_bridge', undef)
   $network_if_dynamic = hiera_hash('network::if_dynamic', undef)
   $network_if_promisc = hiera_hash('network::if_promisc', undef)
@@ -69,6 +70,9 @@ class network::hiera {
   }
   if $network_bridge_static {
     create_resources('network::bridge::static', $network_bridge_static)
+  }
+  if $network_if {
+    create_resources('network::if', $network_if)
   }
   if $network_if_bridge {
     create_resources('network::if::bridge', $network_if_bridge)
