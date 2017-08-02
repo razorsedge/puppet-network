@@ -155,6 +155,13 @@ Aliased interface IPv4 (range):
       noaliasrouting  => true,
     }
 
+Bonded master interface - no IP:
+
+    network::bond { 'bond0':
+      ensure       => 'up',
+      bonding_opts => 'mode=802.3ad lacp_rate=fast miimon=100',
+    }
+
 Bonded master interface - static:
 
     network::bond::static { 'bond0':
@@ -200,12 +207,6 @@ Bridge interface - no IP:
       stp           => true,
       delay         => '0',
       bridging_opts => 'priority=65535',
-    }
-
-Bridge interface - static (minimal - no IP):
-
-    network::bridge::static { 'br1':
-      ensure => 'up',
     }
 
 Bridge interface - static:
