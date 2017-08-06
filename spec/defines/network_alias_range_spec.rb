@@ -48,6 +48,7 @@ describe 'network::alias::range', :type => 'define' do
 
 
   context 'required parameters: ensure => up' do
+    let(:pre_condition) { "file { 'ifcfg-eth99': }" }
     let(:title) { 'eth99' }
     let :params do {
       :ensure          => 'up',
@@ -80,6 +81,7 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'required parameters: ensure => up, restart => false' do
+    let(:pre_condition) { "file { 'ifcfg-eth99': }" }
     let(:title) { 'eth99' }
     let :params do {
       :ensure          => 'up',
@@ -112,6 +114,7 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'required parameters: ensure => down' do
+    let(:pre_condition) { "file { 'ifcfg-bond7': }" }
     let(:title) { 'bond7' }
     let :params do {
       :ensure          => 'down',
@@ -144,6 +147,7 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'required parameters: ensure => absent' do
+    let(:pre_condition) { "file { 'ifcfg-bond6': }" }
     let(:title) { 'bond6' }
     let :params do {
       :ensure          => 'absent',
@@ -162,6 +166,7 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'optional parameters' do
+    let(:pre_condition) { "file { 'ifcfg-eth8': }" }
     let(:title) { 'eth8' }
     let :params do {
       :ensure          => 'up',
