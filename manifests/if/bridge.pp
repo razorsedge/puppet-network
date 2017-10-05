@@ -9,7 +9,8 @@
 #   $mtu          - optional
 #   $ethtool_opts - optional
 #   $macaddress   - optional
-#   $restart      - optional - defaults to true
+#   $restart      - optional - defaults to $::network::restart_default (true)
+#   $sched        - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -36,7 +37,8 @@ define network::if::bridge (
   $mtu = undef,
   $ethtool_opts = undef,
   $macaddress = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
+  $sched = $::network::sched_default,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -48,6 +50,8 @@ define network::if::bridge (
   else {
     $macaddy = $macaddress
   }
+
+  include '::network'
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -62,5 +66,6 @@ define network::if::bridge (
     ethtool_opts => $ethtool_opts,
     bridge       => $bridge,
     restart      => $restart,
+    sched        => $sched,
   }
 } # define network::if::bridge

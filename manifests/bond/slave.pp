@@ -7,13 +7,14 @@
 #   $master       - required
 #   $macaddress   - optional
 #   $ethtool_opts - optional
-#   $restart      - optional, defaults to true
+#   $restart      - optional - defaults to $::network::restart_default (true)
 #   $zone         - optional
 #   $defroute     - optional
 #   $metric       - optional
 #   $userctl      - optional - defaults to false
 #   $bootproto    - optional
 #   $onboot       - optional
+#   $sched        - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -45,10 +46,11 @@ define network::bond::slave (
   $zone = undef,
   $defroute = undef,
   $metric = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
   $userctl = false,
   $bootproto = undef,
   $onboot = undef,
+  $sched = $::network::sched_default,
 ) {
   # Validate our data
   if $macaddress and ! is_mac_address($macaddress) {
@@ -74,7 +76,8 @@ define network::bond::slave (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify   => Service['network'],
+      schedule => $sched,
     }
   }
 } # define network::bond::slave

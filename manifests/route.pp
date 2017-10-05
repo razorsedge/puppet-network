@@ -7,7 +7,8 @@
 #   $ipaddress - required
 #   $netmask   - required
 #   $gateway   - required
-#   $restart   - optional - defaults to true
+#   $restart   - optional - defaults to $::network::restart_default (true)
+#   $sched     - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -44,7 +45,8 @@ define network::route (
   $ipaddress,
   $netmask,
   $gateway,
-  $restart = true,
+  $restart = $::network::restart_default,
+  $sched   = $::network::sched_default,
 ) {
   # Validate our arrays
   validate_array($ipaddress)
@@ -69,7 +71,8 @@ define network::route (
 
   if $restart {
     File["route-${interface}"] {
-      notify  => Service['network'],
+      notify   => Service['network'],
+      schedule => $sched,
     }
   }
 } # define network::route

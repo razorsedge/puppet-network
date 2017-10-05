@@ -13,7 +13,8 @@
 #   $scope         - optional
 #   $flush         - optional - defaults to false
 #   $zone          - optional
-#   $restart       - optional - defaults to true
+#   $restart       - optional - defaults to $::network::restart_default (true)
+#   $sched         - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -43,7 +44,8 @@ define network::if (
   $scope = undef,
   $flush = false,
   $zone = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
+  $sched = $::network::sched_default,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -63,6 +65,8 @@ define network::if (
   validate_bool($flush)
   validate_bool($restart)
 
+  include '::network'
+
   network_if_base { $title:
     ensure        => $ensure,
     ipaddress     => '',
@@ -80,5 +84,6 @@ define network::if (
     flush         => $flush,
     zone          => $zone,
     restart       => $restart,
+    sched         => $sched,
   }
 } # define network::if

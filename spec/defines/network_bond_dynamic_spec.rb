@@ -7,7 +7,9 @@ describe 'network::bond::dynamic', :type => 'define' do
   context 'incorrect value: ensure' do
     let(:title) { 'bond1:1' }
     let :params do {
-      :ensure => 'blah'
+      :ensure  => 'blah',
+      :restart => true,
+      :sched   => nil,
     }
     end
     it 'should fail' do
@@ -18,7 +20,9 @@ describe 'network::bond::dynamic', :type => 'define' do
   context 'required parameters' do
     let(:title) { 'bond2' }
     let :params do {
-      :ensure => 'up',
+      :ensure  => 'up',
+      :restart => true,
+      :sched   => nil,
     }
     end
     let :facts do {
@@ -93,6 +97,44 @@ describe 'network::bond::dynamic', :type => 'define' do
     end
   end
 
+  context 'required parameters: restart => false' do
+    let(:title) { 'bond2' }
+    let :params do {
+      :ensure  => 'up',
+      :restart => false,
+      :sched   => nil,
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
+      :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
+    }
+    end
+    it { should contain_file('ifcfg-bond2').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2',
+    )}
+    it 'should contain File[ifcfg-bond2] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond2', [
+        'DEVICE=bond2',
+        'BOOTPROTO=dhcp',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'BONDING_OPTS="miimon=100"',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { should_not contain_augeas('modprobe.conf_bond2') }
+    it { is_expected.to_not contain_file('ifcfg-bond2').that_notifies('Service[network]') }
+  end
+
   context 'optional parameters' do
     let(:title) { 'bond2' }
     let :params do {
@@ -103,6 +145,8 @@ describe 'network::bond::dynamic', :type => 'define' do
       :defroute     => 'yes',
       :metric       => '10',
       :zone         => 'trusted',
+      :restart      => true,
+      :sched        => nil,
     }
     end
     let :facts do {

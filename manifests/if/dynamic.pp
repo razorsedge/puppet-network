@@ -18,7 +18,8 @@
 #   $zone            - optional
 #   $metric          - optional
 #   $defroute        - optional
-#   $restart         - optional - defaults to true
+#   $restart         - optional - defaults to $::network::restart_default (true)
+#   $sched           - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -60,7 +61,8 @@ define network::if::dynamic (
   $defroute        = undef,
   $zone            = undef,
   $metric          = undef,
-  $restart         = true,
+  $restart         = $::network::restart_default,
+  $sched           = $::network::sched_default,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -77,6 +79,8 @@ define network::if::dynamic (
   validate_bool($userctl)
   validate_bool($peerdns)
   validate_bool($manage_hwaddr)
+
+  include '::network'
 
   network_if_base { $title:
     ensure          => $ensure,
@@ -97,5 +101,6 @@ define network::if::dynamic (
     zone            => $zone,
     metric          => $metric,
     restart         => $restart,
+    sched           => $sched,
   }
 } # define network::if::dynamic

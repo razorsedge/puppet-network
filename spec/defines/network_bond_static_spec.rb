@@ -10,6 +10,8 @@ describe 'network::bond::static', :type => 'define' do
       :ensure    => 'blah',
       :ipaddress => '1.2.3.4',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     it 'should fail' do
@@ -23,6 +25,8 @@ describe 'network::bond::static', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => 'notAnIP',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     it 'should fail' do
@@ -37,6 +41,8 @@ describe 'network::bond::static', :type => 'define' do
       :ipaddress   => '1.2.3.4',
       :netmask     => '255.255.255.0',
       :ipv6address => 'notAnIP',
+      :restart     => true,
+      :sched       => nil,
     }
     end
     it 'should fail' do
@@ -50,6 +56,8 @@ describe 'network::bond::static', :type => 'define' do
       :ensure    => 'up',
 #      :ipaddress => '1.2.3.5',
 #      :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let :facts do {
@@ -149,6 +157,8 @@ describe 'network::bond::static', :type => 'define' do
       :metric       => '10',
       :zone         => 'trusted',
       :userctl      => true,
+      :restart      => true,
+      :sched        => nil,
     }
     end
     let :facts do {
@@ -195,6 +205,49 @@ describe 'network::bond::static', :type => 'define' do
     end
     it { should contain_service('network') }
     it { should_not contain_augeas('modprobe.conf_bond0') }
+  end
+
+  context 'optional parameters: restart => false' do
+    let(:title) { 'bond0' }
+    let :params do {
+      :ensure    => 'up',
+#      :ipaddress => '1.2.3.5',
+#      :netmask   => '255.255.255.0',
+      :restart   => false,
+      :sched     => nil,
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
+      :macaddress_bond0 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-bond0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
+    )}
+    it 'should contain File[ifcfg-bond0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond0', [
+        'DEVICE=bond0',
+        'BOOTPROTO=none',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+#        'IPADDR=1.2.3.5',
+#        'NETMASK=255.255.255.0',
+        'BONDING_OPTS="miimon=100"',
+        'PEERDNS=no',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { should_not contain_augeas('modprobe.conf_bond0') }
+    it { is_expected.to_not contain_file('ifcfg-bond0').that_notifies('Service[network]') }
   end
 
 end

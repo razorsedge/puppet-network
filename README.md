@@ -293,6 +293,32 @@ By default, all changes notify the network service, thus triggering a restart of
       restart   => false,
     }
 
+Schedule network restarts:
+
+If restart is true (default), then an optional schedule can be specified for the network restarts by passing the `sched` parameter.  The specified schedule must be defined in the catalog separately from the network module.
+
+    network::if::static { 'eth0':
+      ensure    => 'up',
+      ipaddress => '1.2.3.4',
+      netmask   => '255.255.255.0',
+      sched     => 'after_hours',
+    }
+
+Defaults for restart and/or schedule:
+By default, network restarts are enabled (true) and schedules are not set (undef).  The defaults can be overridden for all resources by passing the `restart_default` and/or `sched_default` parameters for the network class.
+
+Code Example:
+    class {'network':
+      restart_default => false,
+      sched_default   => 'myschedule',
+    }
+
+Hiera Example:
+    network::restart_default: false
+    network::sched_default: myschedule
+
+The defaults can be overridden normally in specific network resources by using the `restart` and/or `sched` parameters. As before, the schedule only applies in cases where restart is true.
+
 Hiera
 -----
 

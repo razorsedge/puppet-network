@@ -13,7 +13,8 @@
 #   $userctl        - optional - defaults to false
 #   $zone           - optional
 #   $metric         - optional
-#   $restart        - optional - defaults to true
+#   $restart        - optional - defaults to $::network::restart_default (true)
+#   $sched          - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -47,13 +48,19 @@ define network::alias (
   $userctl = false,
   $zone = undef,
   $metric = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
+  $sched = $::network::sched_default,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
   # Validate our booleans
   validate_bool($noaliasrouting)
   validate_bool($userctl)
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$' ]
+  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+
+  include '::network'
 
   network_if_base { $title:
     ensure         => $ensure,
@@ -72,5 +79,6 @@ define network::alias (
     zone           => $zone,
     metric         => $metric,
     restart        => $restart,
+    sched          => $sched,
   }
 } # define network::alias

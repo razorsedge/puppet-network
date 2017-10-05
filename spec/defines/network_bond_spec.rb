@@ -7,7 +7,9 @@ describe 'network::bond', :type => 'define' do
   context 'incorrect value: ensure' do
     let(:title) { 'bond1' }
     let :params do {
-      :ensure => 'blah',
+      :ensure  => 'blah',
+      :restart => true,
+      :sched   => nil,
     }
     end
     it 'should fail' do
@@ -18,7 +20,9 @@ describe 'network::bond', :type => 'define' do
   context 'required parameters' do
     let(:title) { 'bond0' }
     let :params do {
-      :ensure => 'up',
+      :ensure  => 'up',
+      :restart => true,
+      :sched   => nil,
     }
     end
     let :facts do {
@@ -101,6 +105,8 @@ describe 'network::bond', :type => 'define' do
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
       :bonding_opts => 'mode=active-backup miimon=100',
       :zone         => 'trusted',
+      :restart      => true,
+      :sched        => nil,
     }
     end
     let :facts do {
@@ -133,6 +139,44 @@ describe 'network::bond', :type => 'define' do
     end
     it { should contain_service('network') }
     it { should_not contain_augeas('modprobe.conf_bond0') }
+  end
+
+  context 'optional parameters: restart => false' do
+    let(:title) { 'bond0' }
+    let :params do {
+      :ensure  => 'up',
+      :restart => false,
+      :sched   => nil,
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '6.0',
+      :macaddress_bond0 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-bond0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
+    )}
+    it 'should contain File[ifcfg-bond0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond0', [
+        'DEVICE=bond0',
+        'BOOTPROTO=none',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'BONDING_OPTS="miimon=100"',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { should_not contain_augeas('modprobe.conf_bond0') }
+    it { is_expected.to_not contain_file('ifcfg-bond0').that_notifies('Service[network]') }
   end
 
 end

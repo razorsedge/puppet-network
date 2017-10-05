@@ -21,7 +21,8 @@
 #   $delay         - optional - defaults to 30
 #   $bridging_opts - optional
 #   $scope         - optional
-#   $restart       - optional - defaults to true
+#   $restart       - optional - defaults to $::network::restart_default (true)
+#   $sched         - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -68,7 +69,8 @@ define network::bridge::static (
   $delay = '30',
   $bridging_opts = undef,
   $scope = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
+  $sched = $::network::sched_default,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -125,7 +127,8 @@ define network::bridge::static (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify   => Service['network'],
+      schedule => $sched,
     }
   }
 } # define network::bridge::static

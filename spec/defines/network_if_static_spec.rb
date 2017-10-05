@@ -10,6 +10,8 @@ describe 'network::if::static', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => 'notAnIP',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     it 'should fail' do
@@ -24,6 +26,8 @@ describe 'network::if::static', :type => 'define' do
       :ipaddress   => '1.2.3.4',
       :netmask     => '255.255.255.0',
       :ipv6address => 'notAnIP',
+      :restart     => true,
+      :sched       => nil,
     }
     end
     it 'should fail' do
@@ -38,6 +42,8 @@ describe 'network::if::static', :type => 'define' do
       :ipaddress   => '1.2.3.4',
       :netmask     => '255.255.255.0',
       :ipv6address => { 'notAn' => 'IP' },
+      :restart     => true,
+      :sched       => nil,
     }
     end
     it 'should fail' do
@@ -57,7 +63,13 @@ describe 'network::if::static', :type => 'define' do
         '123:4567:89ab:cdef:123:4567:89ab:cdee',
         'notAnIP',
         '123:4567:89ab:cdef:123:4567:89ab:cdef',
-      ]
+      ],
+      :restart     => true,
+      :sched       => nil,
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
     }
     end
     it 'should fail' do
@@ -71,6 +83,8 @@ describe 'network::if::static', :type => 'define' do
       :ensure    => 'up',
 #      :ipaddress => '1.2.3.4',
 #      :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let :facts do {
@@ -111,6 +125,7 @@ describe 'network::if::static', :type => 'define' do
       :ipaddress => '1.2.3.4',
       :netmask   => '255.255.255.0',
       :restart   => false,
+      :sched     => nil,
     }
     end
     let :facts do {
@@ -169,6 +184,8 @@ describe 'network::if::static', :type => 'define' do
       :metric       => '10',
       :zone         => 'trusted',
       :arpcheck     => false,
+      :restart      => true,
+      :sched        => nil,
     }
     end
     let :facts do {
@@ -225,6 +242,8 @@ describe 'network::if::static', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => '1.2.3.4',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let :facts do {
@@ -263,6 +282,8 @@ describe 'network::if::static', :type => 'define' do
       :ipaddress      => '1.2.3.4',
       :netmask        => '255.255.255.0',
       :manage_hwaddr  => false,
+      :restart        => true,
+      :sched          => nil,
     }
     end
     let :facts do {
@@ -299,7 +320,9 @@ describe 'network::if::static', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => '1.2.3.4',
       :netmask   => '255.255.255.0',
-      :flush     => true
+      :flush     => true,
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let :facts do {
@@ -320,6 +343,8 @@ describe 'network::if::static', :type => 'define' do
       :ipv6address => [
         '123:4567:89ab:cdef:123:4567:89ab:cdee',
       ],
+      :restart     => true,
+      :sched       => nil,
     }
     end
     let :facts do {
@@ -366,6 +391,8 @@ describe 'network::if::static', :type => 'define' do
         '123:4567:89ab:cdef:123:4567:89ab:cdee',
         '123:4567:89ab:cdef:123:4567:89ab:cdef',
       ],
+      :restart     => true,
+      :sched       => nil,
     }
     end
     let :facts do {
