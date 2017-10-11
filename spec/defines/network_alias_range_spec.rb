@@ -14,7 +14,7 @@ describe 'network::alias::range', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond77-range0')}.to raise_error(Puppet::Error, /\$ensure must be either "up", "down", or "absent"./)
+      expect {should contain_file('ifcfg-bond77-range0')}.to raise_error(Puppet::Error, /\$ensure must be "up", "down", or "absent"./)
     end
   end
 

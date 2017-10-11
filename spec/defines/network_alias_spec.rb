@@ -13,7 +13,7 @@ describe 'network::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /\$ensure must be "up", "down", or "absent"./)
     end
   end
 
@@ -62,6 +62,26 @@ describe 'network::alias', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'required parameters: ensure => absent' do
+    let(:title) { 'bond2:1' }
+    let :params do {
+      :ensure    => 'absent',
+      :ipaddress => '1.2.3.6',
+      :netmask   => '255.255.255.0',
+      :restart   => true,
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :interfaces => 'eth0,bond2:1',
+    }
+    end
+    it { is_expected.to contain_file('ifcfg-bond2:1').with(
+      :ensure => 'absent',
+    )}
+    it { should contain_service('network') }
+  end
+
   context 'optional parameters' do
     let(:title) { 'bond3:2' }
     let :params do {
@@ -101,6 +121,65 @@ describe 'network::alias', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+  end
+
+  context 'optional parameters: ifscripts => true, ensure => up' do
+    let(:title) { 'bond2:1' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.6',
+      :netmask   => '255.255.255.0',
+      :restart   => true,
+      :ifscripts => true,
+    }
+    end
+    let :facts do {
+      :osfamily   => 'RedHat',
+      :interfaces => 'eth0',
+    }
+    end
+    it { should contain_file('ifcfg-bond2:1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1',
+    )}
+    it 'should contain File[ifcfg-bond2:1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond2:1', [
+        'DEVICE=bond2:1',
+        'BOOTPROTO=none',
+        'ONPARENT=yes',
+        'TYPE=Ethernet',
+        'IPADDR=1.2.3.6',
+        'NETMASK=255.255.255.0',
+        'NO_ALIASROUTING=no',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { is_expected.to contain_file('ifcfg-bond2:1') }
+    it { is_expected.to contain_exec('Refresh bond2:1') }
+  end
+
+  context 'optional parameters: ifscripts => true, ensure => absent' do
+    let(:title) { 'bond2:1' }
+    let :params do {
+      :ensure    => 'absent',
+      :ipaddress => '1.2.3.6',
+      :netmask   => '255.255.255.0',
+      :restart   => true,
+      :ifscripts => true,
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :interfaces => 'eth0,bond2:1',
+    }
+    end
+    it { is_expected.to contain_file('ifcfg-bond2:1').with(
+      :ensure => 'absent',
+    )}
+    it { is_expected.to contain_exec('ifdown bond2:1') }
   end
 
 end
