@@ -11,6 +11,8 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_start => '1.2.3.4',
       :ipaddress_end   => '1.2.3.4',
       :clonenum_start  => '0',
+      :restart         => true,
+      :sched           => nil,
     }
     end
     it 'should fail' do
@@ -25,6 +27,8 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_start => 'notAnIP',
       :ipaddress_end   => '1.2.3.4',
       :clonenum_start  => '0',
+      :restart         => true,
+      :sched           => nil,
     }
     end
     it 'should fail' do
@@ -39,6 +43,8 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_start => '1.2.3.4',
       :ipaddress_end   => 'notAnIP',
       :clonenum_start  => '0',
+      :restart         => true,
+      :sched           => nil,
     }
     end
     it 'should fail' do
@@ -55,6 +61,8 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_start => '1.2.3.99',
       :ipaddress_end   => '1.2.3.200',
       :clonenum_start  => '3',
+      :restart         => true,
+      :sched           => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -89,6 +97,7 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_end   => '1.2.3.200',
       :clonenum_start  => '3',
       :restart         => false,
+      :sched           => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -122,6 +131,8 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_end   => '1.2.3.4',
       :clonenum_start  => '9',
       :noaliasrouting  => true,
+      :restart         => true,
+      :sched           => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -154,6 +165,8 @@ describe 'network::alias::range', :type => 'define' do
       :ipaddress_start => '1.2.3.3',
       :ipaddress_end   => '1.2.3.4',
       :clonenum_start  => '9',
+      :restart         => true,
+      :sched           => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -177,6 +190,8 @@ describe 'network::alias::range', :type => 'define' do
       :netmask         => '255.255.255.0',
       :broadcast       => '1.2.3.0',
       :arpcheck        => false,
+      :restart         => true,
+      :sched           => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}

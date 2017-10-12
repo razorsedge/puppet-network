@@ -14,9 +14,10 @@
 #   $bonding_opts - optional
 #   $zone         - optional
 #   $defroute     - optional
-#   $restart      - optional - defaults to true
+#   $restart      - optional - defaults to $::network::restart_default (true)
 #   $metric       - optional
 #   $userctl      - optional
+#   $sched        - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -59,8 +60,9 @@ define network::bond::static (
   $zone = undef,
   $defroute = undef,
   $metric = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
   $userctl = undef,
+  $sched = $::network::sched_default,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -75,6 +77,8 @@ define network::bond::static (
   # Validate booleans
   validate_bool($ipv6init)
   validate_bool($ipv6peerdns)
+
+  include '::network'
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -99,6 +103,7 @@ define network::bond::static (
     metric       => $metric,
     restart      => $restart,
     userctl      => $userctl,
+    sched        => $sched,
   }
 
   # Only install "alias bondN bonding" on old OSs that support

@@ -27,8 +27,9 @@
 #   $zone           - optional
 #   $metric         - optional
 #   $defroute       - optional
-#   $restart        - optional - defaults to true
+#   $restart        - optional - defaults to $::network::restart_default (true)
 #   $arpcheck       - optional - defaults to true
+#   $sched          - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -80,8 +81,9 @@ define network::if::static (
   $zone = undef,
   $defroute = undef,
   $metric = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
   $arpcheck = true,
+  $sched = $::network::sched_default,
 ) {
   # Validate our data
   if $ipaddress {
@@ -119,6 +121,8 @@ define network::if::static (
   validate_bool($flush)
   validate_bool($arpcheck)
 
+  include '::network'
+
   network_if_base { $title:
     ensure          => $ensure,
     ipv6init        => $ipv6init,
@@ -148,5 +152,6 @@ define network::if::static (
     metric          => $metric,
     restart         => $restart,
     arpcheck        => $arpcheck,
+    sched           => $sched,
   }
 } # define network::if::static

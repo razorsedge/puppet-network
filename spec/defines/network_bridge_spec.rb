@@ -7,7 +7,9 @@ describe 'network::bridge', :type => 'define' do
   context 'incorrect value: ensure' do
     let(:title) { 'br77' }
     let :params do {
-      :ensure => 'blah',
+      :ensure  => 'blah',
+      :restart => true,
+      :sched   => nil,
     }
     end
     it 'should fail' do
@@ -18,8 +20,10 @@ describe 'network::bridge', :type => 'define' do
   context 'incorrect value: stp' do
     let(:title) { 'br77' }
     let :params do {
-      :ensure => 'up',
-      :stp    => 'notABool',
+      :ensure  => 'up',
+      :stp     => 'notABool',
+      :restart => true,
+      :sched   => nil,
     }
     end
     it 'should fail' do
@@ -30,7 +34,9 @@ describe 'network::bridge', :type => 'define' do
   context 'required parameters' do
     let(:title) { 'br1' }
     let :params do {
-      :ensure => 'up',
+      :ensure  => 'up',
+      :restart => true,
+      :sched   => nil,
     }
     end
     let :facts do {
@@ -62,41 +68,6 @@ describe 'network::bridge', :type => 'define' do
     it { should contain_package('bridge-utils') }
   end
 
-  context 'required parameters, restart => false' do
-    let(:title) { 'br1' }
-    let :params do {
-      :ensure  => 'up',
-      :restart => false,
-    }
-    end
-    let :facts do {
-      :osfamily => 'RedHat',
-    }
-    end
-    it { should contain_file('ifcfg-br1').with(
-      :ensure => 'present',
-      :mode   => '0644',
-      :owner  => 'root',
-      :group  => 'root',
-      :path   => '/etc/sysconfig/network-scripts/ifcfg-br1'
-    )}
-    it 'should contain File[ifcfg-br1] with required contents' do
-      verify_contents(catalogue, 'ifcfg-br1', [
-        'DEVICE=br1',
-        'BOOTPROTO=none',
-        'ONBOOT=yes',
-        'TYPE=Bridge',
-        'PEERDNS=no',
-        'DELAY=30',
-        'STP=no',
-        'NM_CONTROLLED=no',
-      ])
-    end
-    it { should contain_service('network') }
-    it { is_expected.to_not contain_file('ifcfg-br1').that_notifies('Service[network]') }
-    it { should contain_package('bridge-utils') }
-  end
-
   context 'optional parameters' do
     let(:title) { 'br1' }
     let :params do {
@@ -105,6 +76,8 @@ describe 'network::bridge', :type => 'define' do
       :stp           => true,
       :delay         => '1000',
       :bridging_opts => 'hello_time=200 priority=65535',
+      :restart       => true,
+      :sched         => nil,
     }
     end
     let :facts do {
@@ -132,6 +105,42 @@ describe 'network::bridge', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+    it { should contain_package('bridge-utils') }
+  end
+
+  context 'optional parameters, restart => false' do
+    let(:title) { 'br1' }
+    let :params do {
+      :ensure  => 'up',
+      :restart => false,
+      :sched   => nil,
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+    }
+    end
+    it { should contain_file('ifcfg-br1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-br1'
+    )}
+    it 'should contain File[ifcfg-br1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-br1', [
+        'DEVICE=br1',
+        'BOOTPROTO=none',
+        'ONBOOT=yes',
+        'TYPE=Bridge',
+        'PEERDNS=no',
+        'DELAY=30',
+        'STP=no',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to_not contain_file('ifcfg-br1').that_notifies('Service[network]') }
     it { should contain_package('bridge-utils') }
   end
 

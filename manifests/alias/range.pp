@@ -10,9 +10,10 @@
 #   $ipaddress_start - required
 #   $clonenum_start  - required
 #   $noaliasrouting  - optional - false|true
-#   $restart         - optional - defaults to true
+#   $restart         - optional - defaults to $::network::restart_default (true)
 #   $netmask         - optional - an IP address (CIDR not supported)
 #   $broadcast       - optional - an IP address
+#   $sched           - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -43,10 +44,11 @@ define network::alias::range (
   $ipaddress_end,
   $clonenum_start,
   $noaliasrouting = false,
-  $restart = true,
+  $restart = $::network::restart_default,
   $netmask = false,
   $broadcast = false,
   $arpcheck = true,
+  $sched = $::network::sched_default,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress_start) { fail("${ipaddress_start} is not an IP address.") }
@@ -88,7 +90,8 @@ define network::alias::range (
 
   if $restart {
     File["ifcfg-${interface}-range${clonenum_start}"] {
-      notify  => Service['network'],
+      notify   => Service['network'],
+      schedule => $sched,
     }
   }
 

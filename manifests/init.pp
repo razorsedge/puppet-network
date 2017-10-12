@@ -22,7 +22,10 @@
 #
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
-class network {
+class network (
+  $restart_default = true,
+  $sched_default = undef,
+) {
   # Only run on RedHat derived systems.
   case $::osfamily {
     'RedHat': { }
@@ -77,8 +80,9 @@ class network {
 #   $metric          - optional
 #   $defroute        - optional
 #   $promisc         - optional - defaults to false
-#   $restart         - optional - defaults to true
+#   $restart         - optional - defaults to $::network::restart_default (true)
 #   $arpcheck        - optional - defaults to true
+#   $sched           - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -138,8 +142,9 @@ define network_if_base (
   $zone            = undef,
   $metric          = undef,
   $promisc         = false,
-  $restart         = true,
+  $restart         = $network::restart_default,
   $arpcheck        = true,
+  $sched           = $network::sched_default,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -215,7 +220,8 @@ define network_if_base (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify   => Service['network'],
+      schedule => $sched,
     }
   }
 } # define network_if_base

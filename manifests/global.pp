@@ -25,6 +25,7 @@
 #   $nozeroconf     - optional
 #   $restart        - optional - defaults to true
 #   $requestreopen  - optional - defaults to true
+#   $sched          - optional
 #
 # === Actions:
 #
@@ -73,6 +74,7 @@ class network::global (
   $nozeroconf     = undef,
   $restart        = true,
   $requestreopen  = true,
+  $sched          = undef,
 ) {
   # Validate our data
   if $gateway {
@@ -129,7 +131,8 @@ class network::global (
 
   if $restart {
     File['network.sysconfig'] {
-      notify  => Service['network'],
+      notify   => Service['network'],
+      schedule => $sched,
     }
   }
 } # class global

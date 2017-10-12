@@ -10,6 +10,8 @@ describe 'network::alias', :type => 'define' do
       :ensure    => 'blah',
       :ipaddress => '1.2.3.4',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     it 'should fail' do
@@ -23,6 +25,8 @@ describe 'network::alias', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => 'notAnIP',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     it 'should fail' do
@@ -36,6 +40,8 @@ describe 'network::alias', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => '1.2.3.6',
       :netmask   => '255.255.255.0',
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -73,6 +79,8 @@ describe 'network::alias', :type => 'define' do
       :userctl        => true,
       :metric         => '10',
       :zone           => 'trusted',
+      :restart        => true,
+      :sched          => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -101,6 +109,40 @@ describe 'network::alias', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+  end
+
+  context 'optional parameters: restart => false' do
+    let(:title) { 'bond2:1' }
+    let :params do {
+      :ensure    => 'up',
+      :ipaddress => '1.2.3.6',
+      :netmask   => '255.255.255.0',
+      :restart   => false,
+      :sched     => nil,
+    }
+    end
+    let(:facts) {{ :osfamily => 'RedHat' }}
+    it { should contain_file('ifcfg-bond2:1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1',
+    )}
+    it 'should contain File[ifcfg-bond2:1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond2:1', [
+        'DEVICE=bond2:1',
+        'BOOTPROTO=none',
+        'ONPARENT=yes',
+        'TYPE=Ethernet',
+        'IPADDR=1.2.3.6',
+        'NETMASK=255.255.255.0',
+        'NO_ALIASROUTING=no',
+        'NM_CONTROLLED=no',
+      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to_not contain_file('ifcfg-bond2:1').that_notifies('Service[network]') }
   end
 
 end

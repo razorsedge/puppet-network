@@ -5,13 +5,15 @@
 # === Parameters:
 #
 #   $ensure        - required - up|down
-#   $macaddress    - optional, defaults to macaddress_$title
+#   $macaddress    - optional - defaults to macaddress_$title
 #   $manage_hwaddr - optional - defaults to true
-#   $bootproto     - optional, defaults to undef ('none')
+#   $bootproto     - optional - defaults to undef ('none')
 #   $userctl       - optional
 #   $mtu           - optional
 #   $ethtool_opts  - optional
+#   $restart       - optional - defaults to $::network::restart_default (true)
 #   $promisc       - defaults to true
+#   $sched         - optional - defaults to $::network::sched_default (undef)
 #
 # === Actions:
 #
@@ -48,8 +50,9 @@ define network::if::promisc (
   $userctl       = false,
   $mtu           = undef,
   $ethtool_opts  = undef,
-  $restart       = true,
+  $restart       = $::network::restart_default,
   $promisc       = true,
+  $sched         = $::network::sched_default,
 ) {
   include '::network'
 
@@ -154,6 +157,8 @@ define network::if::promisc (
     ipv6gateway   => '',
     mtu           => $mtu,
     ethtool_opts  => $ethtool_opts,
+    restart       => $restart,
     promisc       => $promisc,
+    sched         => $sched,
   }
 } # define network::if::promisc

@@ -11,6 +11,8 @@ describe 'network::route', :type => 'define' do
       :ipaddress => [ '192.168.2.1', ],
       :netmask   => [ '255.255.255.1', ],
       :gateway   => [ '192.168.1.2', ],
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -40,6 +42,7 @@ describe 'network::route', :type => 'define' do
       :netmask   => [ '255.255.255.1', ],
       :gateway   => [ '192.168.1.2', ],
       :restart   => false,
+      :sched     => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}
@@ -67,7 +70,9 @@ describe 'network::route', :type => 'define' do
     let :params do {
       :ipaddress => [ '192.168.2.0', '10.0.0.0', ],
       :netmask   => [ '255.255.255.0', '255.0.0.0', ],
-      :gateway   => [ '192.168.1.1', '10.0.0.1', ]
+      :gateway   => [ '192.168.1.1', '10.0.0.1', ],
+      :restart   => true,
+      :sched     => nil,
     }
     end
     let(:facts) {{ :osfamily => 'RedHat' }}

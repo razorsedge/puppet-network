@@ -7,8 +7,10 @@ describe 'network::if::bridge', :type => 'define' do
   context 'incorrect value: ensure' do
     let(:title) { 'eth77' }
     let :params do {
-      :ensure => 'blah',
-      :bridge => 'br0',
+      :ensure  => 'blah',
+      :bridge  => 'br0',
+      :restart => true,
+      :sched   => nil,
     }
     end
     it 'should fail' do
@@ -19,8 +21,10 @@ describe 'network::if::bridge', :type => 'define' do
   context 'required parameters' do
     let(:title) { 'eth1' }
     let :params do {
-      :ensure => 'up',
-      :bridge => 'br0',
+      :ensure  => 'up',
+      :bridge  => 'br0',
+      :restart => true,
+      :sched   => nil,
     }
     end
     let :facts do {
@@ -59,6 +63,8 @@ describe 'network::if::bridge', :type => 'define' do
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
       :macaddress   => '00:00:00:00:00:00',
+      :restart      => true,
+      :sched        => nil,
     }
     end
     let :facts do {
@@ -89,6 +95,41 @@ describe 'network::if::bridge', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+  end
+
+  context 'optional parameters: restart => false' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :ensure  => 'up',
+      :bridge  => 'br0',
+      :restart => false,
+      :sched   => nil,
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-eth1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
+    )}
+    it 'should contain File[ifcfg-eth1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth1', [
+        'DEVICE=eth1',
+        'BOOTPROTO=none',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'PEERDNS=no',
+        'BRIDGE=br0',
+        'NM_CONTROLLED=no',
+      ])
+    end
   end
 
 end

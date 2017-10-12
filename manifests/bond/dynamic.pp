@@ -13,8 +13,9 @@
 #   $zone         - optional
 #   $metric       - optional
 #   $defroute     - optional
-#   $restart      - optional - defaults to true
-
+#   $restart      - optional - defaults to $::network::restart_default (true)
+#   $sched        - optional - defaults to $::network::sched_default (undef)
+#
 #
 # === Actions:
 #
@@ -43,11 +44,14 @@ define network::bond::dynamic (
   $zone = undef,
   $defroute = undef,
   $metric = undef,
-  $restart = true,
+  $restart = $::network::restart_default,
+  $sched = $::network::sched_default,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+
+  include '::network'
 
   network_if_base { $title:
     ensure       => $ensure,
@@ -65,6 +69,7 @@ define network::bond::dynamic (
     defroute     => $defroute,
     metric       => $metric,
     restart      => $restart,
+    sched        => $sched,
   }
 
   # Only install "alias bondN bonding" on old OSs that support
