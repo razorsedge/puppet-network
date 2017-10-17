@@ -14,6 +14,7 @@
 #   $zone           - optional
 #   $metric         - optional
 #   $restart        - optional - defaults to true
+#   $ifscripts      - optional
 #
 # === Actions:
 #
@@ -48,12 +49,20 @@ define network::alias (
   $zone = undef,
   $metric = undef,
   $restart = true,
+  $ifscripts = false,
 ) {
   # Validate our data
   if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
   # Validate our booleans
   validate_bool($noaliasrouting)
   validate_bool($userctl)
+  validate_bool($restart)
+  validate_bool($ifscripts)
+  # Validate our regular expressions
+  $states = [ '^up$', '^down$', '^absent$' ]
+  validate_re($ensure, $states, '$ensure must be "up", "down", or "absent".')
+
+  include '::network'
 
   network_if_base { $title:
     ensure         => $ensure,
@@ -72,5 +81,6 @@ define network::alias (
     zone           => $zone,
     metric         => $metric,
     restart        => $restart,
+    ifscripts      => $ifscripts,
   }
 } # define network::alias

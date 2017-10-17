@@ -79,6 +79,7 @@ class network {
 #   $promisc         - optional - defaults to false
 #   $restart         - optional - defaults to true
 #   $arpcheck        - optional - defaults to true
+#   $ifscripts       - optional (alias only)
 #
 # === Actions:
 #
@@ -140,6 +141,7 @@ define network_if_base (
   $promisc         = false,
   $restart         = true,
   $arpcheck        = true,
+  $ifscripts       = false,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -155,13 +157,22 @@ define network_if_base (
   validate_bool($promisc)
   validate_bool($restart)
   validate_bool($arpcheck)
+  validate_bool($ifscripts)
   # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+  $states = [ '^up$', '^down$', '^absent$' ]
+  validate_re($ensure, $states, '$ensure must be "up", "down", or "absent".')
 
   include '::network'
 
   $interface = $name
+
+  # Handle ensure => 'absent'
+  $file_ensure = $ensure ? {
+    'up'     => 'present',
+    'down'   => 'present',
+    'absent' => 'absent',
+    default  => 'present',
+  }
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
   if $dns2 {
@@ -193,6 +204,15 @@ define network_if_base (
     $iftemplate = template('network/ifcfg-eth.erb')
   }
 
+  if $ifscripts {
+    if ! ($interface in $::interfaces) {
+      $refreshonly_ifscripts = undef
+    }
+    else {
+      $refreshonly_ifscripts = true
+    }
+  }
+
   if $flush {
     exec { 'network-flush':
       user        => 'root',
@@ -204,8 +224,30 @@ define network_if_base (
     }
   }
 
+  if $ifscripts {
+    case $ensure {
+      'up': {
+        exec { "Refresh ${interface}":
+          command     => "/sbin/ifdown ${interface} && /sbin/ifup ${interface}",
+          refreshonly => $refreshonly_ifscripts,
+          subscribe   => File["ifcfg-${interface}"],
+        }
+      }
+      'down','absent': {
+        if ($interface in $::interfaces) {
+          exec { "ifdown ${interface}":
+            command => "/sbin/ifdown ${interface}",
+            before  => File["ifcfg-${interface}"],
+          }
+        }
+      }
+      default: {
+      }
+    }
+  }
+
   file { "ifcfg-${interface}":
-    ensure  => 'present',
+    ensure  => $file_ensure,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
@@ -213,7 +255,7 @@ define network_if_base (
     content => $iftemplate,
   }
 
-  if $restart {
+  if $restart and ! $ifscripts {
     File["ifcfg-${interface}"] {
       notify  => Service['network'],
     }

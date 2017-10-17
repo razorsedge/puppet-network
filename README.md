@@ -293,6 +293,18 @@ By default, all changes notify the network service, thus triggering a restart of
       restart   => false,
     }
 
+Use ifscripts instead of restarting the network services (alias only):
+
+Alias resources can trigger using the ifdown / ifup scripts instead of doing a full network restart.  They also can be set to ensure => 'absent' to remove the ifcfg-${interface} file (as well as 'up' and 'down'). The ifscripts parameter is a boolean that defaults
+to false.
+
+    network::alias { 'eth0:1':
+      ensure => 'up',
+      ipaddress => '1.2.3.4',
+      netmask   => '255.255.255.0',
+      ifscripts => true,
+    }
+
 Hiera
 -----
 
