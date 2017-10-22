@@ -32,6 +32,13 @@
 #     gateway   => [ '192.168.1.1', '10.0.0.1', ],
 #   }
 #
+#   network::route { 'ens192':
+#     ipaddress => [
+#                   '192.168.2.0/24 via 192.168.1.1',
+#                   '10.0.0.0/8 via 10.0.0.1'
+#                  ]
+#   }
+#
 # === Authors:
 #
 # Mike Arnold <mike@razorsedge.org>
@@ -41,21 +48,29 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::route (
-  $ipaddress,
-  $netmask,
-  $gateway,
-  $restart = true,
+  Array[String] $ipaddress,
+  Optional[Array[String]] $netmask = undef,
+  Optional[Array[String]] $gateway = undef,
+  Boolean $restart = true,
 ) {
-  # Validate our arrays
-  validate_array($ipaddress)
-  validate_array($netmask)
-  validate_array($gateway)
-  # Validate our booleans
-  validate_bool($restart)
 
   include '::network'
 
   $interface = $name
+
+  if $ipaddress != undef and $netmask != undef and $gateway != undef {
+    if length($ipaddress) == length($netmask) and length($netmask) == length($gateway) {
+      $template = 'network/route-eth.erb';
+    else {
+      fail { 'All arrays must be the same length': }
+    }
+  }
+  elsif $netmask == undef and $gateway == undef {
+    $template = 'network/route-eth-ip.erb';
+  }
+  else {
+    fail { 'Either use just ipaddress, or use all three array parameters': }
+  }
 
   file { "route-${interface}":
     ensure  => 'present',
@@ -63,7 +78,7 @@ define network::route (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/route-${interface}",
-    content => template('network/route-eth.erb'),
+    content => template($template),
     before  => File["ifcfg-${interface}"],
   }
 
