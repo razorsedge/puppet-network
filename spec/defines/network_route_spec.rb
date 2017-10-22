@@ -4,6 +4,34 @@ require 'spec_helper'
 
 describe 'network::route', :type => 'define' do
 
+  context 'array parameters, ip command format' do
+    let(:title) { 'ens192' }
+    let :params do
+      {
+        :ipaddress => [
+          '192.168.2.0/24 via 192.168.1.2',
+          '10.0.0.0/8 via 10.1.1.1',
+        ],
+      }
+    end
+    let(:facts) {{ :osfamily => 'RedHat' }}
+    it { should contain_file('route-ens192').with(
+                  :ensure => 'present',
+                  :mode   => '0644',
+                  :owner  => 'root',
+                  :group  => 'root',
+                  :path   => '/etc/sysconfig/network-scripts/route-ens192'
+                )}
+    it 'should contain File[route-ens192 with contents "192.168.2.0/24 via 192.168.1.2\n10.0.0.0/8 via 10.1.1.1"' do
+      verify_contents(catalogue, 'route-ens192', [
+                        '192.168.2.0/24 via 192.168.1.2',
+                        '10.0.0.0/8 via 10.1.1.1',
+                      ])
+    end
+    it { should contain_service('network') }
+    it { is_expected.to contain_file('route-ens192').that_notifies('Service[network]') }
+  end
+  
   context 'singular parameters' do
     let(:title) { 'eth1' }
     let :params do {
