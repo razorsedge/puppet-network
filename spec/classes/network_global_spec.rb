@@ -82,7 +82,6 @@ describe 'network::global', :type => 'class' do
       :gateway    => '1.2.3.4',
       :gatewaydev => 'eth2',
       :nisdomain  => 'myNisDomain',
-      :vlan       => 'yes',
       :nozeroconf => 'yes',
     }
     end
@@ -101,7 +100,6 @@ describe 'network::global', :type => 'class' do
         'GATEWAY=1.2.3.4',
         'GATEWAYDEV=eth2',
         'NISDOMAIN=myNisDomain',
-        'VLAN=yes',
         'NOZEROCONF=yes',
         'RES_OPTIONS="single-request-reopen"',
       ])
@@ -156,26 +154,6 @@ describe 'network::global', :type => 'class' do
       end
     end
 
-    context 'vlan = foo' do
-      let(:params) {{ :vlan => 'foo' }}
-
-      it 'should fail' do
-        expect {
-          should raise_error(Puppet::Error, /$vlan must be either "yes" or "no"./)
-        }
-      end
-    end
-
-    context 'ipv6networking = foo' do
-      let(:params) {{ :ipv6networking => 'foo' }}
-
-      it 'should fail' do
-        expect { 
-          should raise_error(Puppet::Error, /$ipv6networking is not a boolean.  It looks to be a String./)
-        }
-      end
-    end
-
     context 'manage_hwaddr = foo' do
       let(:params) {{ :manage_hwaddr  => 'foo' }}
 
@@ -204,7 +182,6 @@ describe 'network::global', :type => 'class' do
       :gateway        => '1.2.3.4',
       :gatewaydev     => 'eth2',
       :nisdomain      => 'myNisDomain',
-      :vlan           => 'yes',
       :nozeroconf     => 'yes',
       :ipv6networking => true,
       :ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
@@ -229,7 +206,6 @@ describe 'network::global', :type => 'class' do
         'GATEWAY=1.2.3.4',
         'GATEWAYDEV=eth2',
         'NISDOMAIN=myNisDomain',
-        'VLAN=yes',
         'NOZEROCONF=yes',
       ])
     end
