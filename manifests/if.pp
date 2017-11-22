@@ -14,7 +14,6 @@
 #   $flush         - optional - defaults to false
 #   $zone          - optional
 #   $restart       - optional - defaults to true
-#   $vlan          - optional - defaults to false
 #
 # === Actions:
 #
