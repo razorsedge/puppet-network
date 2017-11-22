@@ -79,6 +79,7 @@ class network {
 #   $promisc         - optional - defaults to false
 #   $restart         - optional - defaults to true
 #   $arpcheck        - optional - defaults to true
+#   $vlan            - optional - defaults to 'no'
 #
 # === Actions:
 #
@@ -140,6 +141,7 @@ define network_if_base (
   $promisc         = false,
   $restart         = true,
   $arpcheck        = true,
+  $vlan            = undef,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -158,6 +160,10 @@ define network_if_base (
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
+  if($vlan) {
+    $vlanstates = [ '^yes$', '^no$' ]
+    validate_re($vlan, $vlanstates, '$vlan must be either "yes" or "no".')
+  }
 
   include '::network'
 

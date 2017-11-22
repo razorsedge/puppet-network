@@ -169,6 +169,7 @@ describe 'network::if::static', :type => 'define' do
       :metric       => '10',
       :zone         => 'trusted',
       :arpcheck     => false,
+      :vlan         => 'yes',
     }
     end
     let :facts do {
@@ -212,7 +213,8 @@ describe 'network::if::static', :type => 'define' do
         'DEFROUTE=yes',
         'ZONE=trusted',
         'METRIC=10',
-	'ARPCHECK=no',
+      	'ARPCHECK=no',
+        'VLAN=yes',
         'NM_CONTROLLED=no',
       ])
     end
@@ -225,6 +227,7 @@ describe 'network::if::static', :type => 'define' do
       :ensure    => 'up',
       :ipaddress => '1.2.3.4',
       :netmask   => '255.255.255.0',
+      :vlan      => 'yes',
     }
     end
     let :facts do {
@@ -250,6 +253,7 @@ describe 'network::if::static', :type => 'define' do
         'TYPE=Ethernet',
         'IPADDR=1.2.3.4',
         'NETMASK=255.255.255.0',
+        'VLAN=yes',
         'NM_CONTROLLED=no',
       ])
     end
