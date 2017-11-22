@@ -247,25 +247,20 @@ Static interface routes (host route):
 
 Normal interface - VLAN - no IP:
 
-    class { 'network::global':
-      vlan => 'yes',
-    }
-
     network::if { 'eth0.330':
       ensure => 'up',
-    }
+      vlan => 'yes',
+   }
 
 Normal interface - VLAN - static IPv4:
-
-    class { 'network::global':
-      vlan => 'yes',
-    }
 
     network::if::static { 'eth0.330':
       ensure    => 'up',
       ipaddress => '10.2.3.248',
       netmask   => '255.255.255.0',
+      vlan => 'yes',
     }
+
 
 Promiscuous interface:
     To set a static or dynamic interface to promiscuous mode (RedHat only), add:

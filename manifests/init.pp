@@ -79,6 +79,7 @@ class network {
 #   $promisc         - optional - defaults to false
 #   $restart         - optional - defaults to true
 #   $arpcheck        - optional - defaults to true
+#   $vlan            - optional - defaults to false
 #
 # === Actions:
 #
@@ -140,6 +141,7 @@ define network_if_base (
   $promisc         = false,
   $restart         = true,
   $arpcheck        = true,
+  $vlan            = false,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -155,6 +157,7 @@ define network_if_base (
   validate_bool($promisc)
   validate_bool($restart)
   validate_bool($arpcheck)
+  validate_bool($vlan)
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
   validate_re($ensure, $states, '$ensure must be either "up" or "down".')
@@ -192,7 +195,10 @@ define network_if_base (
     }
     $iftemplate = template('network/ifcfg-eth.erb')
   }
-
+  $vlanyes = $vlan ? {
+    true    => 'yes',
+    default => undef,
+  }
   if $flush {
     exec { 'network-flush':
       user        => 'root',

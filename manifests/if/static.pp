@@ -29,6 +29,7 @@
 #   $defroute       - optional
 #   $restart        - optional - defaults to true
 #   $arpcheck       - optional - defaults to true
+#   $vlan           - optional - defaults to false
 #
 # === Actions:
 #
@@ -82,6 +83,7 @@ define network::if::static (
   $metric = undef,
   $restart = true,
   $arpcheck = true,
+  $vlan = false,
 ) {
   # Validate our data
   if $ipaddress {
@@ -118,6 +120,7 @@ define network::if::static (
   validate_bool($manage_hwaddr)
   validate_bool($flush)
   validate_bool($arpcheck)
+  validate_bool($vlan)
 
   network_if_base { $title:
     ensure          => $ensure,
