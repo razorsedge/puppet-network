@@ -195,10 +195,6 @@ define network_if_base (
     }
     $iftemplate = template('network/ifcfg-eth.erb')
   }
-  $vlanyes = $vlan ? {
-    true    => 'yes',
-    default => undef,
-  }
   if $flush {
     exec { 'network-flush':
       user        => 'root',

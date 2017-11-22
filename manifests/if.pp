@@ -14,6 +14,7 @@
 #   $flush         - optional - defaults to false
 #   $zone          - optional
 #   $restart       - optional - defaults to true
+#   $vlan          - optional - defaults to false
 #
 # === Actions:
 #
@@ -44,6 +45,7 @@ define network::if (
   $flush = false,
   $zone = undef,
   $restart = true,
+  $vlan = false,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
