@@ -45,7 +45,6 @@ define network::if (
   $flush = false,
   $zone = undef,
   $restart = true,
-  $vlan = false,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]

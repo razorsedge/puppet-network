@@ -151,5 +151,6 @@ define network::if::static (
     metric          => $metric,
     restart         => $restart,
     arpcheck        => $arpcheck,
+    vlan            => $vlan,
   }
 } # define network::if::static
