@@ -70,4 +70,6 @@ check_link_down() {
 <% end -%>
 <% if !@arpcheck %>ARPCHECK=no
 <% end -%>
+<% if @vlan %>VLAN=yes
+<% end -%>
 NM_CONTROLLED=no
