@@ -249,7 +249,7 @@ Normal interface - VLAN - no IP:
 
     network::if { 'eth0.330':
       ensure => 'up',
-      vlan => 'yes',
+      vlan => true,
    }
 
 Normal interface - VLAN - static IPv4:
@@ -258,7 +258,7 @@ Normal interface - VLAN - static IPv4:
       ensure    => 'up',
       ipaddress => '10.2.3.248',
       netmask   => '255.255.255.0',
-      vlan => 'yes',
+      vlan => true,
     }
 
 
