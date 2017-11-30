@@ -247,25 +247,20 @@ Static interface routes (host route):
 
 Normal interface - VLAN - no IP:
 
-    class { 'network::global':
-      vlan => 'yes',
-    }
-
     network::if { 'eth0.330':
       ensure => 'up',
-    }
+      vlan => 'yes',
+   }
 
 Normal interface - VLAN - static IPv4:
-
-    class { 'network::global':
-      vlan => 'yes',
-    }
 
     network::if::static { 'eth0.330':
       ensure    => 'up',
       ipaddress => '10.2.3.248',
       netmask   => '255.255.255.0',
+      vlan => 'yes',
     }
+
 
 Promiscuous interface:
     To set a static or dynamic interface to promiscuous mode (RedHat only), add:
@@ -333,7 +328,6 @@ Notes
 * It is assumed that if you create a bond that you also create the slave interface(s).
 * It is assumed that if you create an alias that you also create the parent interface.
 * network::route requires the referenced device to also be defined via network::if or network::bond.
-* For VLANs to work, `Class['network::global']` must have parameter `vlan` set to `yes`.
 * To enable IPv6 you have to set both `ipv6networking` in `Class['network::global']` to `true` and `ipv6init` in `network::if::static` to `true`.
 
 Issues

@@ -20,7 +20,7 @@
 #   $ipv6defaultdev - optional - Determines the device to use as the default gateway
 #                                for IPV6 traffic.
 #   $nisdomain      - optional - Configures the NIS domainname.
-#   $vlan           - optional - yes|no to enable VLAN kernel module
+#   $vlan           - optional - yes|no [deprecated] use on device level
 #   $ipv6networking - optional - enables / disables IPv6 globally
 #   $nozeroconf     - optional
 #   $restart        - optional - defaults to true
@@ -43,7 +43,6 @@
 #     ipv6gateway    => '123:4567:89ab:cdef:123:4567:89ab:1',
 #     ipv6defaultdev => 'eth0',
 #     nisdomain      => 'domain.tld',
-#     vlan           => 'yes',
 #     ipv6networking => true,
 #     nozeroconf     => 'yes',
 #     requestreopen  => false,
@@ -65,10 +64,10 @@ class network::global (
   $hostname       = undef,
   $gateway        = undef,
   $gatewaydev     = undef,
+  $vlan           = undef,
   $ipv6gateway    = undef,
   $ipv6defaultdev = undef,
   $nisdomain      = undef,
-  $vlan           = undef,
   $ipv6networking = false,
   $nozeroconf     = undef,
   $restart        = true,
