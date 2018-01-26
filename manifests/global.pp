@@ -22,6 +22,7 @@
 #   $nisdomain      - optional - Configures the NIS domainname.
 #   $vlan           - optional - yes|no to enable VLAN kernel module
 #   $ipv6networking - optional - enables / disables IPv6 globally
+#   $ipv6forwarding - optional - enables / disabled IPv6 forwarding globally
 #   $nozeroconf     - optional
 #   $restart        - optional - defaults to true
 #   $requestreopen  - optional - defaults to true
@@ -45,6 +46,7 @@
 #     nisdomain      => 'domain.tld',
 #     vlan           => 'yes',
 #     ipv6networking => true,
+#     ipv6forwarding => true,
 #     nozeroconf     => 'yes',
 #     requestreopen  => false,
 #   }
@@ -70,6 +72,7 @@ class network::global (
   $nisdomain      = undef,
   $vlan           = undef,
   $ipv6networking = false,
+  $ipv6forwarding = false,
   $nozeroconf     = undef,
   $restart        = true,
   $requestreopen  = true,
@@ -83,6 +86,7 @@ class network::global (
   }
 
   validate_bool($ipv6networking)
+  validate_bool($ipv6forwarding)
   validate_bool($restart)
   validate_bool($requestreopen)
 
