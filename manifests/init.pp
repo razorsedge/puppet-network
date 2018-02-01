@@ -142,8 +142,8 @@ define network_if_base (
   $promisc         = false,
   $restart         = true,
   $arpcheck        = true,
-  $type            = undef,  
-  $connected_mode  = undef,  
+  $type            = undef,
+  $connected_mode  = undef,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
