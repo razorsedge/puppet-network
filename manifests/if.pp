@@ -14,6 +14,7 @@
 #   $flush         - optional - defaults to false
 #   $zone          - optional
 #   $restart       - optional - defaults to true
+#   $type          - optional
 #
 # === Actions:
 #
@@ -44,6 +45,8 @@ define network::if (
   $flush = false,
   $zone = undef,
   $restart = true,
+  $type = undef,
+  $connected_mode = undef,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -64,21 +67,23 @@ define network::if (
   validate_bool($restart)
 
   network_if_base { $title:
-    ensure        => $ensure,
-    ipaddress     => '',
-    netmask       => '',
-    gateway       => '',
-    macaddress    => $macaddy,
-    manage_hwaddr => $manage_hwaddr,
-    bootproto     => 'none',
-    ipv6address   => '',
-    ipv6gateway   => '',
-    userctl       => $userctl,
-    mtu           => $mtu,
-    ethtool_opts  => $ethtool_opts,
-    scope         => $scope,
-    flush         => $flush,
-    zone          => $zone,
-    restart       => $restart,
+    ensure         => $ensure,
+    ipaddress      => '',
+    netmask        => '',
+    gateway        => '',
+    macaddress     => $macaddy,
+    manage_hwaddr  => $manage_hwaddr,
+    bootproto      => 'none',
+    ipv6address    => '',
+    ipv6gateway    => '',
+    userctl        => $userctl,
+    mtu            => $mtu,
+    ethtool_opts   => $ethtool_opts,
+    scope          => $scope,
+    flush          => $flush,
+    zone           => $zone,
+    restart        => $restart,
+    type           => $type,
+    connected_mode => $connected_mode,
   }
 } # define network::if

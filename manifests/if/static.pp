@@ -29,6 +29,8 @@
 #   $defroute       - optional
 #   $restart        - optional - defaults to true
 #   $arpcheck       - optional - defaults to true
+#   $type           - optional
+#   $connected_mode - optional
 #
 # === Actions:
 #
@@ -82,6 +84,8 @@ define network::if::static (
   $metric = undef,
   $restart = true,
   $arpcheck = true,
+  $type = undef,
+  $connected_mode = undef,
 ) {
   # Validate our data
   if $ipaddress {
@@ -148,5 +152,7 @@ define network::if::static (
     metric          => $metric,
     restart         => $restart,
     arpcheck        => $arpcheck,
+    type            => $type,
+    connected_mode  => $connected_mode,
   }
 } # define network::if::static
