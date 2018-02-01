@@ -79,6 +79,8 @@ class network {
 #   $promisc         - optional - defaults to false
 #   $restart         - optional - defaults to true
 #   $arpcheck        - optional - defaults to true
+#   $type            - optional
+#   $connected_mode  - optional
 #
 # === Actions:
 #
@@ -141,6 +143,7 @@ define network_if_base (
   $restart         = true,
   $arpcheck        = true,
   $type            = undef,  
+  $connected_mode  = undef,  
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
