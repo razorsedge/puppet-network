@@ -140,6 +140,7 @@ define network_if_base (
   $promisc         = false,
   $restart         = true,
   $arpcheck        = true,
+  $type            = undef,  
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)

@@ -14,6 +14,7 @@
 #   $flush         - optional - defaults to false
 #   $zone          - optional
 #   $restart       - optional - defaults to true
+#   $type          - optional
 #
 # === Actions:
 #
@@ -44,6 +45,7 @@ define network::if (
   $flush = false,
   $zone = undef,
   $restart = true,
+  $type = undef,
 ) {
   # Validate our regular expressions
   $states = [ '^up$', '^down$' ]
@@ -80,5 +82,6 @@ define network::if (
     flush         => $flush,
     zone          => $zone,
     restart       => $restart,
+    type          => $type,
   }
 } # define network::if

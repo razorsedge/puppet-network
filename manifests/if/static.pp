@@ -82,6 +82,7 @@ define network::if::static (
   $metric = undef,
   $restart = true,
   $arpcheck = true,
+  $type = undef,
 ) {
   # Validate our data
   if $ipaddress {
@@ -148,5 +149,6 @@ define network::if::static (
     metric          => $metric,
     restart         => $restart,
     arpcheck        => $arpcheck,
+    type            => $type,
   }
 } # define network::if::static
