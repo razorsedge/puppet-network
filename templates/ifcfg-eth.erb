@@ -8,7 +8,9 @@ HWADDR=<%= @macaddress %>
 <% end -%>
 ONBOOT=<%= @onboot %>
 HOTPLUG=<%= @onboot %>
-TYPE=Ethernet
+<% if @type and @type != '' %>TYPE=<%= @type %>
+<% else %>TYPE=Ethernet
+<% end -%>
 <% if @ipaddress and @ipaddress != '' %>IPADDR=<%= @ipaddress %>
 <% end -%>
 <% if @netmask and @netmask != '' %>NETMASK=<%= @netmask %>
@@ -71,3 +73,5 @@ check_link_down() {
 <% if !@arpcheck %>ARPCHECK=no
 <% end -%>
 NM_CONTROLLED=no
+<% if @connected_mode and @connected_mode != '' %>CONNECTED_MODE=<%= @connected_mode %>
+<% end -%>
