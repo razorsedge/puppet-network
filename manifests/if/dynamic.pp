@@ -13,6 +13,8 @@
 #   $dhcp_hostname   - optional
 #   $ethtool_opts    - optional
 #   $peerdns         - optional
+#   $dns1            - optional - only used when peerdns is true
+#   $dns2            - optional - only used when peerdns is true
 #   $linkdelay       - optional
 #   $check_link_down - optional
 #   $zone            - optional
@@ -55,6 +57,8 @@ define network::if::dynamic (
   $dhcp_hostname   = undef,
   $ethtool_opts    = undef,
   $peerdns         = false,
+  $dns1            = undef,
+  $dns2            = undef,
   $linkdelay       = undef,
   $check_link_down = false,
   $defroute        = undef,
@@ -91,6 +95,8 @@ define network::if::dynamic (
     dhcp_hostname   => $dhcp_hostname,
     ethtool_opts    => $ethtool_opts,
     peerdns         => $peerdns,
+    dns1            => $dns1,
+    dns2            => $dns2,
     linkdelay       => $linkdelay,
     check_link_down => $check_link_down,
     defroute        => $defroute,
