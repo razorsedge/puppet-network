@@ -17,6 +17,7 @@ describe 'network::bond::slave', :type => 'define' do
   end
 
   context 'required parameters' do
+    let(:pre_condition) { "file { 'ifcfg-bond0': }" }
     let(:title) { 'eth1' }
     let :params do {
       :master     => 'bond0',
@@ -51,6 +52,7 @@ describe 'network::bond::slave', :type => 'define' do
   end
 
   context 'required parameters, restart => false' do
+    let(:pre_condition) { "file { 'ifcfg-bond0': }" }
     let(:title) { 'eth1' }
     let :params do {
       :macaddress => 'fe:fe:fe:aa:aa:a1',
@@ -85,6 +87,7 @@ describe 'network::bond::slave', :type => 'define' do
   end
 
   context 'optional parameters' do
+    let(:pre_condition) { "file { 'ifcfg-bond0': }" }
     let(:title) { 'eth3' }
     let :params do {
       :macaddress   => 'ef:ef:ef:ef:ef:ef',
