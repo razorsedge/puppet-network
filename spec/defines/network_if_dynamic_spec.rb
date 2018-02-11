@@ -164,5 +164,34 @@ describe 'network::if::dynamic', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'optional parameters - custom dns' do
+    let(:title) { 'eth0' }
+    let :params do {
+      :ensure => 'up',
+      :dns1   => '8.8.8.8',
+      :dns2   => '8.8.4.4'
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+    }
+    end
+    it { should contain_file('ifcfg-eth0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
+      :notify => 'Service[network]'
+    )}
+    it 'should contain File[ifcfg-eth0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth0', [
+        'DEVICE=eth0',
+        'DNS1=8.8.8.8',
+        'DNS2=8.8.4.4',
+      ])
+    end
+    it { should contain_service('network') }
+  end
 
 end
