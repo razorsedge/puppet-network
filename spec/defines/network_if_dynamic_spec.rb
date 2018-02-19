@@ -164,5 +164,35 @@ describe 'network::if::dynamic', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'optional parameters - persistent_dhclient' do
+    let(:title) { 'eth0' }
+    let :params do {
+      :ensure              => 'up',
+      :macaddress          => 'bb:cc:bb:cc:bb:cc',
+      :bootproto           => 'dhcp',
+      :persistent_dhclient => true
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat'
+    }
+    end
+    it { should contain_file('ifcfg-eth0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
+      :notify => 'Service[network]'
+    )}
+    it 'should contain File[ifcfg-eth0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth0', [
+        'DEVICE=eth0',
+        'HWADDR=bb:cc:bb:cc:bb:cc',
+        'PERSISTENT_DHCLIENT=1'
+      ])
+    end
+    it { should contain_service('network') }
+  end
 
 end
