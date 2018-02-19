@@ -13,7 +13,7 @@ describe 'network::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
     end
   end
 
@@ -26,7 +26,7 @@ describe 'network::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /expects a match for Stdlib::Compat::Ipv4/)
     end
   end
 
