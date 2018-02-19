@@ -39,24 +39,17 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::slave (
-  $master,
-  $macaddress = undef,
-  $ethtool_opts = undef,
-  $zone = undef,
-  $defroute = undef,
-  $metric = undef,
-  $restart = true,
-  $userctl = false,
-  $bootproto = undef,
-  $onboot = undef,
+  String $master,
+  Optional[Stdlib::MAC] $macaddress = undef,
+  Optional[String] $ethtool_opts = undef,
+  Optional[String] $zone = undef,
+  Optional[String] $defroute = undef,
+  Optional[String] $metric = undef,
+  Boolean $restart = true,
+  Boolean $userctl = false,
+  Optional[String] $bootproto = undef,
+  Optional[String] $onboot = undef,
 ) {
-  # Validate our data
-  if $macaddress and ! is_mac_address($macaddress) {
-    fail("${macaddress} is not a MAC address.")
-  }
-  # Validate our booleans
-  validate_bool($restart)
-  validate_bool($userctl)
 
   include '::network'
 

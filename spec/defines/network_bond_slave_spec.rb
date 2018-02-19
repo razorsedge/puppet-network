@@ -12,7 +12,7 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth6')}.to raise_error(Puppet::Error, /123456 is not a MAC address./)
+      expect {should contain_file('ifcfg-eth6')}.to raise_error(Puppet::Error, /expects a match for Stdlib::MAC/)
     end
   end
 
