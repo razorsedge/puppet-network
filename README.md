@@ -107,6 +107,15 @@ Normal interface - dhcp:
       ethtool_opts  => 'autoneg off speed 100 duplex full',
     }
 
+Normal interface - dhcp with custom DNS servers (peerdns must be true):
+
+    network::if::dynamic { 'eth0':
+      ensure  => 'up',
+      peerdns => true,
+      dns1    => '8.8.8.8',
+      dns2    => '8.8.4.4',
+    }
+
 Normal interface - bootp (minimal):
 
     network::if::dynamic { 'eth2':
