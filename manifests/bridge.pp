@@ -33,22 +33,14 @@
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
 define network::bridge (
-  $ensure,
-  $userctl = false,
-  $stp = false,
-  $delay = '30',
-  $bridging_opts = undef,
-  $ipv6init = false,
-  $restart = true,
+  Enum['up', 'down'] $ensure,
+  Boolean $userctl = false,
+  Boolean $stp = false,
+  String $delay = '30',
+  Optional[String] $bridging_opts = undef,
+  Boolean $ipv6init = false,
+  Boolean $restart = true,
 ) {
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
-  # Validate booleans
-  validate_bool($userctl)
-  validate_bool($stp)
-  validate_bool($ipv6init)
-  validate_bool($restart)
 
   ensure_packages(['bridge-utils'])
 
