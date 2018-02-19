@@ -5,6 +5,6 @@ fixtures:
       ref: '4.24.0'
     ip:
       repo: 'https://github.com/thrnio/puppet-ip.git'
-      ref: '1.0.1'
+      ref: 'v1.0.1'
   symlinks:
     network: "#{source_dir}"
