@@ -41,40 +41,27 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::static (
-  $ensure,
-  $ipaddress = undef,
-  $netmask = undef,
-  $gateway = undef,
-  $mtu = undef,
-  $ethtool_opts = undef,
-  $bonding_opts = 'miimon=100',
-  $peerdns = false,
-  $ipv6init = false,
-  $ipv6address = undef,
-  $ipv6gateway = undef,
-  $ipv6peerdns = false,
-  $dns1 = undef,
-  $dns2 = undef,
-  $domain = undef,
-  $zone = undef,
-  $defroute = undef,
-  $metric = undef,
-  $restart = true,
-  $userctl = undef,
+  Enum['up', 'down'] $ensure,
+  Optional[IP::Address::V4::NoSubnet] $ipaddress = undef,
+  Optional[IP::Address::V4::NoSubnet] $netmask = undef,
+  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
+  Optional[String] $mtu = undef,
+  Optional[String] $ethtool_opts = undef,
+  String $bonding_opts = 'miimon=100',
+  Boolean $peerdns = false,
+  Boolean $ipv6init = false,
+  Optional[IP::Address::V6] $ipv6address = undef,
+  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
+  Boolean $ipv6peerdns = false,
+  Optional[IP::Address::NoSubnet] $dns1 = undef,
+  Optional[IP::Address::NoSubnet] $dns2 = undef,
+  Optional[String] $domain = undef,
+  Optional[String] $zone = undef,
+  Optional[String] $defroute = undef,
+  Optional[String] $metric = undef,
+  Boolean $restart = true,
+  Boolean $userctl = false,
 ) {
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
-  # Validate our data
-  if $ipaddress {
-    if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  }
-  if $ipv6address {
-    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
-  }
-  # Validate booleans
-  validate_bool($ipv6init)
-  validate_bool($ipv6peerdns)
 
   network_if_base { $title:
     ensure       => $ensure,
