@@ -47,7 +47,7 @@ define network::bond::slave (
   Optional[String] $metric = undef,
   Boolean $restart = true,
   Boolean $userctl = false,
-  Optional[String] $bootproto = undef,
+  Optional[Network::If::Bootproto] $bootproto = undef,
   Optional[String] $onboot = undef,
 ) {
 

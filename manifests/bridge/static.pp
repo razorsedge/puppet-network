@@ -56,7 +56,7 @@ define network::bridge::static (
   Optional[IP::Address::V4::NoSubnet] $gateway = undef,
   Optional[IP::Address::V6] $ipv6address = undef,
   Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
-  String $bootproto = 'static',
+  Network::If::Bootproto $bootproto = 'static',
   Boolean $userctl = false,
   Boolean $peerdns = false,
   Boolean $ipv6init = false,

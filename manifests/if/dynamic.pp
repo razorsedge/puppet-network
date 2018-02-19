@@ -49,7 +49,7 @@ define network::if::dynamic (
   Enum['up', 'down'] $ensure,
   Optional[Stdlib::MAC] $macaddress = undef,
   Boolean $manage_hwaddr = true,
-  String $bootproto = 'dhcp',
+  Network::If::Bootproto $bootproto = 'dhcp',
   Boolean $userctl = false,
   Optional[String] $mtu = undef,
   Optional[String] $dhcp_hostname = undef,

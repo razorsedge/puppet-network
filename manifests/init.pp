@@ -117,7 +117,7 @@ define network_if_base (
   Boolean $ipv6init = false,
   Boolean $ipv6autoconf = false,
   Optional[Array[IP::Address::V6]] $ipv6secondaries = undef,
-  String $bootproto = 'none',
+  Network::If::Bootproto $bootproto = 'none',
   Boolean $userctl = false,
   Optional[String] $mtu = undef,
   Optional[String] $dhcp_hostname = undef,

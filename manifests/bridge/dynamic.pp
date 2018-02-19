@@ -37,7 +37,7 @@
 #
 define network::bridge::dynamic (
   Enum['up', 'down'] $ensure,
-  String $bootproto = 'dhcp',
+  Network::If::Bootproto $bootproto = 'dhcp',
   Boolean $userctl = false,
   Boolean $stp = false,
   String $delay = '30',

@@ -44,7 +44,7 @@ define network::if::promisc (
   Enum['up', 'down'] $ensure,
   Optional[Stdlib::MAC] $macaddress = undef,
   Boolean $manage_hwaddr = true,
-  Optional[String] $bootproto = undef,
+  Optional[Network::If::Bootproto] $bootproto = undef,
   Boolean $userctl = false,
   Optional[String] $mtu = undef,
   Optional[String] $ethtool_opts = undef,
