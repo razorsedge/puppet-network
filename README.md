@@ -322,7 +322,7 @@ The Hiera naming substitutes underscore for any secondary double colons, i.e. sp
 Notes
 -----
 
-* Runs under Puppet 2.7 and later.
+* Runs under Puppet 4.9 and later.
 * Only works with RedHat-ish systems.
 * Read /usr/share/doc/initscripts-*/sysconfig.txt for underlying details.
 * Read /usr/share/doc/kernel-doc-*/Documentation/networking/bonding.txt for underlying details.
