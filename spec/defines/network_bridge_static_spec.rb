@@ -13,7 +13,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
     end
   end
 
@@ -26,7 +26,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a match for IP::Address::V4::NoSubnet /)
     end
   end
 
@@ -40,7 +40,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /notAnIP is not an IPv6 address./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, / expects an IP::Address::V6 /)
     end
   end
 
@@ -54,7 +54,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /"notABool" is not a boolean./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a Boolean/)
     end
   end
 
@@ -68,7 +68,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /"notABool" is not a boolean./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a Boolean/)
     end
   end
 

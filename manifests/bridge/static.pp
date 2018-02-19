@@ -50,42 +50,26 @@
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
 define network::bridge::static (
-  $ensure,
-  $ipaddress = undef,
-  $netmask = undef,
-  $gateway = undef,
-  $ipv6address = undef,
-  $ipv6gateway = undef,
-  $bootproto = 'static',
-  $userctl = false,
-  $peerdns = false,
-  $ipv6init = false,
-  $ipv6peerdns = false,
-  $dns1 = undef,
-  $dns2 = undef,
-  $domain = undef,
-  $stp = false,
-  $delay = '30',
-  $bridging_opts = undef,
-  $scope = undef,
-  $restart = true,
+  Enum['up', 'down'] $ensure,
+  Optional[IP::Address::V4::NoSubnet] $ipaddress = undef,
+  Optional[IP::Address::V4::NoSubnet] $netmask = undef,
+  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
+  Optional[IP::Address::V6] $ipv6address = undef,
+  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
+  String $bootproto = 'static',
+  Boolean $userctl = false,
+  Boolean $peerdns = false,
+  Boolean $ipv6init = false,
+  Boolean $ipv6peerdns = false,
+  Optional[IP::Address::NoSubnet] $dns1 = undef,
+  Optional[IP::Address::NoSubnet] $dns2 = undef,
+  Optional[String] $domain = undef,
+  Boolean $stp = false,
+  String $delay = '30',
+  Optional[String] $bridging_opts = undef,
+  Optional[String] $scope = undef,
+  Boolean $restart = true,
 ) {
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
-  # Validate our data
-  if $ipaddress {
-    if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  }
-  if $ipv6address {
-    if ! is_ip_address($ipv6address) { fail("${ipv6address} is not an IPv6 address.") }
-  }
-  # Validate booleans
-  validate_bool($userctl)
-  validate_bool($stp)
-  validate_bool($ipv6init)
-  validate_bool($ipv6peerdns)
-  validate_bool($restart)
 
   ensure_packages(['bridge-utils'])
 
