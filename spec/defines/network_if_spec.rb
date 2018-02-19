@@ -22,9 +22,13 @@ describe 'network::if', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth0 => {
@@ -65,9 +69,13 @@ describe 'network::if', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth0 => {

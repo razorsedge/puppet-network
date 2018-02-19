@@ -54,10 +54,10 @@ define network::bond::bridge (
 
   # Only install "alias bondN bonding" on old OSs that support
   # /etc/modprobe.conf.
-  case $::operatingsystem {
+  case $::os['name'] {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
-      case $::operatingsystemrelease {
-        /^[45]/: {
+      case $::os['release']['major'] {
+        /^[45]$/: {
           augeas { "modprobe.conf_${title}":
             context => '/files/etc/modprobe.conf',
             changes => [
@@ -72,7 +72,7 @@ define network::bond::bridge (
       }
     }
     'Fedora': {
-      case $::operatingsystemrelease {
+      case $::os['release']['major'] {
         /^(1|2|3|4|5|6|7|8|9|10|11)$/: {
           augeas { "modprobe.conf_${title}":
             context => '/files/etc/modprobe.conf',

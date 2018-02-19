@@ -24,7 +24,7 @@
 #
 class network {
   # Only run on RedHat derived systems.
-  case $::osfamily {
+  case $::os['family'] {
     'RedHat': { }
     default: {
       fail('This network module only supports RedHat-based systems.')

@@ -24,7 +24,9 @@ describe 'network::if::bridge', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -68,7 +70,9 @@ describe 'network::if::bridge', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {

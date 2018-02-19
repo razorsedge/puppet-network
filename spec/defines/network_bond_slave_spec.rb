@@ -24,9 +24,13 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -67,7 +71,13 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -112,9 +122,13 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth3 => {

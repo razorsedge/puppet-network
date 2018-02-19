@@ -38,7 +38,7 @@ describe 'network::alias', :type => 'define' do
       :netmask   => '255.255.255.0',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ :os => { :family => 'RedHat' }}}
     it { should contain_file('ifcfg-bond2:1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -75,7 +75,7 @@ describe 'network::alias', :type => 'define' do
       :zone           => 'trusted',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ :os => { :family => 'RedHat' }}}
     it { should contain_file('ifcfg-bond3:2').with(
       :ensure => 'present',
       :mode   => '0644',

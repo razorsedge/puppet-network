@@ -34,7 +34,13 @@ describe 'network::bridge::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
+      :os => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -70,7 +76,9 @@ describe 'network::bridge::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
+      :os => {
+        :family => 'RedHat'
+      }
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -109,7 +117,9 @@ describe 'network::bridge::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
+      :os => {
+        :family => 'RedHat'
+      }
     }
     end
     it { should contain_file('ifcfg-br1').with(

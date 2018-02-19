@@ -22,7 +22,9 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth99 => {
@@ -73,7 +75,9 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth99 => {
@@ -117,7 +121,9 @@ describe 'network::if::dynamic', :type => 'define' do
     let(:title) { 'eth45.302' }
     let(:params) {{ :ensure => 'up' }}
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth45 => {
@@ -157,7 +163,9 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth0 => {

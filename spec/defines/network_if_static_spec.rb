@@ -72,7 +72,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -118,7 +120,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -182,7 +186,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -244,7 +250,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth6 => {
@@ -288,7 +296,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth0 => {
@@ -331,7 +341,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -357,7 +369,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -409,7 +423,9 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily   => 'RedHat',
+      :os         => {
+        :family => 'RedHat'
+      },
       :networking => {
         :interfaces => {
           :eth1 => {

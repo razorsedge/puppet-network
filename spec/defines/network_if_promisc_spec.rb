@@ -11,10 +11,13 @@ describe 'network::if::promisc', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem           => 'RedHat',
-      :operatingsystemrelease    => '6.0',
-      :operatingsystemmajrelease => '6',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth1 => {
@@ -74,10 +77,13 @@ describe 'network::if::promisc', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem           => 'RedHat',
-      :operatingsystemrelease    => '6.0',
-      :operatingsystemmajrelease => '6',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :eth3 => {

@@ -13,7 +13,12 @@ describe 'network::route', :type => 'define' do
       :gateway   => [ '192.168.1.2', ],
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let :facts do {
+      :os => {
+        :family => 'RedHat'
+      }
+    }
+    end
     it { should contain_file('route-eth1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -42,7 +47,12 @@ describe 'network::route', :type => 'define' do
       :restart   => false,
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let :facts do {
+      :os => {
+        :family => 'RedHat'
+      }
+    }
+    end
     it { should contain_file('route-eth1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -70,7 +80,12 @@ describe 'network::route', :type => 'define' do
       :gateway   => [ '192.168.1.1', '10.0.0.1', ]
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let :facts do {
+      :os => {
+        :family => 'RedHat'
+      }
+    }
+    end
     it { should contain_file('route-eth2').with(
       :ensure => 'present',
       :mode   => '0644',

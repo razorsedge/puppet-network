@@ -70,9 +70,9 @@ define network::if::promisc (
   }
 
   if $promisc {
-    case $::operatingsystem {
+    case $::os['name'] {
       /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
-        case $::operatingsystemmajrelease {
+        case $::os['release']['major'] {
           '5': {
             $ifup_source   = "puppet:///modules/${module_name}/promisc/ifup-local-promisc_5"
             $ifdown_source = "puppet:///modules/${module_name}/promisc/ifdown-local-promisc_5"

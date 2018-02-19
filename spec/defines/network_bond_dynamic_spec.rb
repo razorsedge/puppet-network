@@ -22,9 +22,13 @@ describe 'network::bond::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6'
+        }
+      },
       :networking => {
         :interfaces => {
           :bond2 => {
@@ -59,12 +63,16 @@ describe 'network::bond::dynamic', :type => 'define' do
     context 'on an older operatingsystem with /etc/modprobe.conf' do
       (['RedHat', 'CentOS', 'OEL', 'OracleLinux', 'SLC', 'Scientific']).each do |os|
         context "for operatingsystem #{os}" do
-          (['4.8', '5.9']).each do |osv|
+          (['4', '5']).each do |osv|
             context "for operatingsystemrelease #{osv}" do
               let :facts do {
-                :osfamily               => 'RedHat',
-                :operatingsystem        => os,
-                :operatingsystemrelease => osv,
+                :os => {
+                  :family => 'RedHat',
+                  :name   => os,
+                  :release => {
+                    :major => osv
+                  }
+                }
               }
               end
               it { should contain_augeas('modprobe.conf_bond2').with(
@@ -82,9 +90,13 @@ describe 'network::bond::dynamic', :type => 'define' do
           (['6', '9', '11']).each do |osv|
             context "for operatingsystemrelease #{osv}" do
               let :facts do {
-                :osfamily               => 'RedHat',
-                :operatingsystem        => os,
-                :operatingsystemrelease => osv,
+                :os => {
+                  :family => 'RedHat',
+                  :name   => os,
+                  :release => {
+                    :major => osv
+                  }
+                }
               }
               end
               it { should contain_augeas('modprobe.conf_bond2').with(
@@ -112,9 +124,13 @@ describe 'network::bond::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
       :networking => {
         :interfaces => {
           :bond2 => {
