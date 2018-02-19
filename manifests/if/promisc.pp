@@ -41,41 +41,26 @@
 # Copyright (C) 2015 Elyse Salberg, unless otherwise noted.
 #
 define network::if::promisc (
-  $ensure,
-  $macaddress    = undef,
-  $manage_hwaddr = true,
-  $bootproto     = undef,
-  $userctl       = false,
-  $mtu           = undef,
-  $ethtool_opts  = undef,
-  $restart       = true,
-  $promisc       = true,
+  Enum['up', 'down'] $ensure,
+  Optional[Stdlib::MAC] $macaddress = undef,
+  Boolean $manage_hwaddr = true,
+  Optional[String] $bootproto = undef,
+  Boolean $userctl = false,
+  Optional[String] $mtu = undef,
+  Optional[String] $ethtool_opts = undef,
+  Boolean $restart = true,
+  Boolean $promisc = true,
 ) {
   include '::network'
 
   $interface = $name
 
-  if ! is_mac_address($macaddress) {
+  if $macaddress {
+    $macaddy = $macaddress
+  } else {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
     $macaddy = getvar("::macaddress_${title_clean}")
-  } else {
-    $macaddy = $macaddress
-  }
-
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
-
-  # Validate booleans
-  validate_bool($userctl)
-  validate_bool($manage_hwaddr)
-  validate_bool($restart)
-  validate_bool($promisc)
-
-  # Validate our data
-  if ! is_mac_address($macaddy) {
-    fail("${macaddy} is not a MAC address.")
   }
 
   $onboot = $ensure ? {
