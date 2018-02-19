@@ -27,7 +27,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects a value of type Undef, IP::Address::V6/)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /(expects a value of type Undef, IP::Address::V6|expects a match for Variant\[IP::Address::V6::Full .*, IP::Address::V6::Compressed)/)
     end
   end
 
@@ -41,7 +41,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects a value of type Undef, IP::Address::V6/)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /(expects a value of type Undef, IP::Address::V6|expects a match for Variant\[IP::Address::V6::Full .*, IP::Address::V6::Compressed)/)
     end
   end
 
@@ -59,7 +59,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects an IP::Address::V6/)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /(expects an IP::Address::V6 |expects a match for Variant\[IP::Address::V6::Full .*, IP::Address::V6::Compressed)/)
     end
   end
 
