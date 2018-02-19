@@ -50,35 +50,36 @@ class network {
 #
 # === Parameters:
 #
-#   $ensure          - required - up|down
-#   $ipaddress       - optional
-#   $netmask         - optional
-#   $macaddress      - required
-#   $manage_hwaddr   - optional - defaults to true
-#   $gateway         - optional
-#   $noaliasrouting  - optional - defaults to false
-#   $bootproto       - optional
-#   $userctl         - optional - defaults to false
-#   $mtu             - optional
-#   $dhcp_hostname   - optional
-#   $ethtool_opts    - optional
-#   $bonding_opts    - optional
-#   $isalias         - optional
-#   $peerdns         - optional
-#   $dns1            - optional
-#   $dns2            - optional
-#   $domain          - optional
-#   $bridge          - optional
-#   $scope           - optional
-#   $linkdelay       - optional
-#   $check_link_down - optional
-#   $flush           - optional
-#   $zone            - optional
-#   $metric          - optional
-#   $defroute        - optional
-#   $promisc         - optional - defaults to false
-#   $restart         - optional - defaults to true
-#   $arpcheck        - optional - defaults to true
+#   $ensure              - required - up|down
+#   $ipaddress           - optional
+#   $netmask             - optional
+#   $macaddress          - required
+#   $manage_hwaddr       - optional - defaults to true
+#   $gateway             - optional
+#   $noaliasrouting      - optional - defaults to false
+#   $bootproto           - optional
+#   $userctl             - optional - defaults to false
+#   $mtu                 - optional
+#   $dhcp_hostname       - optional
+#   $persistent_dhclient - optional - defaults to false
+#   $ethtool_opts        - optional
+#   $bonding_opts        - optional
+#   $isalias             - optional
+#   $peerdns             - optional
+#   $dns1                - optional
+#   $dns2                - optional
+#   $domain              - optional
+#   $bridge              - optional
+#   $scope               - optional
+#   $linkdelay           - optional
+#   $check_link_down     - optional
+#   $flush               - optional
+#   $zone                - optional
+#   $metric              - optional
+#   $defroute            - optional
+#   $promisc             - optional - defaults to false
+#   $restart             - optional - defaults to true
+#   $arpcheck            - optional - defaults to true
 #
 # === Actions:
 #
@@ -91,7 +92,6 @@ class network {
 #   SCOPE=
 #   SRCADDR=
 #   NOZEROCONF=yes
-#   PERSISTENT_DHCLIENT=yes|no|1|0
 #   DHCPRELEASE=yes|no|1|0
 #   DHCLIENT_IGNORE_GATEWAY=yes|no|1|0
 #   REORDER_HDR=yes|no
@@ -107,39 +107,40 @@ class network {
 define network_if_base (
   $ensure,
   $macaddress,
-  $ipaddress       = undef,
-  $netmask         = undef,
-  $manage_hwaddr   = true,
-  $gateway         = undef,
-  $noaliasrouting  = false,
-  $ipv6address     = undef,
-  $ipv6gateway     = undef,
-  $ipv6init        = false,
-  $ipv6autoconf    = false,
-  $ipv6secondaries = undef,
-  $bootproto       = 'none',
-  $userctl         = false,
-  $mtu             = undef,
-  $dhcp_hostname   = undef,
-  $ethtool_opts    = undef,
-  $bonding_opts    = undef,
-  $isalias         = false,
-  $peerdns         = false,
-  $ipv6peerdns     = false,
-  $dns1            = undef,
-  $dns2            = undef,
-  $domain          = undef,
-  $bridge          = undef,
-  $linkdelay       = undef,
-  $scope           = undef,
-  $check_link_down = false,
-  $flush           = false,
-  $defroute        = undef,
-  $zone            = undef,
-  $metric          = undef,
-  $promisc         = false,
-  $restart         = true,
-  $arpcheck        = true,
+  $ipaddress           = undef,
+  $netmask             = undef,
+  $manage_hwaddr       = true,
+  $gateway             = undef,
+  $noaliasrouting      = false,
+  $ipv6address         = undef,
+  $ipv6gateway         = undef,
+  $ipv6init            = false,
+  $ipv6autoconf        = false,
+  $ipv6secondaries     = undef,
+  $bootproto           = 'none',
+  $userctl             = false,
+  $mtu                 = undef,
+  $dhcp_hostname       = undef,
+  $persistent_dhclient = false,
+  $ethtool_opts        = undef,
+  $bonding_opts        = undef,
+  $isalias             = false,
+  $peerdns             = false,
+  $ipv6peerdns         = false,
+  $dns1                = undef,
+  $dns2                = undef,
+  $domain              = undef,
+  $bridge              = undef,
+  $linkdelay           = undef,
+  $scope               = undef,
+  $check_link_down     = false,
+  $flush               = false,
+  $defroute            = undef,
+  $zone                = undef,
+  $metric              = undef,
+  $promisc             = false,
+  $restart             = true,
+  $arpcheck            = true,
 ) {
   # Validate our booleans
   validate_bool($noaliasrouting)
@@ -162,6 +163,9 @@ define network_if_base (
   include '::network'
 
   $interface = $name
+
+  # Normalize $persistent_dhclient value
+  $persistent_dhclient_real = bool2num($persistent_dhclient)
 
   # Deal with the case where $dns2 is non-empty and $dns1 is empty.
   if $dns2 {

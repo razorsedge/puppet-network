@@ -3,6 +3,9 @@
 ###
 DEVICE=<%= @interface %>
 BOOTPROTO=<%= @bootproto %>
+<% if @bootproto == 'dhcp' -%>
+PERSISTENT_DHCLIENT=<%= @persistent_dhclient_real %>
+<% end -%>
 <% if @manage_hwaddr and @macaddress and @macaddress != '' -%>
 HWADDR=<%= @macaddress %>
 <% end -%>

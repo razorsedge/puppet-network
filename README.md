@@ -107,6 +107,13 @@ Normal interface - dhcp:
       ethtool_opts  => 'autoneg off speed 100 duplex full',
     }
 
+Normal interface - dhcp (persistent dhclient):
+
+    network::if::dynamic { 'eth2':
+      ensure              => 'up',
+      persistent_dhclient => true,
+    }
+
 Normal interface - bootp (minimal):
 
     network::if::dynamic { 'eth2':
