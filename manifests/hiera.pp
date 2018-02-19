@@ -28,22 +28,33 @@
 #
 class network::hiera {
   # Merge hashes from multiple hiera layers
-  $network_alias = hiera_hash('network::alias', undef)
-  $network_alias_range = hiera_hash('network::alias_range', undef)
-  $network_bond = hiera_hash('network::bond', undef)
-  $network_bond_bridge = hiera_hash('network::bond_bridge', undef)
-  $network_bond_dynamic = hiera_hash('network::bond_dynamic', undef)
-  $network_bond_slave = hiera_hash('network::bond_slave', undef)
-  $network_bond_static = hiera_hash('network::bond_static', undef)
-  $network_bridge = hiera_hash('network::bridge', undef)
-  $network_bridge_dynamic = hiera_hash('network::bridge_dynamic', undef)
-  $network_bridge_static = hiera_hash('network::bridge_static', undef)
-  $network_if = hiera_hash('network::if', undef)
-  $network_if_bridge = hiera_hash('network::if_bridge', undef)
-  $network_if_dynamic = hiera_hash('network::if_dynamic', undef)
-  $network_if_promisc = hiera_hash('network::if_promisc', undef)
-  $network_if_static = hiera_hash('network::if_static', undef)
-  $network_route = hiera_hash('network::route', undef)
+  $network_alias = lookup('network::alias', Optional[Hash], 'hash', undef)
+  $network_alias_range = lookup(
+    'network::alias_range', Optional[Hash], 'hash', undef)
+  $network_bond = lookup('network::bond', Optional[Hash], 'hash', undef)
+  $network_bond_bridge = lookup(
+    'network::bond_bridge', Optional[Hash], 'hash', undef)
+  $network_bond_dynamic = lookup(
+    'network::bond_dynamic', Optional[Hash], 'hash', undef)
+  $network_bond_slave = lookup(
+    'network::bond_slave', Optional[Hash], 'hash', undef)
+  $network_bond_static = lookup(
+    'network::bond_static', Optional[Hash], 'hash', undef)
+  $network_bridge = lookup('network::bridge', Optional[Hash], 'hash', undef)
+  $network_bridge_dynamic = lookup(
+    'network::bridge_dynamic', Optional[Hash], 'hash', undef)
+  $network_bridge_static = lookup(
+    'network::bridge_static', Optional[Hash], 'hash', undef)
+  $network_if = lookup('network::if', Optional[Hash], 'hash', undef)
+  $network_if_bridge = lookup(
+    'network::if_bridge', Optional[Hash], 'hash', undef)
+  $network_if_dynamic = lookup(
+    'network::if_dynamic', Optional[Hash], 'hash', undef)
+  $network_if_promisc = lookup(
+    'network::if_promisc', Optional[Hash], 'hash', undef)
+  $network_if_static = lookup(
+    'network::if_static', Optional[Hash], 'hash', undef)
+  $network_route = lookup('network::route', Optional[Hash], 'hash', undef)
 
   if $network_alias {
     create_resources('network::alias', $network_alias)
