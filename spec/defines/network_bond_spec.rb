@@ -25,7 +25,13 @@ describe 'network::bond', :type => 'define' do
       :osfamily         => 'RedHat',
       :operatingsystem        => 'RedHat',
       :operatingsystemrelease => '6.0',
-      :macaddress_bond0 => 'fe:fe:fe:aa:aa:aa',
+      :networking => {
+        :interfaces => {
+          :bond0 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-bond0').with(

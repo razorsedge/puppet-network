@@ -24,8 +24,14 @@ describe 'network::if::bridge', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -62,8 +68,14 @@ describe 'network::if::bridge', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(

@@ -72,8 +72,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -112,8 +118,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -170,8 +182,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -226,8 +244,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :macaddress_eth6 => 'bb:cc:bb:cc:bb:cc',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth6 => {
+            :mac => 'bb:cc:bb:cc:bb:cc'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth6.203').with(
@@ -264,8 +288,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :macaddress_eth0 => 'bb:cc:bb:cc:bb:cc',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth0 => {
+            :mac => 'bb:cc:bb:cc:bb:cc'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth0').with(
@@ -301,8 +331,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_exec('network-flush').with_command('ip addr flush dev eth1').that_comes_before('Service[network]') }
@@ -321,8 +357,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -367,8 +409,14 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(

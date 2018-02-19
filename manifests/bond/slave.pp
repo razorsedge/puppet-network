@@ -26,7 +26,7 @@
 # === Sample Usage:
 #
 #   network::bond::slave { 'eth1':
-#     macaddress => $::macaddress_eth1,
+#     macaddress => $::networking['interfaces']['eth1']['mac'],
 #     master     => 'bond0',
 #   }
 #

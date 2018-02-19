@@ -5,7 +5,7 @@
 # === Parameters:
 #
 #   $ensure          - required - up|down
-#   $macaddress      - optional - defaults to macaddress_$title
+#   $macaddress      - optional - defaults to $::networking['interfaces'][$title]['mac']
 #   $manage_hwaddr   - optional - defaults to true
 #   $bootproto       - optional - defaults to "dhcp"
 #   $userctl         - optional - defaults to false
@@ -28,7 +28,7 @@
 #
 #   network::if::dynamic { 'eth2':
 #     ensure     => 'up',
-#     macaddress => $::macaddress_eth2,
+#     macaddress => $::networking['interfaces']['eth2']['mac'],
 #   }
 #
 #   network::if::dynamic { 'eth3':
@@ -68,7 +68,7 @@ define network::if::dynamic (
   } else {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
-    $macaddy = getvar("::macaddress_${title_clean}")
+    $macaddy = $::networking['interfaces'][$title_clean]['mac']
   }
 
   network_if_base { $title:

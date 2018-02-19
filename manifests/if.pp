@@ -6,7 +6,7 @@
 #
 #   $ensure        - required - up|down
 #   $manage_hwaddr - optional - defaults to true
-#   $macaddress    - optional - defaults to macaddress_$title
+#   $macaddress    - optional - defaults to $::networking['interfaces'][$title]['mac']
 #   $userctl       - optional - defaults to false
 #   $mtu           - optional
 #   $ethtool_opts  - optional
@@ -51,7 +51,7 @@ define network::if (
   } else {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
-    $macaddy = getvar("::macaddress_${title_clean}")
+    $macaddy = $::networking['interfaces'][$title_clean]['mac']
   }
 
   network_if_base { $title:

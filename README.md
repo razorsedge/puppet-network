@@ -195,7 +195,7 @@ Bonded master interface - bridged (the corresponding network::bridge::* may also
 Bonded slave interface:
 
     network::bond::slave { 'eth1':
-      macaddress   => $macaddress_eth1,
+      macaddress   => $::networking['interfaces']['eth1']['mac'],
       ethtool_opts => 'autoneg off speed 1000 duplex full',
       master       => 'bond0',
     }

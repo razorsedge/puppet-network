@@ -25,7 +25,13 @@ describe 'network::bond::dynamic', :type => 'define' do
       :osfamily         => 'RedHat',
       :operatingsystem        => 'RedHat',
       :operatingsystemrelease => '6.0',
-      :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
+      :networking => {
+        :interfaces => {
+          :bond2 => {
+            :mac => 'ff:aa:ff:aa:ff:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-bond2').with(
@@ -109,7 +115,13 @@ describe 'network::bond::dynamic', :type => 'define' do
       :osfamily         => 'RedHat',
       :operatingsystem        => 'RedHat',
       :operatingsystemrelease => '6.0',
-      :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
+      :networking => {
+        :interfaces => {
+          :bond2 => {
+            :mac => 'ff:aa:ff:aa:ff:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-bond2').with(

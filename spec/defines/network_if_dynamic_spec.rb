@@ -22,8 +22,14 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :macaddress_eth99 => 'ff:aa:ff:aa:ff:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth99 => {
+            :mac => 'ff:aa:ff:aa:ff:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth99').with(
@@ -67,8 +73,14 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :macaddress_eth99 => 'ff:aa:ff:aa:ff:aa',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth99 => {
+            :mac => 'ff:aa:ff:aa:ff:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth99').with(
@@ -105,8 +117,14 @@ describe 'network::if::dynamic', :type => 'define' do
     let(:title) { 'eth45.302' }
     let(:params) {{ :ensure => 'up' }}
     let :facts do {
-      :osfamily         => 'RedHat',
-      :macaddress_eth45 => 'bb:cc:bb:cc:bb:cc',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth45 => {
+            :mac => 'bb:cc:bb:cc:bb:cc'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth45.302').with(
@@ -139,8 +157,14 @@ describe 'network::if::dynamic', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth0 => 'bb:cc:bb:cc:bb:cc',
+      :osfamily   => 'RedHat',
+      :networking => {
+        :interfaces => {
+          :eth0 => {
+            :mac => 'bb:cc:bb:cc:bb:cc'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth0').with(

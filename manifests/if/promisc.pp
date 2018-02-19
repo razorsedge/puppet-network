@@ -5,7 +5,7 @@
 # === Parameters:
 #
 #   $ensure        - required - up|down
-#   $macaddress    - optional, defaults to macaddress_$title
+#   $macaddress    - optional - defaults to $::networking['interfaces'][$title]['mac']
 #   $manage_hwaddr - optional - defaults to true
 #   $bootproto     - optional, defaults to undef ('none')
 #   $userctl       - optional
@@ -60,7 +60,7 @@ define network::if::promisc (
   } else {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
-    $macaddy = getvar("::macaddress_${title_clean}")
+    $macaddy = $::networking['interfaces'][$title_clean]['mac']
   }
 
   $onboot = $ensure ? {

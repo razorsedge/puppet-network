@@ -12,7 +12,7 @@
 #   $ipv6init       - optional - defaults to false
 #   $ipv6gateway    - optional
 #   $manage_hwaddr  - optional - defaults to true
-#   $macaddress     - optional - defaults to macaddress_$title
+#   $macaddress     - optional - defaults to $::networking['interfaces'][$title]['mac']
 #   $ipv6autoconf   - optional - defaults to false
 #   $userctl        - optional - defaults to false
 #   $mtu            - optional
@@ -40,7 +40,7 @@
 #     ensure      => 'up',
 #     ipaddress   => '10.21.30.248',
 #     netmask     => '255.255.255.128',
-#     macaddress  => $::macaddress_eth0,
+#     macaddress  => $::networking['interfaces']['eth0']['mac'],
 #     domain      => 'is.domain.com domain.com',
 #     ipv6init    => true,
 #     ipv6address => '123:4567:89ab:cdef:123:4567:89ab:cdef',
@@ -107,7 +107,7 @@ define network::if::static (
   } else {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
-    $macaddy = getvar("::macaddress_${title_clean}")
+    $macaddy = $::networking['interfaces'][$title_clean]['mac']
   }
 
   network_if_base { $title:

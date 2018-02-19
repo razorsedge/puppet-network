@@ -27,14 +27,14 @@ network::bond::static { 'bond0':
 
 # bonded slave interface - static
 network::bond::slave { 'eth1':
-  macaddress   => $::macaddress_eth1,
+  macaddress   => $::networking['interfaces']['eth1']['mac'],
   ethtool_opts => 'speed 1000 duplex full autoneg off',
   master       => 'bond0',
 }
 
 # bonded slave interface - static
 network::bond::slave { 'eth3':
-  macaddress   => $::macaddress_eth3,
+  macaddress   => $::networking['interfaces']['eth3']['mac'],
   ethtool_opts => 'speed 100 duplex half autoneg off',
   master       => 'bond0',
 }

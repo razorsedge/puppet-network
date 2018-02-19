@@ -25,7 +25,13 @@ describe 'network::if', :type => 'define' do
       :osfamily               => 'RedHat',
       :operatingsystem        => 'RedHat',
       :operatingsystemrelease => '6.0',
-      :macaddress_eth0        => 'fe:fe:fe:aa:aa:aa',
+      :networking => {
+        :interfaces => {
+          :eth0 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth0').with(
@@ -62,7 +68,13 @@ describe 'network::if', :type => 'define' do
       :osfamily               => 'RedHat',
       :operatingsystem        => 'RedHat',
       :operatingsystemrelease => '6.0',
-      :macaddress_eth0        => 'fe:fe:fe:aa:aa:aa',
+      :networking => {
+        :interfaces => {
+          :eth0 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth0').with(
