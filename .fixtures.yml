@@ -1,5 +1,10 @@
 fixtures:
   repositories:
-    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    stdlib:
+      repo: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+      ref: '4.24.0'
+    ip:
+      repo: 'https://github.com/thrnio/puppet-ip.git'
+      ref: '1.0.1'
   symlinks:
     network: "#{source_dir}"

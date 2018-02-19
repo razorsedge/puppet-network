@@ -13,7 +13,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /notAnIP is not an IP address\./)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects a match for IP::Address::V4::NoSubnet/)
     end
   end
 
@@ -27,7 +27,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /notAnIP is not an IPv6 address\./)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects a value of type Undef, IP::Address::V6/)
     end
   end
 
@@ -41,9 +41,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      # there are major differences in the way that different ruby versions translate a hash into a string
-      # which makes it hard to match the whole string
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /.*notAn.*IP.* is not an IPv6 address\./)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects a value of type Undef, IP::Address::V6/)
     end
   end
 
@@ -61,7 +59,7 @@ describe 'network::if::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /notAnIP is not an IP\(v6\) address\./)
+      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects an IP::Address::V6/)
     end
   end
 
