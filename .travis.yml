@@ -18,9 +18,6 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 4.0"
   - rvm: 2.4.1
     env: PUPPET_GEM_VERSION="~> 5.0"
-  allow_failures:
-  - rvm: 2.4.1
-    env: PUPPET_GEM_VERSION="~> 5.0"
 notifications:
   email:
     - github@razorsedge.org
