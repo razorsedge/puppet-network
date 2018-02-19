@@ -36,18 +36,15 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::bond::dynamic (
-  $ensure,
-  $mtu = undef,
-  $ethtool_opts = undef,
-  $bonding_opts = 'miimon=100',
-  $zone = undef,
-  $defroute = undef,
-  $metric = undef,
-  $restart = true,
+  Enum['up', 'down'] $ensure,
+  Optional[String] $mtu = undef,
+  Optional[String] $ethtool_opts = undef,
+  String $bonding_opts = 'miimon=100',
+  Optional[String] $zone = undef,
+  Optional[String] $defroute = undef,
+  Optional[String] $metric = undef,
+  Boolean $restart = true,
 ) {
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   network_if_base { $title:
     ensure       => $ensure,
