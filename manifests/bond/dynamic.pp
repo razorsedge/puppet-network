@@ -48,13 +48,7 @@ define network::bond::dynamic (
 
   network_if_base { $title:
     ensure       => $ensure,
-    ipaddress    => '',
-    netmask      => '',
-    gateway      => '',
-    macaddress   => '',
     bootproto    => 'dhcp',
-    ipv6address  => '',
-    ipv6gateway  => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,

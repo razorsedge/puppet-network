@@ -129,14 +129,9 @@ define network::if::promisc (
 
   network_if_base { $title:
     ensure        => $ensure,
-    ipaddress     => '',
-    netmask       => '',
-    gateway       => '',
     macaddress    => $macaddy,
     manage_hwaddr => $manage_hwaddr,
     bootproto     => 'none',
-    ipv6address   => '',
-    ipv6gateway   => '',
     mtu           => $mtu,
     ethtool_opts  => $ethtool_opts,
     promisc       => $promisc,

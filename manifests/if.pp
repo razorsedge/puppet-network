@@ -56,14 +56,9 @@ define network::if (
 
   network_if_base { $title:
     ensure        => $ensure,
-    ipaddress     => '',
-    netmask       => '',
-    gateway       => '',
     macaddress    => $macaddy,
     manage_hwaddr => $manage_hwaddr,
     bootproto     => 'none',
-    ipv6address   => '',
-    ipv6gateway   => '',
     userctl       => $userctl,
     mtu           => $mtu,
     ethtool_opts  => $ethtool_opts,

@@ -73,9 +73,6 @@ define network::if::dynamic (
 
   network_if_base { $title:
     ensure          => $ensure,
-    ipaddress       => '',
-    netmask         => '',
-    gateway         => '',
     macaddress      => $macaddy,
     manage_hwaddr   => $manage_hwaddr,
     bootproto       => $bootproto,

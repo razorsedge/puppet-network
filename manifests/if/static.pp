@@ -107,12 +107,12 @@ define network::if::static (
     $secondary_ipv6addresses = undef
   }
 
-  if !$macaddress {
+  if $macaddress {
+    $macaddy = $macaddress
+  } else {
     # Strip off any tailing VLAN (ie eth5.90 -> eth5).
     $title_clean = regsubst($title,'^(\w+)\.\d+$','\1')
     $macaddy = getvar("::macaddress_${title_clean}")
-  } else {
-    $macaddy = $macaddress
   }
 
   network_if_base { $title:

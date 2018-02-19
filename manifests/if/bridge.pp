@@ -39,22 +39,10 @@ define network::if::bridge (
   Boolean $restart = true,
 ) {
 
-  if $macaddress == undef {
-    $macaddy = '' # lint:ignore:empty_string_assignment
-  }
-  else {
-    $macaddy = $macaddress
-  }
-
   network_if_base { $title:
     ensure       => $ensure,
-    ipaddress    => '',
-    netmask      => '',
-    gateway      => '',
-    macaddress   => $macaddy,
+    macaddress   => $macaddress,
     bootproto    => 'none',
-    ipv6address  => '',
-    ipv6gateway  => '',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bridge       => $bridge,

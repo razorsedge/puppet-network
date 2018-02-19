@@ -68,7 +68,6 @@ define network::bond::static (
     ipaddress    => $ipaddress,
     netmask      => $netmask,
     gateway      => $gateway,
-    macaddress   => '',
     bootproto    => 'none',
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
