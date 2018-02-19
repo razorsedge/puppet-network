@@ -34,16 +34,13 @@
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
 define network::bond::bridge (
-  $ensure,
-  $bridge,
-  $mtu = undef,
-  $ethtool_opts = undef,
-  $bonding_opts = 'miimon=100',
-  $restart = true,
+  Enum['up', 'down'] $ensure,
+  String $bridge,
+  Optional[String] $mtu = undef,
+  Optional[String] $ethtool_opts = undef,
+  String $bonding_opts = 'miimon=100',
+  Boolean $restart = true,
 ) {
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   network_if_base { $title:
     ensure       => $ensure,
