@@ -67,12 +67,7 @@ define network::if::static (
     ]
   ] $ipv6address = undef,
   Boolean $ipv6init = false,
-  Optional[
-    Variant[
-      IP::Address::V6::NoSubnet::Full,
-      IP::Address::V6::NoSubnet::Compressed,
-    ]
-  ] $ipv6gateway = undef,
+  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
   Optional[Stdlib::MAC] $macaddress = undef,
   Boolean $manage_hwaddr = true,
   Boolean $ipv6autoconf = false,
@@ -81,8 +76,8 @@ define network::if::static (
   Optional[String] $ethtool_opts = undef,
   Boolean $peerdns = false,
   Boolean $ipv6peerdns = false,
-  Optional[Stdlib::Compat::Ip_address] $dns1 = undef,
-  Optional[Stdlib::Compat::Ip_address] $dns2 = undef,
+  Optional[IP::Address::NoSubnet] $dns1 = undef,
+  Optional[IP::Address::NoSubnet] $dns2 = undef,
   Optional[String] $domain = undef,
   Optional[String] $linkdelay = undef,
   Optional[String] $scope = undef,

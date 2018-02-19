@@ -26,7 +26,7 @@ describe 'network::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /expects a match for Stdlib::Compat::Ipv4/)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /expects a match for IP::Address::V4::NoSubnet /)
     end
   end
 

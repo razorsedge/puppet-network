@@ -38,12 +38,12 @@
 #
 define network::alias (
   Enum['up', 'down'] $ensure,
-  Stdlib::Compat::Ipv4 $ipaddress,
-  Stdlib::Compat::Ipv4 $netmask,
-  Optional[Stdlib::Compat::Ipv4] $gateway = undef,
+  IP::Address::V4::NoSubnet $ipaddress,
+  IP::Address::V4::NoSubnet $netmask,
+  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
   Boolean $noaliasrouting = false,
-  Optional[Stdlib::Compat::Ipv6] $ipv6address = undef,
-  Optional[Stdlib::Compat::Ipv6] $ipv6gateway = undef,
+  Optional[IP::Address::V6] $ipv6address = undef,
+  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
   Boolean $userctl = false,
   Optional[String] $zone = undef,
   Optional[String] $metric = undef,
