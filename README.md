@@ -45,6 +45,12 @@ Global network setting with IPv6 enabled with optional default device for IPv6 t
       ipv6defaultdev => 'eth1',
     }
 
+Set IPv6 forwarding globally:
+
+    class { 'network::global':
+      ipv6networking => true,
+      ipv6forwarding => true,
+    }
 
 Normal interface - no IP:
 
