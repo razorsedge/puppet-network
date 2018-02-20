@@ -8,6 +8,8 @@ NETWORKING=yes
 <% end -%>
 <% if @ipv6defaultdev %>IPV6_DEFAULTDEV=<%= @ipv6defaultdev %>
 <% end -%>
+<% if @ipv6forwarding %>IPV6FORWARDING=yes
+<% end -%>
 <% end -%>
 <% if @hostname %>HOSTNAME=<%= @hostname %>
 <% else %>HOSTNAME=<%= scope.lookupvar('::fqdn') %>
