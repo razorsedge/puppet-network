@@ -61,7 +61,18 @@ define network::bond::slave (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-bond.erb'),
+    content => epp("${module_name}/ifcfg-bond.epp", {
+      interface    => $interface,
+      macaddress   => $macaddress,
+      master       => $master,
+      ethtool_opts => $ethtool_opts,
+      defroute     => $defroute,
+      zone         => $zone,
+      metric       => $metric,
+      bootproto    => $bootproto,
+      onboot       => $onboot,
+      userctl      => $userctl,
+    }),
     before  => File["ifcfg-${master}"],
   }
 
