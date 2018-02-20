@@ -71,13 +71,7 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :os         => {
-        :family => 'RedHat',
-        :name   => 'RedHat',
-        :release => {
-          :major => '6',
-        }
-      },
+      :os         => { :family => 'RedHat' },
       :networking => {
         :interfaces => {
           :eth1 => {
