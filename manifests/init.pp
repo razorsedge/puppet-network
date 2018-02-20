@@ -185,7 +185,40 @@ define network_if_base (
       'down'  => 'no',
       default => undef,
     }
-    $iftemplate = template('network/ifcfg-eth.erb')
+    $iftemplate = epp("${module_name}/ifcfg-eth.epp", {
+      interface       => $interface,
+      bootproto       => $bootproto,
+      manage_hwaddr   => $manage_hwaddr,
+      macaddress      => $macaddress,
+      onboot          => $onboot,
+      ipaddress       => $ipaddress,
+      netmask         => $netmask,
+      gateway         => $gateway,
+      mtu             => $mtu,
+      bonding_opts    => $bonding_opts,
+      dhcp_hostname   => $dhcp_hostname,
+      ethtool_opts    => $ethtool_opts,
+      peerdns         => $peerdns,
+      dns1            => $dns1_real,
+      dns2            => $dns2_real,
+      domain          => $domain,
+      userctl         => $userctl,
+      ipv6init        => $ipv6init,
+      ipv6autoconf    => $ipv6autoconf,
+      ipv6address     => $ipv6address,
+      ipv6gateway     => $ipv6gateway,
+      ipv6peerdns     => $ipv6peerdns,
+      ipv6secondaries => $ipv6secondaries,
+      bridge          => $bridge,
+      linkdelay       => $linkdelay,
+      scope           => $scope,
+      check_link_down => $check_link_down,
+      defroute        => $defroute,
+      zone            => $zone,
+      metric          => $metric,
+      promisc         => $promisc,
+      arpcheck        => $arpcheck,
+    })
   }
 
   if $flush {

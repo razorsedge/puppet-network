@@ -1,0 +1,45 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= $interface %>
+BOOTPROTO=<%= $bootproto %>
+<% if $manage_hwaddr and $macaddress { %>HWADDR=<%= $macaddress %><% } %>
+ONBOOT=<%= $onboot %>
+HOTPLUG=<%= $onboot %>
+TYPE=Ethernet
+<% if $ipaddress { %>IPADDR=<%= $ipaddress %><% } %>
+<% if $netmask { %>NETMASK=<%= $netmask %><% } %>
+<% if $gateway { %>GATEWAY=<%= $gateway %><% } %>
+<% if $mtu { %>MTU=<%= $mtu %><% } %>
+<% if $bonding_opts { %>BONDING_OPTS="<%= $bonding_opts %>"<% } %>
+<% if $dhcp_hostname { %>DHCP_HOSTNAME="<%= $dhcp_hostname %>"<% } %>
+<% if $ethtool_opts { %>ETHTOOL_OPTS="<%= $ethtool_opts %>"<% } %>
+PEERDNS=<%= bool2str($peerdns, 'yes', 'no') %>
+<% if $dns1 { %>DNS1=<%= $dns1 %><% } %>
+<% if $dns2 { %>DNS2=<%= $dns2 %><% } %>
+<% if $domain { %>DOMAIN="<%= $domain %>"<% } %>
+<% if $userctl { %>USERCTL=yes<% } %>
+<%- if $ipv6init { -%>
+IPV6INIT=yes
+IPV6_AUTOCONF=<%= bool2str($ipv6autoconf, 'yes', 'no') %>
+<% if $ipv6address { %>IPV6ADDR=<%= $ipv6address %><% } %>
+<% if $ipv6gateway { %>IPV6_DEFAULTGW=<%= $ipv6gateway %><% } %>
+IPV6_PEERDNS=<%= bool2str($ipv6peerdns, 'yes', 'no') %>
+<%- if $ipv6secondaries { -%>
+IPV6ADDR_SECONDARIES="<%= join($ipv6secondaries, ' ') %>"
+<%- } -%>
+<%- } -%>
+<% if $bridge { %>BRIDGE=<%= $bridge %><% } %>
+<% if $linkdelay { %>LINKDELAY=<%= $linkdelay %><% } %>
+<% if $scope { %>SCOPE="<%= $scope %>"<% } %>
+<% if $check_link_down { %>
+check_link_down() {
+ return 1;
+}
+<% } -%>
+<% if $defroute { %>DEFROUTE=<%= $defroute %><% } %>
+<% if $zone { %>ZONE=<%= $zone %><% } %>
+<% if $metric { %>METRIC=<%= $metric %><% } %>
+<% if $promisc { %>PROMISC=yes<% } %>
+<% if !$arpcheck { %>ARPCHECK=no<% } %>
+NM_CONTROLLED=no
