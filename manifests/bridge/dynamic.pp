@@ -45,36 +45,14 @@ define network::bridge::dynamic (
   Boolean $restart = true,
 ) {
 
-  ensure_packages(['bridge-utils'])
-
-  include '::network'
-
-  $interface = $name
-  $ipaddress = undef
-  $netmask = undef
-  $gateway = undef
-  $ipv6address = undef
-  $ipv6gateway = undef
-
-  $onboot = $ensure ? {
-    'up'    => 'yes',
-    'down'  => 'no',
-    default => undef,
+  network::bridge { $title:
+    ensure        => $ensure,
+    bootproto     => $bootproto,
+    userctl       => $userctl,
+    stp           => $stp,
+    delay         => $delay,
+    bridging_opts => $bridging_opts,
+    restart       => $restart,
   }
 
-  file { "ifcfg-${interface}":
-    ensure  => 'present',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-br.erb'),
-    require => Package['bridge-utils'],
-  }
-
-  if $restart {
-    File["ifcfg-${interface}"] {
-      notify  => Service['network'],
-    }
-  }
 } # define network::bridge::dynamic

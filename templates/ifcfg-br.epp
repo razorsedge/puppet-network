@@ -1,0 +1,26 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= $interface %>
+BOOTPROTO=<%= $bootproto %>
+ONBOOT=<%= $onboot %>
+TYPE=Bridge
+<% if $ipaddress { %>IPADDR=<%= $ipaddress %><% } %>
+<% if $netmask { %>NETMASK=<%= $netmask %><% } %>
+<% if $gateway { %>GATEWAY=<%= $gateway %><% } %>
+<%- if $ipv6init { -%>
+IPV6INIT=yes
+<% if $ipv6address { %>IPV6ADDR=<%= $ipv6address %><% } %>
+<% if $ipv6gateway { %>IPV6_DEFAULTGW=<%= $ipv6gateway %><% } %>
+<% if $ipv6peerdns { %>IPV6_PEERDNS=yes<% } %>
+<%- } -%>
+PEERDNS=<%= bool2str($peerdns, 'yes', 'no') %>
+<% if $dns1 { %>DNS1=<%= $dns1 %><% } %>
+<% if $dns2 { %>DNS2=<%= $dns2 %><% } %>
+<% if $domain { %>DOMAIN="<%= $domain %>"<% } %>
+<% if $userctl { %>USERCTL=yes<% } %>
+DELAY=<%= $delay %>
+STP=<%= bool2str($stp, 'yes', 'no') %>
+<% if $bridging_opts { %>BRIDGING_OPTS="<%= $bridging_opts %>"<% } %>
+<% if $scope { %>SCOPE="<%= $scope %>"<% } %>
+NM_CONTROLLED=no

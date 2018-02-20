@@ -11,7 +11,7 @@
 #   $ipv6address   - optional
 #   $ipv6gateway   - optional
 #   $userctl       - optional - defaults to false
-#   $peerdns       - optional
+#   $peerdns       - optional - defaults to false
 #   $ipv6init      - optional - defaults to false
 #   $ipv6peerdns   - optional - defaults to false
 #   $dns1          - optional
@@ -71,45 +71,26 @@ define network::bridge::static (
   Boolean $restart = true,
 ) {
 
-  ensure_packages(['bridge-utils'])
-
-  include '::network'
-
-  $interface = $name
-
-  # Deal with the case where $dns2 is non-empty and $dns1 is empty.
-  if $dns2 {
-    if !$dns1 {
-      $dns1_real = $dns2
-      $dns2_real = undef
-    } else {
-      $dns1_real = $dns1
-      $dns2_real = $dns2
-    }
-  } else {
-    $dns1_real = $dns1
-    $dns2_real = $dns2
+  network::bridge { $title:
+    ensure        => $ensure,
+    ipaddress     => $ipaddress,
+    netmask       => $netmask,
+    gateway       => $gateway,
+    ipv6address   => $ipv6address,
+    ipv6gateway   => $ipv6gateway,
+    bootproto     => $bootproto,
+    userctl       => $userctl,
+    peerdns       => $peerdns,
+    ipv6init      => $ipv6init,
+    ipv6peerdns   => $ipv6peerdns,
+    dns1          => $dns1,
+    dns2          => $dns2,
+    domain        => $domain,
+    stp           => $stp,
+    delay         => $delay,
+    bridging_opts => $bridging_opts,
+    scope         => $scope,
+    restart       => $restart,
   }
 
-  $onboot = $ensure ? {
-    'up'    => 'yes',
-    'down'  => 'no',
-    default => undef,
-  }
-
-  file { "ifcfg-${interface}":
-    ensure  => 'present',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-br.erb'),
-    require => Package['bridge-utils'],
-  }
-
-  if $restart {
-    File["ifcfg-${interface}"] {
-      notify  => Service['network'],
-    }
-  }
 } # define network::bridge::static
