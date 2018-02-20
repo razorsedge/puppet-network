@@ -1,0 +1,12 @@
+###
+### File managed by Puppet
+###
+<% $ipaddress.each |$index, $item| { -%>
+ADDRESS<%= $index %>=<%= $item %>
+<% } -%>
+<% $netmask.each |$index, $item| { -%>
+NETMASK<%= $index %>=<%= $item %>
+<% } -%>
+<% $gateway.each |$index, $item| { -%>
+GATEWAY<%= $index %>=<%= $item %>
+<% } -%>

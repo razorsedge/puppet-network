@@ -57,7 +57,11 @@ define network::route (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/route-${interface}",
-    content => template('network/route-eth.erb'),
+    content => epp("${module_name}/route-eth.epp", {
+      ipaddress => $ipaddress,
+      netmask   => $netmask,
+      gateway   => $gateway,
+    }),
     before  => File["ifcfg-${interface}"],
   }
 
