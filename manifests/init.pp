@@ -166,7 +166,19 @@ define network_if_base (
       'down'  => 'no',
       default => undef,
     }
-    $iftemplate = template('network/ifcfg-alias.erb')
+    $iftemplate = epp("${module_name}/ifcfg-alias.epp", {
+      interface      => $interface,
+      bootproto      => $bootproto,
+      onparent       => $onparent,
+      ipaddress      => $ipaddress,
+      netmask        => $netmask,
+      gateway        => $gateway,
+      ipv6address    => $ipv6address,
+      noaliasrouting => $noaliasrouting,
+      userctl        => $userctl,
+      zone           => $zone,
+      metric         => $metric,
+    })
   } else {
     $onboot = $ensure ? {
       'up'    => 'yes',
