@@ -70,7 +70,16 @@ define network::alias::range (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}-range${clonenum_start}",
-    content => template('network/ifcfg-alias-range.erb'),
+    content => epp("${module_name}/ifcfg-alias-range.epp", {
+      ipaddress_start => $ipaddress_start,
+      ipaddress_end   => $ipaddress_end,
+      clonenum_start  => $clonenum_start,
+      noaliasrouting  => $noaliasrouting,
+      netmask         => $netmask,
+      broadcast       => $broadcast,
+      arpcheck        => $arpcheck,
+      onparent        => $onparent,
+    }),
     before  => File["ifcfg-${interface}"],
   }
 
