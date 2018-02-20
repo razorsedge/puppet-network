@@ -26,7 +26,7 @@ describe 'network::global', :type => 'class' do
           :major => '7',
         }
       },
-      :fqdn => 'localhost.localdomain',
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it { should contain_class('network') }
@@ -62,7 +62,7 @@ describe 'network::global', :type => 'class' do
           :major => '7',
         }
       },
-      :fqdn => 'localhost.localdomain',
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it { should contain_class('network') }
@@ -102,7 +102,7 @@ describe 'network::global', :type => 'class' do
           :major => '7',
         }
       },
-      :fqdn => 'localhost.localdomain',
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
@@ -138,7 +138,7 @@ describe 'network::global', :type => 'class' do
           :major => '6',
         }
       },
-      :fqdn => 'localhost.localdomain',
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
@@ -236,7 +236,7 @@ describe 'network::global', :type => 'class' do
           :major => '6',
         }
       },
-      :fqdn => 'localhost.localdomain',
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do

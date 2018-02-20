@@ -101,13 +101,29 @@ class network::global (
     }
   }
 
+  $effective_hostname = $hostname ? {
+    String  => $hostname,
+    default => $::networking['fqdn'],
+  }
+
   file { 'network.sysconfig':
     ensure  => 'present',
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
     path    => '/etc/sysconfig/network',
-    content => template('network/network.erb'),
+    content => epp("${module_name}/network.epp", {
+      ipv6networking => $ipv6networking,
+      ipv6gateway    => $ipv6gateway,
+      ipv6defaultdev => $ipv6defaultdev,
+      hostname       => $effective_hostname,
+      gateway        => $gateway,
+      gatewaydev     => $gatewaydev,
+      nisdomain      => $nisdomain,
+      vlan           => $vlan,
+      nozeroconf     => $nozeroconf,
+      requestreopen  => $requestreopen,
+    }),
   }
 
   if $restart {
