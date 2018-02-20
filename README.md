@@ -195,7 +195,7 @@ Bonded master interface - bridged (the corresponding network::bridge::* may also
 Bonded slave interface:
 
     network::bond::slave { 'eth1':
-      macaddress   => $macaddress_eth1,
+      macaddress   => $::networking['interfaces']['eth1']['mac'],
       ethtool_opts => 'autoneg off speed 1000 duplex full',
       master       => 'bond0',
     }
@@ -322,7 +322,7 @@ The Hiera naming substitutes underscore for any secondary double colons, i.e. sp
 Notes
 -----
 
-* Runs under Puppet 2.7 and later.
+* Runs under Puppet 4.9 and later.
 * Only works with RedHat-ish systems.
 * Read /usr/share/doc/initscripts-*/sysconfig.txt for underlying details.
 * Read /usr/share/doc/kernel-doc-*/Documentation/networking/bonding.txt for underlying details.

@@ -36,52 +36,23 @@
 # Copyright (C) 2013 Mike Arnold, unless otherwise noted.
 #
 define network::bridge::dynamic (
-  $ensure,
-  $bootproto = 'dhcp',
-  $userctl = false,
-  $stp = false,
-  $delay = '30',
-  $bridging_opts = undef,
-  $restart = true,
+  Enum['up', 'down'] $ensure,
+  Network::If::Bootproto $bootproto = 'dhcp',
+  Boolean $userctl = false,
+  Boolean $stp = false,
+  String $delay = '30',
+  Optional[String] $bridging_opts = undef,
+  Boolean $restart = true,
 ) {
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
-  # Validate booleans
-  validate_bool($userctl)
-  validate_bool($stp)
-  validate_bool($restart)
 
-  ensure_packages(['bridge-utils'])
-
-  include '::network'
-
-  $interface = $name
-  $ipaddress = undef
-  $netmask = undef
-  $gateway = undef
-  $ipv6address = undef
-  $ipv6gateway = undef
-
-  $onboot = $ensure ? {
-    'up'    => 'yes',
-    'down'  => 'no',
-    default => undef,
+  network::bridge { $title:
+    ensure        => $ensure,
+    bootproto     => $bootproto,
+    userctl       => $userctl,
+    stp           => $stp,
+    delay         => $delay,
+    bridging_opts => $bridging_opts,
+    restart       => $restart,
   }
 
-  file { "ifcfg-${interface}":
-    ensure  => 'present',
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => "/etc/sysconfig/network-scripts/ifcfg-${interface}",
-    content => template('network/ifcfg-br.erb'),
-    require => Package['bridge-utils'],
-  }
-
-  if $restart {
-    File["ifcfg-${interface}"] {
-      notify  => Service['network'],
-    }
-  }
 } # define network::bridge::dynamic

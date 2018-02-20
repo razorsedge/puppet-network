@@ -11,11 +11,20 @@ describe 'network::if::promisc', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem           => 'RedHat',
-      :operatingsystemrelease    => '6.0',
-      :operatingsystemmajrelease => '6',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -68,11 +77,20 @@ describe 'network::if::promisc', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem           => 'RedHat',
-      :operatingsystemrelease    => '6.0',
-      :operatingsystemmajrelease => '6',
-      :macaddress_eth3 => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :eth3 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth3').with(

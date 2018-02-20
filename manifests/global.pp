@@ -62,47 +62,30 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 class network::global (
-  $hostname       = undef,
-  $gateway        = undef,
-  $gatewaydev     = undef,
-  $ipv6gateway    = undef,
-  $ipv6defaultdev = undef,
-  $nisdomain      = undef,
-  $vlan           = undef,
-  $ipv6networking = false,
-  $nozeroconf     = undef,
-  $restart        = true,
-  $requestreopen  = true,
+  Optional[String] $hostname = undef,
+  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
+  Optional[String] $gatewaydev = undef,
+  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
+  Optional[String] $ipv6defaultdev = undef,
+  Optional[String] $nisdomain = undef,
+  Optional[Enum['yes', 'no']] $vlan = undef,
+  Boolean $ipv6networking = false,
+  Optional[Enum['yes', 'no']] $nozeroconf = undef,
+  Boolean $restart = true,
+  Boolean $requestreopen = true,
 ) {
-  # Validate our data
-  if $gateway {
-    if ! is_ip_address($gateway) { fail("${gateway} is not an IP address.") }
-  }
-  if $ipv6gateway {
-    if ! is_ip_address($ipv6gateway) { fail("${ipv6gateway} is not an IPv6 address.") }
-  }
-
-  validate_bool($ipv6networking)
-  validate_bool($restart)
-  validate_bool($requestreopen)
-
-  # Validate our regular expressions
-  if $vlan {
-    $states = [ '^yes$', '^no$' ]
-    validate_re($vlan, $states, '$vlan must be either "yes" or "no".')
-  }
 
   include '::network'
 
-  case $::operatingsystem {
+  case $::os['name'] {
     /^(RedHat|CentOS|OEL|OracleLinux|SLC|Scientific)$/: {
-      case $::operatingsystemrelease {
-        /^[456]/: { $has_systemd = false }
+      case $::os['release']['major'] {
+        /^[456]$/: { $has_systemd = false }
         default: { $has_systemd = true }
       }
     }
     'Fedora': {
-      case $::operatingsystemrelease {
+      case $::os['release']['major'] {
         /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17)$/: { $has_systemd = false }
         default: { $has_systemd = true }
       }
@@ -118,13 +101,29 @@ class network::global (
     }
   }
 
+  $effective_hostname = $hostname ? {
+    String  => $hostname,
+    default => $::networking['fqdn'],
+  }
+
   file { 'network.sysconfig':
     ensure  => 'present',
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
     path    => '/etc/sysconfig/network',
-    content => template('network/network.erb'),
+    content => epp("${module_name}/network.epp", {
+      ipv6networking => $ipv6networking,
+      ipv6gateway    => $ipv6gateway,
+      ipv6defaultdev => $ipv6defaultdev,
+      hostname       => $effective_hostname,
+      gateway        => $gateway,
+      gatewaydev     => $gatewaydev,
+      nisdomain      => $nisdomain,
+      vlan           => $vlan,
+      nozeroconf     => $nozeroconf,
+      requestreopen  => $requestreopen,
+    }),
   }
 
   if $restart {

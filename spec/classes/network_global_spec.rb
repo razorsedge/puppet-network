@@ -6,7 +6,7 @@ describe 'network::global', :type => 'class' do
 
   context 'on a non-supported operatingsystem' do
     let :facts do {
-      :osfamily => 'foo',
+      :os => { :family => 'foo' }
     }
     end
     it 'should fail' do
@@ -19,10 +19,14 @@ describe 'network::global', :type => 'class' do
   context 'on a supported operatingsystem, default parameters' do
     let(:params) {{}}
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '7.0',
-      :fqdn                   => 'localhost.localdomain',
+      :os => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '7',
+        }
+      },
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it { should contain_class('network') }
@@ -51,10 +55,14 @@ describe 'network::global', :type => 'class' do
       :restart => false
     }}
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '7.0',
-      :fqdn                   => 'localhost.localdomain',
+      :os => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '7',
+        }
+      },
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it { should contain_class('network') }
@@ -87,10 +95,14 @@ describe 'network::global', :type => 'class' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '7.0',
-      :fqdn                   => 'localhost.localdomain',
+      :os => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '7',
+        }
+      },
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
@@ -119,10 +131,14 @@ describe 'network::global', :type => 'class' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :fqdn                   => 'localhost.localdomain',
+      :os => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do
@@ -134,7 +150,7 @@ describe 'network::global', :type => 'class' do
   end
 
   context 'on a supported operatingsystem, bad parameters' do
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ :os => { :family => 'RedHat' }}}
 
     context 'gateway = foo' do
       let(:params) {{ :gateway => 'foo' }}
@@ -213,10 +229,14 @@ describe 'network::global', :type => 'class' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :fqdn     => 'localhost.localdomain',
+      :os => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => { :fqdn => 'localhost.localdomain' }
     }
     end
     it 'should contain File[network.sysconfig] with correct contents' do

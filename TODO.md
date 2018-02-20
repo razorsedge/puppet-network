@@ -30,7 +30,10 @@ and remove the interface.
 
         network::bond::dynamic { "bond2":
           slaves       => [ "eth4", "eth7", ],
-          macaddress   => [ $macaddress_eth4, $macaddress_eth7, ],
+          macaddress   => [
+            $::networking['interfaces']['eth4']['mac'],
+            $::networking['interfaces']['eth7']['mac'],
+          ],
           bonding_opts => "mode=active-backup",
           mtu          => "1500",
           ethtool_opts => "speed 100 duplex full autoneg off",

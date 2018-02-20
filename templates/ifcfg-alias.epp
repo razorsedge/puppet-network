@@ -1,0 +1,16 @@
+###
+### File managed by Puppet
+###
+DEVICE=<%= $interface %>
+BOOTPROTO=<%= $bootproto %>
+ONPARENT=<%= $onparent %>
+TYPE=Ethernet
+<% if $ipaddress { %>IPADDR=<%= $ipaddress %><% } %>
+<% if $netmask { %>NETMASK=<%= $netmask %><% } %>
+<% if $gateway { %>GATEWAY=<%= $gateway %><% } %>
+<% if $ipv6address { %>IPV6ADDR=<%= $ipv6address %><% } %>
+NO_ALIASROUTING=<%= bool2str($noaliasrouting, 'yes', 'no') %>
+<% if $userctl { %>USERCTL=yes<% } %>
+<% if $zone { %>ZONE=<%= $zone %><% } %>
+<% if $metric { %>METRIC=<%= $metric %><% } %>
+NM_CONTROLLED=no

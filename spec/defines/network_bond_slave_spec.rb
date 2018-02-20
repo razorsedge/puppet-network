@@ -12,7 +12,7 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth6')}.to raise_error(Puppet::Error, /123456 is not a MAC address./)
+      expect {should contain_file('ifcfg-eth6')}.to raise_error(Puppet::Error, /expects a match for Stdlib::MAC/)
     end
   end
 
@@ -24,10 +24,20 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -61,8 +71,14 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+      :os         => { :family => 'RedHat' },
+      :networking => {
+        :interfaces => {
+          :eth1 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -100,10 +116,20 @@ describe 'network::bond::slave', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily        => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :macaddress_eth3 => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :eth3 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth3').with(
