@@ -233,5 +233,38 @@ describe 'network::global', :type => 'class' do
         'NOZEROCONF=yes',
       ])
     end
+
+    context 'ipv6forwarding = foo' do
+      let(:params) {{ :ipv6forwarding => 'foo' }}
+
+      it 'should fail' do
+        expect { 
+          should raise_error(Puppet::Error, /$ipv6forwarding is not a boolean.  It looks to be a String./)
+        }
+      end
+    end
+  end
+
+  context 'on a supported operatingsystem, custom parameters' do
+    let :params do {
+      :ipv6networking => true,
+      :ipv6forwarding => true,
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '7.1',
+      :fqdn     => 'localhost.localdomain',
+    }
+    end
+    it 'should contain File[network.sysconfig] with correct contents' do
+      verify_contents(catalogue, 'network.sysconfig', [
+        'NETWORKING=yes',
+        'NETWORKING_IPV6=yes',
+        'IPV6FORWARDING=yes',
+      ])
+    end
+
   end
 end
