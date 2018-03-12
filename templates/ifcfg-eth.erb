@@ -39,6 +39,9 @@ IPV6INIT=yes
 <% if !@ipv6autoconf %>IPV6_AUTOCONF=no
 <% else %>IPV6_AUTOCONF=yes
 <% end -%>
+<% if !@ipv6dhcpv6c %>DHCPV6C=no
+<% else %>DHCPV6C=yes
+<% end -%>
 <% if @ipv6address %>IPV6ADDR=<%= @ipv6address %>
 <% end -%>
 <% if @ipv6gateway %>IPV6_DEFAULTGW=<%= @ipv6gateway %>
