@@ -37,6 +37,9 @@
 #
 define network::bond::dynamic (
   $ensure,
+  $ipv6init = false,
+  $ipv6autoconf = false,
+  $ipv6dhcpv6c = false,
   $mtu = undef,
   $ethtool_opts = undef,
   $bonding_opts = 'miimon=100',
@@ -56,8 +59,9 @@ define network::bond::dynamic (
     gateway      => '',
     macaddress   => '',
     bootproto    => 'dhcp',
-    ipv6address  => '',
-    ipv6gateway  => '',
+    ipv6init     => $ipv6init,
+    ipv6autoconf => $ipv6autoconf,
+    ipv6dhcpv6c  => $ipv6dhcpv6c,
     mtu          => $mtu,
     ethtool_opts => $ethtool_opts,
     bonding_opts => $bonding_opts,

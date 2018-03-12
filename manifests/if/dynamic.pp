@@ -47,6 +47,9 @@
 #
 define network::if::dynamic (
   $ensure,
+  $ipv6init        = false,
+  $ipv6autoconf    = false,
+  $ipv6dhcpv6c     = false,
   $macaddress      = undef,
   $manage_hwaddr   = true,
   $bootproto       = 'dhcp',
@@ -83,6 +86,9 @@ define network::if::dynamic (
     ipaddress       => '',
     netmask         => '',
     gateway         => '',
+    ipv6init        => $ipv6init,
+    ipv6autoconf    => $ipv6autoconf,
+    ipv6dhcpv6c     => $ipv6dhcpv6c,
     macaddress      => $macaddy,
     manage_hwaddr   => $manage_hwaddr,
     bootproto       => $bootproto,

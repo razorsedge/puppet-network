@@ -12,6 +12,10 @@ TYPE=Bridge
 <% if @gateway %>GATEWAY=<%= @gateway %>
 <% end -%>
 <% if @ipv6init %>IPV6INIT=yes
+<% if !@ipv6autoconf %>IPV6_AUTOCONF=no
+<% end -%>
+<% if @ipv6dhcpv6c %>DHCPV6C=yes
+<% end -%>
 <% if @ipv6address %>IPV6ADDR=<%= @ipv6address %>
 <% end -%>
 <% if @ipv6gateway %>IPV6_DEFAULTGW=<%= @ipv6gateway %>

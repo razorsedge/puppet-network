@@ -38,6 +38,9 @@
 define network::bridge::dynamic (
   $ensure,
   $bootproto = 'dhcp',
+  $ipv6init = false,
+  $ipv6autoconf = false,
+  $ipv6dhcpv6c = false,
   $userctl = false,
   $stp = false,
   $delay = '30',
