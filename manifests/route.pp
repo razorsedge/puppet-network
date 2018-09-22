@@ -73,7 +73,7 @@ define network::route (
     $netmask   = $route[1]
     $gateway   = $route[2]
 
-    exec { "route: $route":
+    exec { "route: ${route}":
       command => "/usr/sbin/ip route add ${ipaddress}/${netmask} via ${gateway} dev ${interface}",
       unless  => "/usr/sbin/ip route show ${ipaddress}/${netmask} via ${gateway} dev ${interface} | grep \\.\\*",
     }
