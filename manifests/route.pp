@@ -67,7 +67,7 @@ define network::route (
     before  => File["ifcfg-${interface}"],
   }
 
-  $routes = zip($ipaddress, zip($netmask, $gateway)).map |x| {x.flatten}
+  $routes = map(zip($ipaddress, zip($netmask, $gateway))) |$x| {$x.flatten}
   $routes.each |Array $route|{
     $ipaddress = $route[0]
     $netmask   = $route[1]
