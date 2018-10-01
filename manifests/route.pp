@@ -67,6 +67,18 @@ define network::route (
     before  => File["ifcfg-${interface}"],
   }
 
+  $routes = map(zip($ipaddress, zip($netmask, $gateway))) |$x| {$x.flatten}
+  $routes.each |Array $route|{
+    $ipaddress = $route[0]
+    $netmask   = $route[1]
+    $gateway   = $route[2]
+
+    exec { "route: ${route}":
+      command => "/usr/sbin/ip route add ${ipaddress}/${netmask} via ${gateway} dev ${interface}",
+      unless  => "/usr/sbin/ip route show ${ipaddress}/${netmask} via ${gateway} dev ${interface} | grep \\.\\*",
+    }
+  }
+
   if $restart {
     File["route-${interface}"] {
       notify  => Service['network'],
