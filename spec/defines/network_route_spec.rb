@@ -3,8 +3,17 @@
 require 'spec_helper'
 
 describe 'network::route', :type => 'define' do
-
   context 'singular parameters' do
+    let(:pre_condition) do
+      "
+      network::alias { 'eth1':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
+
     let(:title) { 'eth1' }
     let :params do {
       :ipaddress => [ '192.168.2.1', ],
@@ -32,6 +41,16 @@ describe 'network::route', :type => 'define' do
   end
 
   context 'singular parameters, restart => false' do
+    let(:pre_condition) do
+      "
+      network::alias { 'eth1':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
+
     let(:title) { 'eth1' }
     let :params do {
       :ipaddress => [ '192.168.2.1', ],
@@ -60,6 +79,16 @@ describe 'network::route', :type => 'define' do
   end
 
   context 'array parameters' do
+    let(:pre_condition) do
+      "
+      network::alias { 'eth2':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
+
     let(:title) { 'eth2' }
     let :params do {
       :ipaddress => [ '192.168.2.0', '10.0.0.0', ],

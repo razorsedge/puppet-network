@@ -48,6 +48,15 @@ describe 'network::alias::range', :type => 'define' do
 
 
   context 'required parameters: ensure => up' do
+    let(:pre_condition) do
+      "
+      network::alias { 'eth99':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
     let(:title) { 'eth99' }
     let :params do {
       :ensure          => 'up',
@@ -80,6 +89,15 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'required parameters: ensure => up, restart => false' do
+    let(:pre_condition) do
+      "
+      network::alias { 'eth99':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
     let(:title) { 'eth99' }
     let :params do {
       :ensure          => 'up',
@@ -112,6 +130,15 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'required parameters: ensure => down' do
+    let(:pre_condition) do
+      "
+      network::alias { 'bond7':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
     let(:title) { 'bond7' }
     let :params do {
       :ensure          => 'down',
@@ -144,6 +171,16 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'required parameters: ensure => absent' do
+    let(:pre_condition) do
+      "
+      network::alias { 'bond6':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
+
     let(:title) { 'bond6' }
     let :params do {
       :ensure          => 'absent',
@@ -162,6 +199,16 @@ describe 'network::alias::range', :type => 'define' do
   end
 
   context 'optional parameters' do
+    let(:pre_condition) do
+      "
+      network::alias { 'eth8':
+        ensure         => 'up',
+        ipaddress      => '1.2.3.5',
+        netmask        => '255.255.255.0',
+      }
+      "
+    end
+
     let(:title) { 'eth8' }
     let :params do {
       :ensure          => 'up',
