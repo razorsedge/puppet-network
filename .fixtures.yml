@@ -1,5 +1,8 @@
 fixtures:
   repositories:
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+    augeas_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-augeas_core.git"
+      puppet_version: ">= 6.0.0"
   symlinks:
     network: "#{source_dir}"
