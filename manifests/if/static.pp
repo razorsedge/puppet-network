@@ -57,17 +57,17 @@
 #
 define network::if::static (
   Enum['up', 'down'] $ensure,
-  Optional[IP::Address::V4::NoSubnet] $ipaddress = undef,
-  Optional[IP::Address::V4::NoSubnet] $netmask = undef,
-  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $ipaddress = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $netmask = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $gateway = undef,
   Optional[
     Variant[
-      IP::Address::V6,
-      Tuple[IP::Address::V6, 1],
+      Stdlib::IP::Address::V6,
+      Tuple[Stdlib::IP::Address::V6, 1],
     ]
   ] $ipv6address = undef,
   Boolean $ipv6init = false,
-  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $ipv6gateway = undef,
   Optional[Stdlib::MAC] $macaddress = undef,
   Boolean $manage_hwaddr = true,
   Boolean $ipv6autoconf = false,
@@ -76,8 +76,8 @@ define network::if::static (
   Optional[String] $ethtool_opts = undef,
   Boolean $peerdns = false,
   Boolean $ipv6peerdns = false,
-  Optional[IP::Address::NoSubnet] $dns1 = undef,
-  Optional[IP::Address::NoSubnet] $dns2 = undef,
+  Optional[Stdlib::IP::Address::Nosubnet] $dns1 = undef,
+  Optional[Stdlib::IP::Address::Nosubnet] $dns2 = undef,
   Optional[String] $domain = undef,
   Optional[String] $linkdelay = undef,
   Optional[String] $scope = undef,

@@ -47,11 +47,11 @@
 #
 define network::bridge (
   Enum['up', 'down'] $ensure,
-  Optional[IP::Address::V4::NoSubnet] $ipaddress = undef,
-  Optional[IP::Address::V4::NoSubnet] $netmask = undef,
-  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
-  Optional[IP::Address::V6] $ipv6address = undef,
-  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $ipaddress = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $netmask = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $gateway = undef,
+  Optional[Stdlib::IP::Address::V6] $ipv6address = undef,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $ipv6gateway = undef,
   Network::If::Bootproto $bootproto = 'none',
   Boolean $userctl = false,
   Boolean $stp = false,
@@ -61,8 +61,8 @@ define network::bridge (
   Boolean $peerdns = false,
   Boolean $ipv6init = false,
   Boolean $ipv6peerdns = false,
-  Optional[IP::Address::NoSubnet] $dns1 = undef,
-  Optional[IP::Address::NoSubnet] $dns2 = undef,
+  Optional[Stdlib::IP::Address::Nosubnet] $dns1 = undef,
+  Optional[Stdlib::IP::Address::Nosubnet] $dns2 = undef,
   Optional[String] $domain = undef,
   Boolean $restart = true,
 ) {

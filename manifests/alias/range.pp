@@ -39,13 +39,13 @@
 #
 define network::alias::range (
   Enum['up', 'down', 'absent'] $ensure,
-  IP::Address::V4::NoSubnet $ipaddress_start,
-  IP::Address::V4::NoSubnet $ipaddress_end,
+  Stdlib::IP::Address::V4::Nosubnet $ipaddress_start,
+  Stdlib::IP::Address::V4::Nosubnet $ipaddress_end,
   String $clonenum_start,
   Boolean $noaliasrouting = false,
   Boolean $restart = true,
-  Optional[IP::Address::V4::NoSubnet] $netmask = undef,
-  Optional[IP::Address::V4::NoSubnet] $broadcast = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $netmask = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $broadcast = undef,
   Boolean $arpcheck = true,
 ) {
 

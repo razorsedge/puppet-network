@@ -28,7 +28,7 @@ describe 'network::alias::range', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond77-range0')}.to raise_error(Puppet::Error, /expects a match for IP::Address::V4::NoSubnet /)
+      expect {should contain_file('ifcfg-bond77-range0')}.to raise_error(Puppet::Error, /expects a match for Stdlib::IP::Address::V4::Nosubnet /)
     end
   end
 
@@ -42,7 +42,7 @@ describe 'network::alias::range', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond77-range0')}.to raise_error(Puppet::Error, /expects a match for IP::Address::V4::NoSubnet /)
+      expect {should contain_file('ifcfg-bond77-range0')}.to raise_error(Puppet::Error, /expects a match for Stdlib::IP::Address::V4::Nosubnet /)
     end
   end
 

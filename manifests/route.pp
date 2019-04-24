@@ -41,9 +41,9 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::route (
-  Array[IP::Address::V4::NoSubnet] $ipaddress,
-  Array[IP::Address::V4::NoSubnet] $netmask,
-  Array[IP::Address::V4::NoSubnet] $gateway,
+  Array[Stdlib::IP::Address::V4::Nosubnet] $ipaddress,
+  Array[Stdlib::IP::Address::V4::Nosubnet] $netmask,
+  Array[Stdlib::IP::Address::V4::Nosubnet] $gateway,
   Boolean $restart = true,
 ) {
 

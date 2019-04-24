@@ -63,9 +63,9 @@
 #
 class network::global (
   Optional[String] $hostname = undef,
-  Optional[IP::Address::V4::NoSubnet] $gateway = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $gateway = undef,
   Optional[String] $gatewaydev = undef,
-  Optional[IP::Address::V6::NoSubnet] $ipv6gateway = undef,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $ipv6gateway = undef,
   Optional[String] $ipv6defaultdev = undef,
   Optional[String] $nisdomain = undef,
   Optional[Enum['yes', 'no']] $vlan = undef,

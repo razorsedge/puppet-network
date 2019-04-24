@@ -26,7 +26,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a match for IP::Address::V4::NoSubnet /)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a match for Stdlib::IP::Address::V4::Nosubnet /)
     end
   end
 
@@ -40,7 +40,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /(expects an IP::Address::V6 |expects a match for Variant\[IP::Address::V6::Full .*, IP::Address::V6::Compressed)/)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /(expects a Stdlib::IP::Address::V6 |expects a match for Variant\[Stdlib::IP::Address::V6::Full .*, Stdlib::IP::Address::V6::Compressed)/)
     end
   end
 
