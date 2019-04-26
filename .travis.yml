@@ -2,20 +2,18 @@
 language: ruby
 cache:
   directories:
-  - vendor/bundle
-#  - spec/fixtures/modules
+    - vendor/bundle
 sudo: false
-bundler_args: --without system_tests
-script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
+script:
+  - 'bundle exec rake validate'
+  - 'bundle exec rake lint'
+  - 'bundle exec rake spec SPEC_OPTS="--format documentation"'
 matrix:
   fast_finish: true
   include:
-  - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 4.0"
-  - rvm: 2.4.1
-    env: PUPPET_GEM_VERSION="~> 5.0"
-  - rvm: 2.5.0
-    env: PUPPET_GEM_VERSION="~> 6.0"
-notifications:
-  email:
-    - github@razorsedge.org
+    - rvm: 2.1.9
+      env: PUPPET_GEM_VERSION="~> 4.0"
+    - rvm: 2.4.1
+      env: PUPPET_GEM_VERSION="~> 5.0"
+    - rvm: 2.5.0
+      env: PUPPET_GEM_VERSION="~> 6.0"
