@@ -24,7 +24,7 @@
 #
 class network {
   # Only run on RedHat derived systems.
-  case $::osfamily {
+  case $::os['family'] {
     'RedHat': { }
     default: {
       fail('This network module only supports RedHat-based systems.')
@@ -53,7 +53,7 @@ class network {
 #   $ensure          - required - up|down
 #   $ipaddress       - optional
 #   $netmask         - optional
-#   $macaddress      - required
+#   $macaddress      - optional
 #   $manage_hwaddr   - optional - defaults to true
 #   $gateway         - optional
 #   $noaliasrouting  - optional - defaults to false
@@ -105,59 +105,42 @@ class network {
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network_if_base (
-  $ensure,
-  $macaddress,
-  $ipaddress       = undef,
-  $netmask         = undef,
-  $manage_hwaddr   = true,
-  $gateway         = undef,
-  $noaliasrouting  = false,
-  $ipv6address     = undef,
-  $ipv6gateway     = undef,
-  $ipv6init        = false,
-  $ipv6autoconf    = false,
-  $ipv6secondaries = undef,
-  $bootproto       = 'none',
-  $userctl         = false,
-  $mtu             = undef,
-  $dhcp_hostname   = undef,
-  $ethtool_opts    = undef,
-  $bonding_opts    = undef,
-  $isalias         = false,
-  $peerdns         = false,
-  $ipv6peerdns     = false,
-  $dns1            = undef,
-  $dns2            = undef,
-  $domain          = undef,
-  $bridge          = undef,
-  $linkdelay       = undef,
-  $scope           = undef,
-  $check_link_down = false,
-  $flush           = false,
-  $defroute        = undef,
-  $zone            = undef,
-  $metric          = undef,
-  $promisc         = false,
-  $restart         = true,
-  $arpcheck        = true,
+  Enum['up', 'down'] $ensure,
+  Optional[Stdlib::MAC] $macaddress = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $ipaddress = undef,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $netmask = undef,
+  Boolean $manage_hwaddr = true,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $gateway = undef,
+  Boolean $noaliasrouting = false,
+  Optional[Stdlib::IP::Address::V6] $ipv6address = undef,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $ipv6gateway = undef,
+  Boolean $ipv6init = false,
+  Boolean $ipv6autoconf = false,
+  Optional[Array[Stdlib::IP::Address::V6]] $ipv6secondaries = undef,
+  Network::If::Bootproto $bootproto = 'none',
+  Boolean $userctl = false,
+  Optional[String] $mtu = undef,
+  Optional[String] $dhcp_hostname = undef,
+  Optional[String] $ethtool_opts = undef,
+  Optional[String] $bonding_opts = undef,
+  Boolean $isalias = false,
+  Boolean $peerdns = false,
+  Boolean $ipv6peerdns = false,
+  Optional[Stdlib::IP::Address::Nosubnet] $dns1 = undef,
+  Optional[Stdlib::IP::Address::Nosubnet] $dns2 = undef,
+  Optional[String] $domain = undef,
+  Optional[String] $bridge = undef,
+  Optional[String] $linkdelay = undef,
+  Optional[String] $scope = undef,
+  Boolean $check_link_down = false,
+  Boolean $flush = false,
+  Optional[String] $defroute = undef,
+  Optional[String] $zone = undef,
+  Optional[String] $metric = undef,
+  Boolean $promisc = false,
+  Boolean $restart = true,
+  Boolean $arpcheck = true,
 ) {
-  # Validate our booleans
-  validate_bool($noaliasrouting)
-  validate_bool($userctl)
-  validate_bool($isalias)
-  validate_bool($peerdns)
-  validate_bool($ipv6init)
-  validate_bool($ipv6autoconf)
-  validate_bool($ipv6peerdns)
-  validate_bool($check_link_down)
-  validate_bool($manage_hwaddr)
-  validate_bool($flush)
-  validate_bool($promisc)
-  validate_bool($restart)
-  validate_bool($arpcheck)
-  # Validate our regular expressions
-  $states = [ '^up$', '^down$' ]
-  validate_re($ensure, $states, '$ensure must be either "up" or "down".')
 
   include '::network'
 
@@ -183,14 +166,59 @@ define network_if_base (
       'down'  => 'no',
       default => undef,
     }
-    $iftemplate = template('network/ifcfg-alias.erb')
+    $iftemplate = epp("${module_name}/ifcfg-alias.epp", {
+      interface      => $interface,
+      bootproto      => $bootproto,
+      onparent       => $onparent,
+      ipaddress      => $ipaddress,
+      netmask        => $netmask,
+      gateway        => $gateway,
+      ipv6address    => $ipv6address,
+      noaliasrouting => $noaliasrouting,
+      userctl        => $userctl,
+      zone           => $zone,
+      metric         => $metric,
+    })
   } else {
     $onboot = $ensure ? {
       'up'    => 'yes',
       'down'  => 'no',
       default => undef,
     }
-    $iftemplate = template('network/ifcfg-eth.erb')
+    $iftemplate = epp("${module_name}/ifcfg-eth.epp", {
+      interface       => $interface,
+      bootproto       => $bootproto,
+      manage_hwaddr   => $manage_hwaddr,
+      macaddress      => $macaddress,
+      onboot          => $onboot,
+      ipaddress       => $ipaddress,
+      netmask         => $netmask,
+      gateway         => $gateway,
+      mtu             => $mtu,
+      bonding_opts    => $bonding_opts,
+      dhcp_hostname   => $dhcp_hostname,
+      ethtool_opts    => $ethtool_opts,
+      peerdns         => $peerdns,
+      dns1            => $dns1_real,
+      dns2            => $dns2_real,
+      domain          => $domain,
+      userctl         => $userctl,
+      ipv6init        => $ipv6init,
+      ipv6autoconf    => $ipv6autoconf,
+      ipv6address     => $ipv6address,
+      ipv6gateway     => $ipv6gateway,
+      ipv6peerdns     => $ipv6peerdns,
+      ipv6secondaries => $ipv6secondaries,
+      bridge          => $bridge,
+      linkdelay       => $linkdelay,
+      scope           => $scope,
+      check_link_down => $check_link_down,
+      defroute        => $defroute,
+      zone            => $zone,
+      metric          => $metric,
+      promisc         => $promisc,
+      arpcheck        => $arpcheck,
+    })
   }
 
   if $flush {
@@ -219,24 +247,3 @@ define network_if_base (
     }
   }
 } # define network_if_base
-
-# == Definition: validate_ip_address
-#
-# This definition can be used to call is_ip_address on an array of ip addresses.
-#
-# === Parameters:
-#
-# None
-#
-# === Actions:
-#
-# Runs is_ip_address on the name of the define and fails if it is not a valid IP address.
-#
-# === Sample Usage:
-#
-# $ips = [ '10.21.30.248', '123:4567:89ab:cdef:123:4567:89ab:cdef' ]
-# validate_ip_address { $ips: }
-#
-define validate_ip_address {
-  if ! is_ip_address($name) { fail("${name} is not an IP(v6) address.") }
-} # define validate_ip_address

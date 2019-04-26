@@ -2,38 +2,19 @@
 
 require 'spec_helper'
 
-describe 'network::if::bridge', :type => 'define' do
-
-  context 'incorrect value: ensure' do
-    let(:title) { 'eth77' }
-    let :params do {
-      :ensure => 'blah',
-      :bridge => 'br0',
-    }
-    end
-    it 'should fail' do
-      expect {should contain_file('ifcfg-eth77')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
-    end
-  end
-
-  context 'required parameters' do
+describe 'network::if::none', :type => 'define' do
+  context 'without parameters' do
     let(:title) { 'eth1' }
-    let :params do {
-      :ensure => 'up',
-      :bridge => 'br0',
+    let(:params){
+      {
+        :ensure => 'up'
+      }
     }
-    end
     let :facts do {
-      :os         => {
+      :os => {
         :family => 'RedHat'
       },
-      :networking => {
-        :interfaces => {
-          :eth1 => {
-            :mac => 'fe:fe:fe:aa:aa:aa'
-          }
-        }
-      }
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -48,11 +29,10 @@ describe 'network::if::bridge', :type => 'define' do
       verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
+        'HWADDR=fe:fe:fe:aa:aa:aa',
         'ONBOOT=yes',
         'HOTPLUG=yes',
         'TYPE=Ethernet',
-        'PEERDNS=no',
-        'BRIDGE=br0',
         'NM_CONTROLLED=no',
       ])
     end
@@ -63,23 +43,18 @@ describe 'network::if::bridge', :type => 'define' do
     let(:title) { 'eth1' }
     let :params do {
       :ensure       => 'down',
-      :bridge       => 'br55',
+      :macaddress   => 'ef:ef:ef:ef:ef:ef',
+      :userctl      => true,
       :mtu          => '9000',
       :ethtool_opts => 'speed 1000 duplex full autoneg off',
-      :macaddress   => '00:00:00:00:00:00',
+      :linkdelay    => '5',
     }
     end
     let :facts do {
-      :os         => {
+      :os => {
         :family => 'RedHat'
       },
-      :networking => {
-        :interfaces => {
-          :eth1 => {
-            :mac => 'fe:fe:fe:aa:aa:aa'
-          }
-        }
-      }
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
     it { should contain_file('ifcfg-eth1').with(
@@ -94,17 +69,17 @@ describe 'network::if::bridge', :type => 'define' do
       verify_contents(catalogue, 'ifcfg-eth1', [
         'DEVICE=eth1',
         'BOOTPROTO=none',
-        'HWADDR=00:00:00:00:00:00',
+        'HWADDR=ef:ef:ef:ef:ef:ef',
         'ONBOOT=no',
         'HOTPLUG=no',
         'TYPE=Ethernet',
         'MTU=9000',
         'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
-        'BRIDGE=br55',
+        'USERCTL=yes',
+        'LINKDELAY=5',
         'NM_CONTROLLED=no',
       ])
     end
     it { should contain_service('network') }
   end
-
 end

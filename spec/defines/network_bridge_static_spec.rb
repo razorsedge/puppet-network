@@ -13,7 +13,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
     end
   end
 
@@ -26,7 +26,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a match for Stdlib::IP::Address::V4::Nosubnet /)
     end
   end
 
@@ -40,7 +40,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /notAnIP is not an IPv6 address./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /(expects a Stdlib::IP::Address::V6 |expects a match for Variant\[Stdlib::IP::Address::V6::Full .*, Stdlib::IP::Address::V6::Compressed)/)
     end
   end
 
@@ -54,7 +54,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /"notABool" is not a boolean./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a Boolean/)
     end
   end
 
@@ -68,7 +68,7 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /"notABool" is not a boolean./)
+      expect {should contain_file('ifcfg-br77')}.to raise_error(Puppet::Error, /expects a Boolean/)
     end
   end
 
@@ -81,7 +81,9 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
+      :os => {
+        :family => 'RedHat'
+      }
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -119,7 +121,9 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
+      :os => {
+        :family => 'RedHat'
+      }
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -169,7 +173,9 @@ describe 'network::bridge::static', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily => 'RedHat',
+      :os => {
+        :family => 'RedHat'
+      }
     }
     end
     it { should contain_file('ifcfg-br1').with(

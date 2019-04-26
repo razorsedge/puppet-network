@@ -41,17 +41,11 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::route (
-  $ipaddress,
-  $netmask,
-  $gateway,
-  $restart = true,
+  Array[Stdlib::IP::Address::V4::Nosubnet] $ipaddress,
+  Array[Stdlib::IP::Address::V4::Nosubnet] $netmask,
+  Array[Stdlib::IP::Address::V4::Nosubnet] $gateway,
+  Boolean $restart = true,
 ) {
-  # Validate our arrays
-  validate_array($ipaddress)
-  validate_array($netmask)
-  validate_array($gateway)
-  # Validate our booleans
-  validate_bool($restart)
 
   include '::network'
 
@@ -63,7 +57,11 @@ define network::route (
     owner   => 'root',
     group   => 'root',
     path    => "/etc/sysconfig/network-scripts/route-${interface}",
-    content => template('network/route-eth.erb'),
+    content => epp("${module_name}/route-eth.epp", {
+      ipaddress => $ipaddress,
+      netmask   => $netmask,
+      gateway   => $gateway,
+    }),
     before  => File["ifcfg-${interface}"],
   }
 

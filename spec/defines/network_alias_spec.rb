@@ -13,7 +13,7 @@ describe 'network::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
     end
   end
 
@@ -26,7 +26,7 @@ describe 'network::alias', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /notAnIP is not an IP address./)
+      expect {should contain_file('ifcfg-eth1:1')}.to raise_error(Puppet::Error, /expects a match for Stdlib::IP::Address::V4::Nosubnet /)
     end
   end
 
@@ -38,7 +38,7 @@ describe 'network::alias', :type => 'define' do
       :netmask   => '255.255.255.0',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ :os => { :family => 'RedHat' }}}
     it { should contain_file('ifcfg-bond2:1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -75,7 +75,7 @@ describe 'network::alias', :type => 'define' do
       :zone           => 'trusted',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ :os => { :family => 'RedHat' }}}
     it { should contain_file('ifcfg-bond3:2').with(
       :ensure => 'present',
       :mode   => '0644',

@@ -12,7 +12,7 @@ describe 'network::bond::bridge', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-bond1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-bond1')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
     end
   end
 
@@ -24,10 +24,20 @@ describe 'network::bond::bridge', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily         => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :macaddress_bond0 => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :bond0 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-bond0').with(
@@ -57,12 +67,16 @@ describe 'network::bond::bridge', :type => 'define' do
     context 'on an older operatingsystem with /etc/modprobe.conf' do
       (['RedHat', 'CentOS', 'OEL', 'OracleLinux', 'SLC', 'Scientific']).each do |os|
         context "for operatingsystem #{os}" do
-          (['4.8', '5.9']).each do |osv|
+          (['4', '5']).each do |osv|
             context "for operatingsystemrelease #{osv}" do
               let :facts do {
-                :osfamily               => 'RedHat',
-                :operatingsystem        => os,
-                :operatingsystemrelease => osv,
+                :os => {
+                  :family => 'RedHat',
+                  :name   => os,
+                  :release => {
+                    :major => osv
+                  }
+                }
               }
               end
               it { should contain_augeas('modprobe.conf_bond0').with(
@@ -80,9 +94,13 @@ describe 'network::bond::bridge', :type => 'define' do
           (['6', '9', '11']).each do |osv|
             context "for operatingsystemrelease #{osv}" do
               let :facts do {
-                :osfamily               => 'RedHat',
-                :operatingsystem        => os,
-                :operatingsystemrelease => osv,
+                :os => {
+                  :family => 'RedHat',
+                  :name   => os,
+                  :release => {
+                    :major => osv
+                  }
+                }
               }
               end
               it { should contain_augeas('modprobe.conf_bond0').with(
@@ -108,9 +126,13 @@ describe 'network::bond::bridge', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0'
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-bond0').with(

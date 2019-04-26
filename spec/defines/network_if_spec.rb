@@ -11,7 +11,7 @@ describe 'network::if', :type => 'define' do
     }
     end
     it 'should fail' do
-      expect {should contain_file('ifcfg-eth1')}.to raise_error(Puppet::Error, /\$ensure must be either "up" or "down"./)
+      expect {should contain_file('ifcfg-eth1')}.to raise_error(Puppet::Error, /expects a match for Enum\['down', 'up'\]/)
     end
   end
 
@@ -22,10 +22,20 @@ describe 'network::if', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :macaddress_eth0        => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :eth0 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth0').with(
@@ -59,10 +69,20 @@ describe 'network::if', :type => 'define' do
     }
     end
     let :facts do {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'RedHat',
-      :operatingsystemrelease => '6.0',
-      :macaddress_eth0        => 'fe:fe:fe:aa:aa:aa',
+      :os         => {
+        :family => 'RedHat',
+        :name   => 'RedHat',
+        :release => {
+          :major => '6',
+        }
+      },
+      :networking => {
+        :interfaces => {
+          :eth0 => {
+            :mac => 'fe:fe:fe:aa:aa:aa'
+          }
+        }
+      }
     }
     end
     it { should contain_file('ifcfg-eth0').with(

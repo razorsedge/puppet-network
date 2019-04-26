@@ -37,23 +37,18 @@
 # Copyright (C) 2011 Mike Arnold, unless otherwise noted.
 #
 define network::alias (
-  $ensure,
-  $ipaddress,
-  $netmask,
-  $gateway = undef,
-  $noaliasrouting = false,
-  $ipv6address = undef,
-  $ipv6gateway = undef,
-  $userctl = false,
-  $zone = undef,
-  $metric = undef,
-  $restart = true,
+  Enum['up', 'down'] $ensure,
+  Stdlib::IP::Address::V4::Nosubnet $ipaddress,
+  Stdlib::IP::Address::V4::Nosubnet $netmask,
+  Optional[Stdlib::IP::Address::V4::Nosubnet] $gateway = undef,
+  Boolean $noaliasrouting = false,
+  Optional[Stdlib::IP::Address::V6] $ipv6address = undef,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $ipv6gateway = undef,
+  Boolean $userctl = false,
+  Optional[String] $zone = undef,
+  Optional[String] $metric = undef,
+  Boolean $restart = true,
 ) {
-  # Validate our data
-  if ! is_ip_address($ipaddress) { fail("${ipaddress} is not an IP address.") }
-  # Validate our booleans
-  validate_bool($noaliasrouting)
-  validate_bool($userctl)
 
   network_if_base { $title:
     ensure         => $ensure,
@@ -63,11 +58,8 @@ define network::alias (
     noaliasrouting => $noaliasrouting,
     ipv6address    => $ipv6address,
     ipv6gateway    => $ipv6gateway,
-    macaddress     => '',
     bootproto      => 'none',
     userctl        => $userctl,
-    mtu            => '',
-    ethtool_opts   => '',
     isalias        => true,
     zone           => $zone,
     metric         => $metric,
