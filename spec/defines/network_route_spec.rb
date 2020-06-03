@@ -13,7 +13,10 @@ describe 'network::route', :type => 'define' do
       :gateway   => [ '192.168.1.2', ],
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('route-eth1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -29,7 +32,7 @@ describe 'network::route', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
-    it { is_expected.to contain_file('route-eth1').that_notifies('Service[network]') }
+    it { is_expected.to contain_file('route-eth1').that_notifies('Class[Network::Service]') }
   end
 
   context 'singular parameters, restart => false' do
@@ -42,7 +45,10 @@ describe 'network::route', :type => 'define' do
       :restart   => false,
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('route-eth1').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -58,7 +64,7 @@ describe 'network::route', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
-    it { is_expected.to_not contain_file('route-eth1').that_notifies('Service[network]') }
+    it { is_expected.to_not contain_file('route-eth1').that_notifies('Class[Network::Service]') }
   end
 
   context 'array parameters' do
@@ -70,7 +76,10 @@ describe 'network::route', :type => 'define' do
       :gateway   => [ '192.168.1.1', '10.0.0.1', ]
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('route-eth2').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -110,7 +119,10 @@ describe 'network::route', :type => 'define' do
       ]
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('route-eth0').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -147,7 +159,10 @@ describe 'network::route', :type => 'define' do
       ]
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('route6-eth0').with(
       :ensure => 'present',
       :mode   => '0644',

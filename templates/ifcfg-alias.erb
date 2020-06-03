@@ -22,4 +22,8 @@ TYPE=Ethernet
 <% end -%>
 <% if @metric %>METRIC=<%= @metric %>
 <% end -%>
+<% if @nm_controlled -%>
+NM_CONTROLLED=yes
+<% else -%>
 NM_CONTROLLED=no
+<% end -%>

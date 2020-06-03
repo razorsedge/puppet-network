@@ -14,7 +14,7 @@
 # === Requires:
 #
 #   File["ifcfg-$name"]
-#   Service['network']
+#   Class['network::service']
 #
 # === Sample Usage:
 #
@@ -52,7 +52,7 @@ define network::rule (
   $interface = $name
 
   if $restart {
-    $notify = Service['network']
+    $notify = Class['network::service']
   } else {
     $notify = undef
   }

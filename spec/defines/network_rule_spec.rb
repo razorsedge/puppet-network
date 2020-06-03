@@ -22,7 +22,10 @@ describe 'network::rule', :type => 'define' do
       ]
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('rule-eth0').with(
       :ensure => 'present',
       :mode   => '0644',
@@ -58,7 +61,10 @@ describe 'network::rule', :type => 'define' do
       ]
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
     it { should contain_file('rule6-eth0').with(
       :ensure => 'present',
       :mode   => '0644',

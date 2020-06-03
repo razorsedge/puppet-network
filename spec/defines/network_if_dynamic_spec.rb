@@ -23,6 +23,7 @@ describe 'network::if::dynamic', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth99 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -32,7 +33,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth99] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth99', [
@@ -68,6 +69,7 @@ describe 'network::if::dynamic', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth99 => 'ff:aa:ff:aa:ff:aa',
     }
     end
@@ -77,7 +79,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth99',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth99] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth99', [
@@ -106,6 +108,7 @@ describe 'network::if::dynamic', :type => 'define' do
     let(:params) {{ :ensure => 'up' }}
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth45 => 'bb:cc:bb:cc:bb:cc',
     }
     end
@@ -115,7 +118,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth45.302',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth45.302] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth45.302', [
@@ -140,6 +143,7 @@ describe 'network::if::dynamic', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth0 => 'bb:cc:bb:cc:bb:cc',
     }
     end
@@ -149,7 +153,7 @@ describe 'network::if::dynamic', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth0] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth0', [
@@ -164,5 +168,37 @@ describe 'network::if::dynamic', :type => 'define' do
     it { should contain_service('network') }
   end
 
-
+  context 'RHEL8 optional parameters - manage_hwaddr' do
+    let(:title) { 'eth0' }
+    let :params do {
+      :ensure        => 'up',
+      :manage_hwaddr => false,
+    }
+    end
+    let :facts do {
+      :osfamily               => 'RedHat',
+      :operatingsystemrelease => '8.0',
+      :macaddress_eth0        => 'bb:cc:bb:cc:bb:cc',
+    }
+    end
+    it { should contain_file('ifcfg-eth0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-eth0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth0', [
+        'DEVICE=eth0',
+        'BOOTPROTO=dhcp',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
+  end
 end

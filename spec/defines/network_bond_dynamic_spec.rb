@@ -34,7 +34,7 @@ describe 'network::bond::dynamic', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-bond2] with required contents' do
       verify_contents(catalogue, 'ifcfg-bond2', [
@@ -118,7 +118,7 @@ describe 'network::bond::dynamic', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-bond2] with required contents' do
       verify_contents(catalogue, 'ifcfg-bond2', [
@@ -140,4 +140,50 @@ describe 'network::bond::dynamic', :type => 'define' do
     it { should_not contain_augeas('modprobe.conf_bond2') }
   end
 
+  context 'RHEL8 optional parameters' do
+    let(:title) { 'bond2' }
+    let :params do {
+      :ensure       => 'down',
+      :mtu          => '9000',
+      :ethtool_opts => 'speed 1000 duplex full autoneg off',
+      :bonding_opts => 'mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254',
+      :defroute     => 'yes',
+      :metric       => '10',
+      :zone         => 'trusted',
+    }
+    end
+    let :facts do {
+      :osfamily         => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '8.0',
+      :macaddress_bond2 => 'ff:aa:ff:aa:ff:aa',
+    }
+    end
+    it { should contain_file('ifcfg-bond2').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-bond2] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond2', [
+        'DEVICE=bond2',
+        'BOOTPROTO=dhcp',
+        'ONBOOT=no',
+        'HOTPLUG=no',
+        'TYPE=Ethernet',
+        'MTU=9000',
+        'BONDING_OPTS="mode=active-backup arp_interval=60 arp_ip_target=192.168.1.254"',
+        'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
+        'DEFROUTE=yes',
+        'ZONE=trusted',
+        'METRIC=10',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
+    it { should_not contain_augeas('modprobe.conf_bond2') }
+  end
 end

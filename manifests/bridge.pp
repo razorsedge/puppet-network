@@ -67,6 +67,11 @@ define network::bridge (
     'down'  => 'no',
     default => undef,
   }
+  if versioncmp($::operatingsystemrelease, '8') >= 0 {
+    $nm_controlled = true
+  } else {
+    $nm_controlled = false
+  }
 
   file { "ifcfg-${interface}":
     ensure  => 'present',
@@ -80,7 +85,7 @@ define network::bridge (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify  => Class['network::service'],
     }
   }
 } # define network::bridge

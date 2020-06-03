@@ -38,14 +38,17 @@ describe 'network::alias', :type => 'define' do
       :netmask   => '255.255.255.0',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ 
+      :osfamily               => 'RedHat', 
+      :operatingsystemrelease => '7.0', 
+    }}
     it { should contain_file('ifcfg-bond2:1').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-bond2:1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-bond2:1] with required contents' do
       verify_contents(catalogue, 'ifcfg-bond2:1', [
@@ -75,14 +78,17 @@ describe 'network::alias', :type => 'define' do
       :zone           => 'trusted',
     }
     end
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{ 
+      :osfamily               => 'RedHat', 
+      :operatingsystemrelease => '7.0', 
+    }}
     it { should contain_file('ifcfg-bond3:2').with(
       :ensure => 'present',
       :mode   => '0644',
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-bond3:2',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-bond3:2] with required contents' do
       verify_contents(catalogue, 'ifcfg-bond3:2', [
@@ -103,4 +109,47 @@ describe 'network::alias', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'RHEL8 optional parameters' do
+    let(:title) { 'bond3:2' }
+    let :params do {
+      :ensure         => 'down',
+      :ipaddress      => '33.2.3.127',
+      :netmask        => '255.255.0.0',
+      :gateway        => '33.2.3.1',
+      :noaliasrouting => true,
+      :userctl        => true,
+      :metric         => '10',
+      :zone           => 'trusted',
+    }
+    end
+    let(:facts) {{ 
+      :osfamily               => 'RedHat', 
+      :operatingsystemrelease => '8.0', 
+    }}
+    it { should contain_file('ifcfg-bond3:2').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond3:2',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-bond3:2] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond3:2', [
+        'DEVICE=bond3:2',
+        'BOOTPROTO=none',
+        'ONPARENT=no',
+        'TYPE=Ethernet',
+        'IPADDR=33.2.3.127',
+        'NETMASK=255.255.0.0',
+        'GATEWAY=33.2.3.1',
+        'NO_ALIASROUTING=yes',
+        'USERCTL=yes',
+        'ZONE=trusted',
+        'METRIC=10',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
+  end
 end

@@ -32,7 +32,7 @@ describe 'network::global', :type => 'class' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[network.sysconfig] with correct contents' do
       verify_contents(catalogue, 'network.sysconfig', [
@@ -43,7 +43,7 @@ describe 'network::global', :type => 'class' do
       ])
     end
     it { should_not contain_exec('hostnamectl set-hostname') }
-    it { is_expected.to contain_file('network.sysconfig').that_notifies('Service[network]') }
+    it { is_expected.to contain_file('network.sysconfig').that_notifies('Class[Network::Service]') }
   end
 
   context 'on a supported operatingsystem, default parameters, restart => false' do
@@ -73,7 +73,7 @@ describe 'network::global', :type => 'class' do
       ])
     end
     it { should_not contain_exec('hostnamectl set-hostname') }
-    it { is_expected.to_not contain_file('network.sysconfig').that_notifies('Service[network]') }
+    it { is_expected.to_not contain_file('network.sysconfig').that_notifies('Class[Network::Service]') }
   end
 
   context 'on a supported operatingsystem, custom parameters, systemd' do

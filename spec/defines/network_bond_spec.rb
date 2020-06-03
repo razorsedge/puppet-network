@@ -34,7 +34,7 @@ describe 'network::bond', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-bond0] with required contents' do
       verify_contents(catalogue, 'ifcfg-bond0', [
@@ -115,7 +115,7 @@ describe 'network::bond', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-bond0] with required contents' do
       verify_contents(catalogue, 'ifcfg-bond0', [
@@ -135,4 +135,45 @@ describe 'network::bond', :type => 'define' do
     it { should_not contain_augeas('modprobe.conf_bond0') }
   end
 
+  context 'RHEL8 optional parameters' do
+    let(:title) { 'bond0' }
+    let :params do {
+      :ensure       => 'down',
+      :mtu          => '9000',
+      :ethtool_opts => 'speed 1000 duplex full autoneg off',
+      :bonding_opts => 'mode=active-backup miimon=100',
+      :zone         => 'trusted',
+    }
+    end
+    let :facts do {
+      :osfamily               => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '8.0'
+    }
+    end
+    it { should contain_file('ifcfg-bond0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-bond0',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-bond0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-bond0', [
+        'DEVICE=bond0',
+        'BOOTPROTO=none',
+        'ONBOOT=no',
+        'HOTPLUG=no',
+        'TYPE=Ethernet',
+        'MTU=9000',
+        'BONDING_OPTS="mode=active-backup miimon=100"',
+        'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
+        'ZONE=trusted',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
+    it { should_not contain_augeas('modprobe.conf_bond0') }
+  end
 end

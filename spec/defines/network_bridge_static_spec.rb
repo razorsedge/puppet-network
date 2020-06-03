@@ -82,6 +82,7 @@ describe 'network::bridge::static', :type => 'define' do
     end
     let :facts do {
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -90,7 +91,7 @@ describe 'network::bridge::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-br1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-br1] with required contents' do
       verify_contents(catalogue, 'ifcfg-br1', [
@@ -105,7 +106,7 @@ describe 'network::bridge::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
-    it { is_expected.to contain_file('ifcfg-br1').that_notifies('Service[network]') }
+    it { is_expected.to contain_file('ifcfg-br1').that_notifies('Class[Network::Service]') }
     it { should contain_package('bridge-utils') }
   end
 
@@ -120,6 +121,7 @@ describe 'network::bridge::static', :type => 'define' do
     end
     let :facts do {
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -142,7 +144,7 @@ describe 'network::bridge::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
-    it { is_expected.to_not contain_file('ifcfg-br1').that_notifies('Service[network]') }
+    it { is_expected.to_not contain_file('ifcfg-br1').that_notifies('Class[Network::Service]') }
     it { should contain_package('bridge-utils') }
   end
 
@@ -170,6 +172,7 @@ describe 'network::bridge::static', :type => 'define' do
     end
     let :facts do {
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
     }
     end
     it { should contain_file('ifcfg-br1').with(
@@ -178,7 +181,7 @@ describe 'network::bridge::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-br1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-br1] with required contents' do
       verify_contents(catalogue, 'ifcfg-br1', [
@@ -208,4 +211,66 @@ describe 'network::bridge::static', :type => 'define' do
     it { should contain_package('bridge-utils') }
   end
 
+  context 'RHEL8 optional parameters' do
+    let(:title) { 'br1' }
+    let :params do {
+      :ensure        => 'down',
+      :ipaddress     => '1.2.3.4',
+      :netmask       => '255.255.255.0',
+      :gateway       => '1.2.3.1',
+      :ipv6init      => true,
+      :ipv6address   => '123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+      :ipv6gateway   => '123:4567:89ab:cdef:123:4567:89ab:1',
+      :ipv6peerdns   => true,
+      :userctl       => true,
+      :peerdns       => true,
+      :dns1          => '3.4.5.6',
+      :dns2          => '5.6.7.8',
+      :domain        => 'somedomain.com',
+      :stp           => true,
+      :delay         => '1000',
+      :bridging_opts => 'hello_time=200 priority=65535',
+      :scope         => 'peer 1.2.3.1',
+    }
+    end
+    let :facts do {
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '8.0',
+    }
+    end
+    it { should contain_file('ifcfg-br1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-br1',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-br1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-br1', [
+        'DEVICE=br1',
+        'BOOTPROTO=static',
+        'ONBOOT=no',
+        'TYPE=Bridge',
+        'IPADDR=1.2.3.4',
+        'NETMASK=255.255.255.0',
+        'GATEWAY=1.2.3.1',
+        'IPV6INIT=yes',
+        'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cdef/64',
+        'IPV6_DEFAULTGW=123:4567:89ab:cdef:123:4567:89ab:1',
+        'IPV6_PEERDNS=yes',
+        'PEERDNS=yes',
+        'DNS1=3.4.5.6',
+        'DNS2=5.6.7.8',
+        'DOMAIN="somedomain.com"',
+        'DELAY=1000',
+        'STP=yes',
+        'BRIDGING_OPTS="hello_time=200 priority=65535"',
+        'SCOPE="peer 1.2.3.1"',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
+    it { should contain_package('bridge-utils') }
+  end
 end
