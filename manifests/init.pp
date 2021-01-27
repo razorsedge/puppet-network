@@ -30,7 +30,7 @@ class network {
       fail('This network module only supports RedHat-based systems.')
     }
   }
-  include network::service
+  contain network::service
 } # class network
 
 # == Definition: network_if_base
