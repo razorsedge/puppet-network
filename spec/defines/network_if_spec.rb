@@ -34,7 +34,7 @@ describe 'network::if', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth0] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth0', [
@@ -71,7 +71,7 @@ describe 'network::if', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth0] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth0', [
@@ -89,5 +89,44 @@ describe 'network::if', :type => 'define' do
     it { should contain_service('network') }
   end
 
+  context 'RHEL8 optional parameters' do
+    let(:title) { 'eth0' }
+    let :params do {
+      :ensure       => 'down',
+      :mtu          => '9000',
+      :ethtool_opts => 'speed 1000 duplex full autoneg off',
+      :zone         => 'trusted',
+    }
+    end
+    let :facts do {
+      :osfamily               => 'RedHat',
+      :operatingsystem        => 'RedHat',
+      :operatingsystemrelease => '8.0',
+      :macaddress_eth0        => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-eth0').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-eth0] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth0', [
+        'DEVICE=eth0',
+        'BOOTPROTO=none',
+        'ONBOOT=no',
+        'HOTPLUG=no',
+        'TYPE=Ethernet',
+        'MTU=9000',
+        'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
+        'ZONE=trusted',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
+  end
 end
 

@@ -21,7 +21,7 @@
 #
 # === Requires:
 #
-#   Service['network']
+#   Class['network::service']
 #
 # === Sample Usage:
 #
@@ -61,6 +61,11 @@ define network::bond::slave (
   include '::network'
 
   $interface = $name
+  if versioncmp($::operatingsystemrelease, '8') >= 0 {
+    $nm_controlled = true
+  } else {
+    $nm_controlled = false
+  }
 
   file { "ifcfg-${interface}":
     ensure  => 'present',
@@ -74,7 +79,7 @@ define network::bond::slave (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify  => Class['network::service'],
     }
   }
 } # define network::bond::slave

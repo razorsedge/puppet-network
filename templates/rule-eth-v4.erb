@@ -1,0 +1,47 @@
+###
+### File managed by Puppet
+###
+<% if !@ipv4_rules.empty? -%>
+<% [@ipv4_rules].flatten.each do |v4| -%>
+<% if v4["from"] != nil -%>
+<%= "from #{v4["from"]} "  -%>
+<% end -%>
+<% if v4["to"] != nil -%>
+<%= "to #{v4["to"]} "  -%>
+<% end -%>
+<% if v4["tos"] != nil -%>
+<%= "tos #{v4["tos"]} "  -%>
+<% end -%>
+<% if v4["fwmark"] != nil -%>
+<%= "fwmark #{v4["fwmark"]} "  -%>
+<% end -%>
+<% if v4["iif"] != nil -%>
+<%= "iif #{v4["iif"]} "  -%>
+<% end -%>
+<% if v4["oif"] != nil -%>
+<%= "oif #{v4["oif"]} "  -%>
+<% end -%>
+<% if v4["pref"] != nil -%>
+<%= "pref #{v4["pref"]} "  -%>
+<% end -%>
+<% if v4["table"] != nil -%>
+<%= "table #{v4["table"]} "  -%>
+<% end -%>
+<% if v4["nat"] != nil -%>
+<%= "nat #{v4["nat"]} "  -%>
+<% end -%>
+<% if v4["prohibit"] != nil -%>
+<%= "prohibit "  -%>
+<% end -%>
+<% if v4["reject"] != nil -%>
+<%= "reject "  -%>
+<% end -%>
+<% if v4["unreachable"] != nil -%>
+<%= "unreachable "  -%>
+<% end -%>
+<% if v4["realms"] != nil -%>
+<%= "realms #{v4["realms"]} "  -%>
+<% end -%>
+
+<% end -%>
+<% end -%>

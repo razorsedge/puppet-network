@@ -1,0 +1,47 @@
+###
+### File managed by Puppet
+###
+<% if !@ipv6_rules.empty? -%>
+<% [@ipv6_rules].flatten.each do |v6| -%>
+<% if v6["from"] != nil -%>
+<%= "from #{v6["from"]} "  -%>
+<% end -%>
+<% if v6["to"] != nil -%>
+<%= "to #{v6["to"]} "  -%>
+<% end -%>
+<% if v6["tos"] != nil -%>
+<%= "tos #{v6["tos"]} "  -%>
+<% end -%>
+<% if v6["fwmark"] != nil -%>
+<%= "fwmark #{v6["fwmark"]} "  -%>
+<% end -%>
+<% if v6["iif"] != nil -%>
+<%= "iif #{v6["iif"]} "  -%>
+<% end -%>
+<% if v6["oif"] != nil -%>
+<%= "oif #{v6["oif"]} "  -%>
+<% end -%>
+<% if v6["pref"] != nil -%>
+<%= "pref #{v6["pref"]} "  -%>
+<% end -%>
+<% if v6["table"] != nil -%>
+<%= "table #{v6["table"]} "  -%>
+<% end -%>
+<% if v6["nat"] != nil -%>
+<%= "nat #{v6["nat"]} "  -%>
+<% end -%>
+<% if v6["prohibit"] != nil -%>
+<%= "prohibit "  -%>
+<% end -%>
+<% if v6["reject"] != nil -%>
+<%= "reject "  -%>
+<% end -%>
+<% if v6["unreachable"] != nil -%>
+<%= "unreachable "  -%>
+<% end -%>
+<% if v6["realms"] != nil -%>
+<%= "realms #{v6["realms"]} "  -%>
+<% end -%>
+
+<% end -%>
+<% end -%>

@@ -19,7 +19,7 @@
 #
 # === Requires:
 #
-#   Service['network']
+#   Class['network::service']
 #
 # === Sample Usage:
 #

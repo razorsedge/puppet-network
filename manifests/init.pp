@@ -8,7 +8,7 @@
 #
 # === Actions:
 #
-# Defines the network service so that other resources can notify it to restart.
+# Fails if not on a RHEL system
 #
 # === Sample Usage:
 #
@@ -30,14 +30,7 @@ class network {
       fail('This network module only supports RedHat-based systems.')
     }
   }
-
-  service { 'network':
-    ensure     => 'running',
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
-    provider   => 'redhat',
-  }
+  contain network::service
 } # class network
 
 # == Definition: network_if_base
@@ -177,6 +170,12 @@ define network_if_base (
     $dns2_real = $dns2
   }
 
+  if versioncmp($::operatingsystemrelease, '8') >= 0 {
+    $nm_controlled = true
+  } else {
+    $nm_controlled = false
+  }
+
   if $isalias {
     $onparent = $ensure ? {
       'up'    => 'yes',
@@ -199,7 +198,7 @@ define network_if_base (
       command     => "ip addr flush dev ${interface}",
       refreshonly => true,
       subscribe   => File["ifcfg-${interface}"],
-      before      => Service['network'],
+      before      => Class['network::service'],
       path        => '/sbin:/usr/sbin',
     }
   }
@@ -215,7 +214,7 @@ define network_if_base (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify  => Class['network::service'],
     }
   }
 } # define network_if_base

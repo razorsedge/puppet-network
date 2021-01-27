@@ -75,6 +75,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -84,7 +85,7 @@ describe 'network::if::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -101,7 +102,7 @@ describe 'network::if::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
-    it { is_expected.to contain_file('ifcfg-eth1').that_notifies('Service[network]') }
+    it { is_expected.to contain_file('ifcfg-eth1').that_notifies('Class[Network::Service]') }
   end
 
   context 'no restart' do
@@ -115,6 +116,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -140,7 +142,7 @@ describe 'network::if::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
-    it { is_expected.to_not contain_file('ifcfg-eth1').that_notifies('Service[network]') }
+    it { is_expected.to_not contain_file('ifcfg-eth1').that_notifies('Class[Network::Service]') }
   end
 
   context 'optional parameters' do
@@ -173,6 +175,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -182,7 +185,7 @@ describe 'network::if::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -229,6 +232,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth6 => 'bb:cc:bb:cc:bb:cc',
     }
     end
@@ -238,7 +242,7 @@ describe 'network::if::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth6.203',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth6.203] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth6.203', [
@@ -267,6 +271,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily         => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth0 => 'bb:cc:bb:cc:bb:cc',
     }
     end
@@ -276,7 +281,7 @@ describe 'network::if::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth0',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth0] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth0', [
@@ -304,10 +309,11 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
-    it { should contain_exec('network-flush').with_command('ip addr flush dev eth1').that_comes_before('Service[network]') }
+    it { should contain_exec('network-flush').with_command('ip addr flush dev eth1').that_comes_before('Class[Network::Service]') }
   end
 
   context 'optional parameters - single ipv6address in array' do
@@ -324,6 +330,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -333,7 +340,7 @@ describe 'network::if::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -370,6 +377,7 @@ describe 'network::if::static', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -379,7 +387,7 @@ describe 'network::if::static', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -399,5 +407,53 @@ describe 'network::if::static', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+  end
+
+  context 'RHEL8 optional parameters - multiple ipv6addresses' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :ensure      => 'up',
+      :ipaddress   => '1.2.3.4',
+      :netmask     => '255.255.255.0',
+      :ipv6init    => true,
+      :ipv6address => [
+        '123:4567:89ab:cdef:123:4567:89ab:cded',
+        '123:4567:89ab:cdef:123:4567:89ab:cdee',
+        '123:4567:89ab:cdef:123:4567:89ab:cdef',
+      ],
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :operatingsystemrelease => '8.0',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-eth1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-eth1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth1', [
+        'DEVICE=eth1',
+        'BOOTPROTO=none',
+        'HWADDR=fe:fe:fe:aa:aa:aa',
+        'ONBOOT=yes',
+        'HOTPLUG=yes',
+        'TYPE=Ethernet',
+        'IPADDR=1.2.3.4',
+        'NETMASK=255.255.255.0',
+        'PEERDNS=no',
+        'IPV6INIT=yes',
+        'IPV6ADDR=123:4567:89ab:cdef:123:4567:89ab:cded',
+        'IPV6ADDR_SECONDARIES="123:4567:89ab:cdef:123:4567:89ab:cdee 123:4567:89ab:cdef:123:4567:89ab:cdef"',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
   end
 end

@@ -32,7 +32,7 @@
 #
 # === Requires:
 #
-#   Service['network']
+#   Class['network::service']
 #
 # === Sample Usage:
 #
@@ -129,7 +129,7 @@ class network::global (
 
   if $restart {
     File['network.sysconfig'] {
-      notify  => Service['network'],
+      notify  => Class['network::service'],
     }
   }
 } # class global

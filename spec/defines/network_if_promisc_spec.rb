@@ -24,7 +24,7 @@ describe 'network::if::promisc', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -81,7 +81,7 @@ describe 'network::if::promisc', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth3',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth3] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth3', [

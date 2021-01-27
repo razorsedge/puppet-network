@@ -75,6 +75,11 @@ define network::alias::range (
     'absent' => 'absent',
     default  => undef,
   }
+  if versioncmp($::operatingsystemrelease, '8') >= 0 {
+    $nm_controlled = true
+  } else {
+    $nm_controlled = false
+  }
 
   file { "ifcfg-${interface}-range${clonenum_start}":
     ensure  => $file_ensure,
@@ -88,7 +93,7 @@ define network::alias::range (
 
   if $restart {
     File["ifcfg-${interface}-range${clonenum_start}"] {
-      notify  => Service['network'],
+      notify  => Class['network::service'],
     }
   }
 

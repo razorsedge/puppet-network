@@ -1,0 +1,16 @@
+###
+### File managed by Puppet
+###
+<% if !@ipv4_routes.empty? -%>
+<% [@ipv4_routes].flatten.each do |v4| -%>
+<%= "#{v4["dest"]}" -%>
+<% if v4["gateway"] != nil -%>
+<%= " via #{v4["gateway"]}"  -%>
+<% end -%>
+<%= " dev #{@interface}" -%>
+<% if v4["table"] != nil -%>
+<%= " table #{v4["table"]}" -%>
+<% end -%>
+
+<% end -%>
+<% end -%>

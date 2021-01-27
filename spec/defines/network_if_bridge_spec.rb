@@ -25,6 +25,7 @@ describe 'network::if::bridge', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -34,7 +35,7 @@ describe 'network::if::bridge', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -63,6 +64,7 @@ describe 'network::if::bridge', :type => 'define' do
     end
     let :facts do {
       :osfamily        => 'RedHat',
+      :operatingsystemrelease => '7.0',
       :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
     }
     end
@@ -72,7 +74,7 @@ describe 'network::if::bridge', :type => 'define' do
       :owner  => 'root',
       :group  => 'root',
       :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
-      :notify => 'Service[network]'
+      :notify => 'Class[Network::Service]'
     )}
     it 'should contain File[ifcfg-eth1] with required contents' do
       verify_contents(catalogue, 'ifcfg-eth1', [
@@ -89,6 +91,47 @@ describe 'network::if::bridge', :type => 'define' do
       ])
     end
     it { should contain_service('network') }
+  end
+
+  context 'RHEL8 optional parameters' do
+    let(:title) { 'eth1' }
+    let :params do {
+      :ensure       => 'down',
+      :bridge       => 'br55',
+      :mtu          => '9000',
+      :ethtool_opts => 'speed 1000 duplex full autoneg off',
+      :macaddress   => '00:00:00:00:00:00',
+    }
+    end
+    let :facts do {
+      :osfamily        => 'RedHat',
+      :operatingsystemrelease => '8.0',
+      :macaddress_eth1 => 'fe:fe:fe:aa:aa:aa',
+    }
+    end
+    it { should contain_file('ifcfg-eth1').with(
+      :ensure => 'present',
+      :mode   => '0644',
+      :owner  => 'root',
+      :group  => 'root',
+      :path   => '/etc/sysconfig/network-scripts/ifcfg-eth1',
+      :notify => 'Class[Network::Service]'
+    )}
+    it 'should contain File[ifcfg-eth1] with required contents' do
+      verify_contents(catalogue, 'ifcfg-eth1', [
+        'DEVICE=eth1',
+        'BOOTPROTO=none',
+        'HWADDR=00:00:00:00:00:00',
+        'ONBOOT=no',
+        'HOTPLUG=no',
+        'TYPE=Ethernet',
+        'MTU=9000',
+        'ETHTOOL_OPTS="speed 1000 duplex full autoneg off"',
+        'BRIDGE=br55',
+        'NM_CONTROLLED=yes',
+      ])
+    end
+    it { should contain_exec('restart_network') }
   end
 
 end

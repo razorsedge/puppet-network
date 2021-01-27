@@ -15,14 +15,12 @@ describe 'network', :type => 'class' do
   end
 
   context 'on a supported operatingsystem' do
-    let(:facts) {{ :osfamily => 'RedHat' }}
+    let(:facts) {{
+      :osfamily => 'RedHat',
+      :operatingsystemrelease => '7.0',
+    }}
 
-    it { should contain_service('network').with(
-      :ensure     => 'running',
-      :enable     => true,
-      :hasrestart => true,
-      :hasstatus  => true
-    )}
+    it { is_expected.to compile.with_all_deps }
   end
 
 end

@@ -68,6 +68,11 @@ define network::bridge::dynamic (
     'down'  => 'no',
     default => undef,
   }
+  if versioncmp($::operatingsystemrelease, '8') >= 0 {
+    $nm_controlled = true
+  } else {
+    $nm_controlled = false
+  }
 
   file { "ifcfg-${interface}":
     ensure  => 'present',
@@ -81,7 +86,7 @@ define network::bridge::dynamic (
 
   if $restart {
     File["ifcfg-${interface}"] {
-      notify  => Service['network'],
+      notify  => Class['network::service'],
     }
   }
 } # define network::bridge::dynamic

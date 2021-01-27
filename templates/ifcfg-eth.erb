@@ -70,4 +70,8 @@ check_link_down() {
 <% end -%>
 <% if !@arpcheck %>ARPCHECK=no
 <% end -%>
+<% if @nm_controlled -%>
+NM_CONTROLLED=yes
+<% else -%>
 NM_CONTROLLED=no
+<% end -%>
